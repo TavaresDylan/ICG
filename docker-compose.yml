@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  db:
+    restart: on-failure
+    container_name: database_server
+    image: mysql:5.7
+    ports:
+      - 32000:3306
+    env_file:
+      - .env
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+    networks:
+      - net
+
+  adminer:
+    container_name: "Flask-adminer"
+    image: adminer
+    restart: always
+    ports:
+      - 31730:8080
+
+  backend:
+    tty: true
+    restart: always
+    container_name: django_server
+    build: ./backend/
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./backend:/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+    depends_on:
+      - db
+      - frontend
+    networks:
+      - net
+
+  frontend:
+    tty: true
+    container_name: vuejs_server
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    volumes: ["./frontend:/app"]
+
+
+networks:
+  net:
+    driver: bridge
