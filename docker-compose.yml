@@ -15,7 +15,7 @@ services:
       - net
 
   adminer:
-    container_name: "Flask-adminer"
+    container_name: "adminer"
     image: adminer
     restart: always
     ports:
@@ -26,6 +26,7 @@ services:
     restart: always
     container_name: django_server
     build: ./backend/
+    command: sh -c "sleep 10 && python manage.py runserver 0.0.0.0:8080"
     ports:
       - "8085:8085"
     volumes:
@@ -48,7 +49,6 @@ services:
     ports:
       - "8080:8080"
     volumes: ["./frontend:/app"]
-
 
 networks:
   net:
