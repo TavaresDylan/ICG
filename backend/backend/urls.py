@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from backend import views as myapp_views
+from django.conf.urls import url, include
 
 urlpatterns = [
+    # pages
     path('admin/', admin.site.urls),
     path('', myapp_views.index),
     path('about/', myapp_views.index),
+    path('signup/', myapp_views.index),
+    path('login/', myapp_views.index),
+    path('upload/', myapp_views.index),
+    url(r'^', include('api.urls')),
 ]
