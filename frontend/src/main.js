@@ -6,12 +6,15 @@ import vuetify from "@/plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import VueTyperPlugin from "vue-typer";
 
+import axios from "axios";
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
   vuetify,
+  axios,
   VueTyperPlugin,
   render: (h) => h(App),
 }).$mount("#app");

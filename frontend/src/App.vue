@@ -49,7 +49,10 @@ export default {
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         { title: "About", path: "/about", icon: "info" },
-        { title: "Sign In", path: "/signin", icon: "lock_open" },
+        { title: "Upload", path: "/upload", icon: "file_upload" },
+        { title: "Signup", path: "/signup", icon: "person_add"},
+        { title: "Login", path: "/login", icon: "login"},
+        { title: "Profile", path: "/profile", icon: "account_circle"},
       ],
     };
   },

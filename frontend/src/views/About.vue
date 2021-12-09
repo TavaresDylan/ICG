@@ -1,51 +1,21 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt odit
-      vitae beatae nihil magnam asperiores, consectetur magni cumque iusto
-      corrupti, assumenda modi exercitationem ipsa similique laudantium in
-      atque. Eos, voluptatibus. Lorem ipsum dolor sit, amet consectetur
-      adipisicing elit. Laudantium, omnis. Quas possimus aperiam blanditiis
-      temporibus impedit neque molestiae delectus voluptatum aspernatur? Beatae
-      modi optio magni. Ratione ipsam nesciunt quasi cum!. Lorem ipsum dolor sit
-      amet, consectetur adipisicing elit. Fugit saepe iste facere, impedit
-      necessitatibus aliquam vel quisquam et labore. Dolores quae molestias
-      tempore at esse, nulla quidem reiciendis soluta saepe! Lorem ipsum, dolor
-      sit amet consectetur adipisicing elit. Sunt quasi libero, doloremque
-      expedita eos obcaecati facilis officiis omnis id esse. In doloremque
-      reiciendis necessitatibus totam quae quibusdam quidem saepe perferendis.
-    </p>
-    <v-img src="https://picsum.photos/1920/1080?random" alt=""></v-img>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt odit
-      vitae beatae nihil magnam asperiores, consectetur magni cumque iusto
-      corrupti, assumenda modi exercitationem ipsa similique laudantium in
-      atque. Eos, voluptatibus. Lorem ipsum dolor sit, amet consectetur
-      adipisicing elit. Laudantium, omnis. Quas possimus aperiam blanditiis
-      temporibus impedit neque molestiae delectus voluptatum aspernatur? Beatae
-      modi optio magni. Ratione ipsam nesciunt quasi cum!. Lorem ipsum dolor sit
-      amet, consectetur adipisicing elit. Fugit saepe iste facere, impedit
-      necessitatibus aliquam vel quisquam et labore. Dolores quae molestias
-      tempore at esse, nulla quidem reiciendis soluta saepe! Lorem ipsum, dolor
-      sit amet consectetur adipisicing elit. Sunt quasi libero, doloremque
-      expedita eos obcaecati facilis officiis omnis id esse. In doloremque
-      reiciendis necessitatibus totam quae quibusdam quidem saepe perferendis.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt odit
-      vitae beatae nihil magnam asperiores, consectetur magni cumque iusto
-      corrupti, assumenda modi exercitationem ipsa similique laudantium in
-      atque. Eos, voluptatibus. Lorem ipsum dolor sit, amet consectetur
-      adipisicing elit. Laudantium, omnis. Quas possimus aperiam blanditiis
-      temporibus impedit neque molestiae delectus voluptatum aspernatur? Beatae
-      modi optio magni. Ratione ipsam nesciunt quasi cum!. Lorem ipsum dolor sit
-      amet, consectetur adipisicing elit. Fugit saepe iste facere, impedit
-      necessitatibus aliquam vel quisquam et labore. Dolores quae molestias
-      tempore at esse, nulla quidem reiciendis soluta saepe! Lorem ipsum, dolor
-      sit amet consectetur adipisicing elit. Sunt quasi libero, doloremque
-      expedita eos obcaecati facilis officiis omnis id esse. In doloremque
-      reiciendis necessitatibus totam quae quibusdam quidem saepe perferendis.
-    </p>
+    <h1 class="text-center">This is an about page</h1>
+    <p>Ce projet est pour la fin d'alternance de la promo Dev I.A 2021 Toulouse AI by Microsoft</p>
+    <p class="display-1 text-center">Quel but à but à ce projet ?</p>
+    <p>Ce projet est fait pour facilité le tri des photos des utlisateurs et de leur offir un espadce de stockage cloud assité par IA afin d'automatiquement généré une description de chaqunes de leurs photos afin de les retrouver plus facilement dans leur espace de stockage.</p>
+    <v-img src="https://cdn.pixabay.com/photo/2013/07/12/12/34/slide-145953_1280.png" max-width="346"></v-img>
+    <p class="display-1 text-center">Quelles technolgies sont utilisés pour généré les descriptions des photos ?</p>
+    <p>Les réseaux neuronnals convolutifs</p>
+    <p>Cet algorithme de machine learning profond permet de traiter votre image en 2 dimensions. L'algorithme scan de dans le sens de la lecture de votre image</p>
+    <p class="display-1 text-center">Quel est le dataset d'entrainement de L'IA ?</p>
+    <p>Le datadet d'entrainement de cette IA est <a href="https://github.com/jbrownlee/Datasets/releases/download/Flickr8k/Flickr8k_Dataset.zip">Flickr8k</a></p>
   </div>
 </template>
+
+
+<script>
+export default {
+  name: "About",
+}
+</script>

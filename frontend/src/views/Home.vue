@@ -1,6 +1,6 @@
 <template>
   <v-app id="home">
-    <div class="row ma-4">
+    <div class="row ma-16">
       <div
         class="col-md-6 col-xs-12 d-flex flex-column align-center justify-center"
       >
@@ -27,11 +27,11 @@
         <div>
           <vue-typer
             :text="[
-              'Arya Stark',
-              'Jon Snow',
-              'Daenerys Targaryen',
+              'Squirrel eating gland',
+              'Cloudy sky with sunset',
+              'Eagle',
               'Melisandre',
-              'Tyrion Lannister',
+              'Planets in space',
             ]"
             :repeat="Infinity"
             :shuffle="false"
@@ -47,6 +47,89 @@
           ></vue-typer>
         </div>
       </div>
+    </div>
+
+    <div class="d-flex justify-center align-center flex-column">
+      <h2 class="display-2">Fonctionnalités</h2>
+      <div id="spacer"></div>
+      <div class="row">
+        <div class="col-6 d-flex justify-center align-center flex-column pa-6">
+          <p class="display-1">Retrouvez vos photo simplement</p>
+          <p>
+            Vos photos sur le cloud sont automatiquement décrite par IA,
+            retrouvez vos souvenirs en faisant une recherche par description.
+          </p>
+        </div>
+        <div class="col-6 d-flex align-center justify-center">
+          <v-img
+            max-width="23em"
+            src="https://cdn.pixabay.com/photo/2016/03/31/19/16/images-1294872_1280.png"
+          ></v-img>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 d-flex align-center justify-center">
+          <v-img
+            max-width="23em"
+            src="https://cdn.pixabay.com/photo/2016/03/31/19/16/images-1294872_1280.png"
+          ></v-img>
+        </div>
+        <div class="col-6 d-flex justify-center align-center flex-column pa-6">
+          <p class="display-1">Stockez toute vos photos sur le cloud</p>
+          <p>
+            Un espace de stockage illimité pour sécurisé vos souvenir les plus
+            précieux.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-center align-center flex-column">
+      <h2 class="display-2">Tarifs</h2>
+      <div id="spacer"></div>
+      <v-row class="pa-12">
+        <v-col cols="6">
+          <v-card>
+            <v-card-title class="text-h5"> Starter pack </v-card-title>
+
+            <v-card-subtitle
+              >Profitez de notre offre de découverte.</v-card-subtitle
+            >
+
+            <v-card-text>
+              <v-list>
+                ✔️ Profitez de l'hebergement jusqu'a 220 photos <br/>
+                ✔️
+              </v-list>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn color="primary" text> Commencer </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card>
+            <v-card-title class="text-h5"> Premium pack </v-card-title>
+
+            <v-card-subtitle
+              >Profitez de notre offre de complète et soutenez le projet.</v-card-subtitle
+            >
+
+            <v-card-text>
+              <v-list>
+                ✔️ Hebergement de photos illimité <br/>
+                ✔️ Accès à l'IA prioritaire <br/>
+                ✔️ Contribuez à l'amélioration des description de l'IA <br/>
+              </v-list>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn color="primary" text> Souscrire </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
   </v-app>
 </template>
@@ -86,7 +169,12 @@ export default {
 </script>
 
 <style lang="scss">
-#home {
-  //background: rgb(88, 88, 243);
+#spacer {
+  width: 12em;
+  height: 0.2em;
+  border: 2px solid black;
+  border-radius: 4px;
+  background: black;
+  margin-top: 1.2em;
 }
 </style>

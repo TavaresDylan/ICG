@@ -19,6 +19,38 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  {
+    path: "/upload",
+    component: () =>
+      import(/* webpackChunckName: "about" */ "../views/Upload.vue"),
+  },
+  {
+    path: "/login",
+    component: () =>
+      import(/* webpackChunckName: "about" */ "../views/Login.vue"),
+  },
+  {
+    path: "/signup",
+    component: () =>
+      import(/* webpackChunckName: "about" */ "../views/Signup.vue"),
+  },
+  {
+    path: "/profile",
+    component: () =>
+      import(/* webpackChunckName: "about" */ "../views/Profile.vue"),
+    children: [
+      {
+        path: "/profile/settings",
+        component: () =>
+          import(/* webpackChunckName: "about" */ "../views/profile/Settings.vue"),
+      },
+    ],
+  },
+  {
+    path: "/api/user",
+    component: () =>
+      import(/* webpackChunckName: "about" */ "../views/Signup.vue"),
+  },
 ];
 
 const router = new VueRouter({
