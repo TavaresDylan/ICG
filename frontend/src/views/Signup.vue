@@ -4,7 +4,7 @@
     <div class="container pa-12">
       <v-form ref="form" lazy-validation>
         <v-text-field
-          v-model="form.name"
+          v-model="form.username"
           :counter="10"
           :rules="[rules.required, rules.minName]"
           label="Name"
@@ -12,7 +12,7 @@
         ></v-text-field>
 
         <v-text-field
-          v-model="form.mail"
+          v-model="form.email"
           :rules="[rules.required, rules.format]"
           label="E-mail"
           required
@@ -33,7 +33,7 @@
         <v-text-field
           v-model="form.confirmPassword"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.minPassword, rules.passwordMatch]"
+          :rules="[rules.required, rules.minPassword]"
           :type="show2 ? 'text' : 'password'"
           name="confirmPassword"
           label="Confirmez mot de passe"
@@ -51,7 +51,9 @@
           required
         ></v-checkbox>
 
-        <v-btn color="success" class="mr-4" @click="validate"> S'enregistrer </v-btn>
+        <v-btn color="success" class="mr-4" @click="validate">
+          S'enregistrer
+        </v-btn>
       </v-form>
     </div>
   </v-app>
@@ -65,19 +67,25 @@ export default {
       show1: false,
       show2: false,
       form: {
-        name: "",
-        mail: "",
+        username: "",
+        email: "",
         password: "",
+        confirmPassword: "",
       },
       rules: {
         // NameRules
         minName: (v) => v.length >= 3 || "Doit contenir au moins 3 caratères.",
         // MailRules
-        format: (v) => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'L\'e-mail doit être valide.',
+        format: (v) =>
+          !v ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "L'e-mail doit être valide.",
         emailMatch: () => `The email and password you entered don't match`,
         // PasswordRules
-        passwordMatch: (v) => v == this.$refs.password || `La confirmation du mot de passe ne correspond pas à votre mot de passe`,
-        minPassword: (v) => v.length >= 8 || "Doit contenir au moins 8 caratères incluant au moins un caractère spécial.",
+        //passwordMatch: (v) => v == this.form.password || `La confirmation du mot de passe ne correspond pas à votre mot de passe`,
+        minPassword: (v) =>
+          v.length >= 8 ||
+          "Doit contenir au moins 8 caratères incluant au moins un caractère spécial.",
         // GeneralRules
         required: (value) => !!value || "Requis.",
       },
@@ -85,10 +93,14 @@ export default {
   },
   methods: {
     validate() {
-      axios.post("http://localhost:8085/api/user/", this.form).then((res) => {
-        console.log(res.data);
-        console.log(this.form);
-      });
+      axios
+        .post("http://localhost:8085/api/register/", this.form)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

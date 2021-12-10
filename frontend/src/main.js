@@ -5,10 +5,13 @@ import store from "./store";
 import vuetify from "@/plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import VueTyperPlugin from "vue-typer";
+import VueSession from "vue-session";
 
 import axios from "axios";
 
 Vue.config.productionTip = false;
+
+Vue.use(VueSession);
 
 new Vue({
   router,
