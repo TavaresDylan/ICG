@@ -1,5 +1,4 @@
-"""backend URL Configuration
-
+""""
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
@@ -17,6 +16,7 @@ from django.contrib import admin
 from django.urls import path
 from backend import views as myapp_views
 from django.conf.urls import url, include
+from api import views
 
 urlpatterns = [
     # pages
@@ -26,5 +26,7 @@ urlpatterns = [
     path('signup/', myapp_views.index),
     path('login/', myapp_views.index),
     path('upload/', myapp_views.index),
+    path('profile/', myapp_views.index),
+    # API
     url(r'^', include('api.urls')),
 ]

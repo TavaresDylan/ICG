@@ -1,7 +1,14 @@
-from django.conf.urls import url 
-from api import views
+from django.conf.urls import url
+from django.urls import path, include
+from rest_framework_jwt.views import obtain_jwt_token
 
-urlpatterns = [ 
-    url('api/user', views.create_user),
-    url('api/user/(?P<pk>[0-9]+)$', views.get_user),
+from rest_framework import routers
+from api.views import RegisterViewset
+
+router = routers.SimpleRouter()
+router.register('register', RegisterViewset, basename='register')
+
+urlpatterns = [
+    url(r'^auth/', obtain_jwt_token),
+    path('api/', include(router.urls))
 ]
