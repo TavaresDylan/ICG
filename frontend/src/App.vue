@@ -40,19 +40,33 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "App",
+  beforeCreate() {
+    this.$store.commit('initializeStore')
+
+    const token = this.$store.state.token
+
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = "Token " + token
+    } else {
+      axios.defaults.headers.common["Authorization"] = ""
+    }
+  },
   data() {
     return {
-      appTitle: "CGI",
+      appTitle: "ICG",
       sidebar: false,
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         { title: "About", path: "/about", icon: "info" },
-        { title: "Upload", path: "/upload", icon: "file_upload" },
+        { title: "Demo", path: "/upload", icon: "file_upload" },
         { title: "Signup", path: "/signup", icon: "person_add"},
         { title: "Login", path: "/login", icon: "login"},
-        { title: "Profile", path: "/profile", icon: "account_circle"},
+        { title: "Profile", path: "/profile/dashboard", icon: "account_circle"},
+        { title: "Logout", path: "/logout", icon: "logout"},
       ],
     };
   },

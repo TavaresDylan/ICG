@@ -1,14 +1,14 @@
 <template>
   <v-app class="d-flex">
     <div>
-      <h1 class="text-center">Mon compte</h1>
+      <router-view />
     </div>
     <div>
       <v-navigation-drawer app permanent>
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6"> Mon compte </v-list-item-title>
-            <v-list-item-subtitle> {{ username }} </v-list-item-subtitle>
+            <v-list-item-subtitle> {{ $store.state.username }} </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -36,14 +36,16 @@
 </template>
 
 <script>
+import settings from "./profile/Settings.vue";
+import { mapState } from "vuex";
 export default {
-  props: {
-    username: String,
+  component: {
+    settings,
   },
   data() {
     return {
       items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard", path: "/profile" },
+        { title: "Dashboard", icon: "mdi-view-dashboard", path: "/profile/dashboard" },
         { title: "Photos", icon: "mdi-image", path: "/profile/photos" },
         { title: "About", icon: "mdi-help-box", path: "/profile/about" },
         {
@@ -55,5 +57,8 @@ export default {
       right: null,
     };
   },
+  computed: {
+      ...mapState(["username"])
+    },
 };
 </script>

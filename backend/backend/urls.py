@@ -27,6 +27,9 @@ urlpatterns = [
     path('login/', myapp_views.index),
     path('upload/', myapp_views.index),
     path('profile/', myapp_views.index),
+    path('profile/dashboard/', myapp_views.index),
+    path('profile/photos/', myapp_views.index),
+    path('profile/settings/', myapp_views.index),
     # API
     url(r'^', include('api.urls')),
 ]

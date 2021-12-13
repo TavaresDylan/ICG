@@ -4,6 +4,7 @@
       <div class="col-6 d-flex align-center justify-center">
         <v-card class="col-6 d-flex flex-column text-center">
           <h1>Upload your file</h1>
+          <p>Esssayer notre I.A de description en envoyant une photo.</p>
           <v-file-input
             :rules="rules"
             label="Envoyez votre image"

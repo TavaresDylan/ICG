@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <v-app class="container">
     <h1 class="text-center">This is an about page</h1>
     <p>Ce projet est pour la fin d'alternance de la promo Dev I.A 2021 Toulouse AI by Microsoft</p>
     <p class="display-1 text-center">Quel but à but à ce projet ?</p>
@@ -10,7 +10,7 @@
     <p>Cet algorithme de machine learning profond permet de traiter votre image en 2 dimensions. L'algorithme scan de dans le sens de la lecture de votre image</p>
     <p class="display-1 text-center">Quel est le dataset d'entrainement de L'IA ?</p>
     <p>Le datadet d'entrainement de cette IA est <a href="https://github.com/jbrownlee/Datasets/releases/download/Flickr8k/Flickr8k_Dataset.zip">Flickr8k</a></p>
-  </div>
+  </v-app>
 </template>
 
 

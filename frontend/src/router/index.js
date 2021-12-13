@@ -40,6 +40,16 @@ const routes = [
       import(/* webpackChunckName: "about" */ "../views/Profile.vue"),
     children: [
       {
+        path: "/profile/dashboard",
+        component: () =>
+          import(/* webpackChunckName: "about" */ "../views/profile/Dashboard.vue"),
+      },
+      {
+        path: "/profile/photos",
+        component: () =>
+          import(/* webpackChunckName: "about" */ "../views/profile/Photos.vue"),
+      },
+      {
         path: "/profile/settings",
         component: () =>
           import(/* webpackChunckName: "about" */ "../views/profile/Settings.vue"),

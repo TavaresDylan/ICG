@@ -35,7 +35,6 @@
 
 <script>
 import axios from "axios";
-//import swal from 'sweetalert2';
 import router from "../router";
 export default {
   data: () => {
@@ -57,23 +56,25 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         axios
-          .post("http://localhost:8085/auth/", this.credentials)
+          .post("api/v1/token/login/", this.credentials)
           .then((res) => {
-            this.$session.start();
-            this.$session.set("token", res.data.token);
-            router.push("/profile");
+
+            console.log(res)
+
+            const token = res.data.auth_token
+
+            this.$store.commit("setToken", token)
+
+            this.$store.commit("setUsername", this.credentials.username)
+
+            axios.defaults.headers.common["Authorization"] = "Token " + token
+
+            localStorage.setItem("Token",token)
+
+            router.push("/profile/dashboard/");
+          }).catch((err) => {
+            console.log(err)
           });
-        //.catch(e => {
-        //  this.loading = false;
-        //  swal({
-        //    type: "warning",
-        //    title: "Error",
-        //    text: "Wrong username or password",
-        //    showConfirmButton: false,
-        //    showCloseButton: false,
-        //    timer: 3000,
-        //  });
-        //});
       }
     },
   },
