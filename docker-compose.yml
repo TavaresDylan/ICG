@@ -1,12 +1,31 @@
 version: "3.9"
 
 services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - net
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/conf.d/dev.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend/static/:/usr/src/app/static
+    networks:
+      - net
+
   db:
     restart: on-failure
     container_name: database_server
-    image: mysql:5.7
+    image: mysql:${MYSQL_VERSION}
     ports:
-      - 32000:3306
+      - ${MYSQL_CONTAINER_PORTS}
     env_file:
       - .env
     volumes:
@@ -15,27 +34,27 @@ services:
       - net
 
   adminer:
-    container_name: "adminer"
+    container_name: adminer
     image: adminer
     restart: always
     ports:
       - 31730:8080
+    networks:
+      - net
 
   backend:
     tty: true
     restart: always
     container_name: django_server
     build: ./backend/
-    command: sh -c "sleep 10 && python manage.py runserver 0.0.0.0:8080"
+    command: sh -c "sleep 10 && python manage.py runserver 0.0.0.0:8085"
     ports:
-      - "8085:8085"
+      - ${DJANGO_CONTAINER_PORTS}
     volumes:
-      - ./backend:/app
-    environment:
-      - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=test
-      - MYSQL_USER=mysql
-      - MYSQL_PASSWORD=mysql
+      - ./backend:/app/app
+      - ./frontend/static:/app/frontend
+    env_file:
+      - .env
     depends_on:
       - db
       - frontend
@@ -43,12 +62,31 @@ services:
       - net
 
   frontend:
+    restart: always
     tty: true
     container_name: vuejs_server
     build: ./frontend
+    env_file:
+      - .env
     ports:
-      - "8080:8080"
+      - ${VUE_CONTAINER_PORTS}
     volumes: ["./frontend:/app"]
+    networks:
+      - net
+
+  doc:
+    tty: true
+    container_name: mkdocs-material
+    image: squidfunk/mkdocs-material
+    ports:
+      - ${MKDOCS_CONTAINER_PORTS}
+    volumes: 
+      - ./docs/:/docs
+    entrypoint: ["mkdocs", "serve", "-a", "0.0.0.0:5000"]
+    env_file:
+      - .env
+    networks:
+      - net
 
 networks:
   net:
