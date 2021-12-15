@@ -13,6 +13,26 @@ Prerequisites:
 - Python > 3.6
 - Mkdocs-material
 
+## With docker-compose 🐳
+
+➤ Setup environment variables
+
+➤ From root directory
+
+```sh
+docker-compose up -d
+```
+
+➤ Make migrations
+
+➤ Migrate
+
+➤ Collectstatics
+
+*Tips :*
+
+----
+
 ## Without docker
 
 ⚠️ Must be setup first of all
