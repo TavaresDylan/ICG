@@ -2,6 +2,8 @@ FROM python:3.9 as dev
 
 # Dossier de travail (racine du projet)
 WORKDIR /app
+# Créer un point de montage pour le volume
+VOLUME /app
 # Mise à jour de pip
 RUN pip install --upgrade pip
 # Copie du fichier de listing des dépendances dans le container

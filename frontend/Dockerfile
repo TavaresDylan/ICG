@@ -1,5 +1,8 @@
 FROM node:15-buster as dev
-
+# Dossier de travail courant dans le container
+WORKDIR /app
+# Créer un point de montage pour le volume
+VOLUME /app
 # Copie du fichier des dépendences
 COPY package.json package.json
 # Installation des dépendences
