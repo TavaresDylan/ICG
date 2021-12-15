@@ -2,3 +2,16 @@ site_name: ICG Documentation
 
 theme:
   name: material
+  palette:
+      - scheme: default
+        accent: indigo
+        primary: white
+        toggle:
+          icon: material/weather-night
+          name: Switch to dark mode
+      - scheme: slate
+        primary: black
+        accent: white
+        toggle:
+          icon: material/weather-sunny
+          name: Switch to light mode
