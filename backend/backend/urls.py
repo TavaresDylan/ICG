@@ -25,7 +25,7 @@ urlpatterns = [
     path('about/', myapp_views.index),
     path('signup/', myapp_views.index),
     path('login/', myapp_views.index),
-    path('upload/', myapp_views.index),
+    path('demo/', myapp_views.index),
     path('profile/', myapp_views.index),
     path('profile/dashboard/', myapp_views.index),
     path('profile/photos/', myapp_views.index),

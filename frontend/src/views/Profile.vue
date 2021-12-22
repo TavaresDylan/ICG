@@ -45,9 +45,8 @@ export default {
   data() {
     return {
       items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard", path: "/profile/dashboard" },
-        { title: "Photos", icon: "mdi-image", path: "/profile/photos" },
-        { title: "About", icon: "mdi-help-box", path: "/profile/about" },
+        { title: "Dashboard", icon: "dashboard", path: "/profile/dashboard" },
+        { title: "Photos", icon: "image", path: "/profile/photos" },
         {
           title: "Paramètres du compte",
           icon: "settings",

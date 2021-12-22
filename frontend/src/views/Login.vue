@@ -1,6 +1,6 @@
 <template>
   <v-app class="d-flex justify-center align-center">
-    <h1 class="text-center mt-12">Se connecter</h1>
+    <h1 class="text-center mt-12">Log In</h1>
     <div class="container pa-12">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
@@ -11,22 +11,17 @@
         ></v-text-field>
 
         <v-text-field
-          v-model="credentials.mail"
-          :rules="[rules.required, rules.format]"
-          label="E-mail"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          type="password"
+          @click:append="show1 = !show1"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show1 ? 'text' : 'password'"
           v-model="credentials.password"
           :rules="[rules.required]"
           label="Password"
           required
         ></v-text-field>
 
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
-          Se connecter
+        <v-btn :disabled="!valid" color="success" class="mt-4" @click="login">
+          Log In
         </v-btn>
       </v-form>
     </div>
@@ -39,14 +34,11 @@ import router from "../router";
 export default {
   data: () => {
     return {
+      show1: false,
       credentials: {},
       loading: false,
       valid: true,
       rules: {
-        format: (v) =>
-          !v ||
-          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "L'e-mail doit être valide.",
         required: (value) => !!value || "Requis.",
       },
     };

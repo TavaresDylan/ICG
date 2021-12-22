@@ -54,7 +54,7 @@
       <div id="spacer"></div>
       <div class="row">
         <div class="col-6 d-flex justify-center align-center flex-column pa-6">
-          <p class="display-1">Retrouvez vos photo simplement</p>
+          <p class="display-1">Retrouvez vos photos simplement</p>
           <p>
             Vos photos sur le cloud sont automatiquement décrite par IA,
             retrouvez vos souvenirs en faisant une recherche par description.
@@ -120,7 +120,7 @@
               <v-list>
                 ✔️ Hebergement de photos illimité <br/>
                 ✔️ Accès à l'IA prioritaire <br/>
-                ✔️ Contribuez à l'amélioration des description de l'IA <br/>
+                ✔️ Contribuez à l'amélioration des descriptions de l'IA <br/>
               </v-list>
             </v-card-text>
 
@@ -143,7 +143,6 @@ export default {
   },
   methods: {
     onComplete: function () {
-      console.log("Vue typer complete ok");
       this.$refs.carousel.next();
     },
   },

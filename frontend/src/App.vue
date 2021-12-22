@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer v-model="sidebar" app>
+    <v-navigation-drawer class="hidden-md-and-up" v-model="sidebar" disable-resize-watcher="true" app>
       <v-list>
         <v-list-item
           v-for="item in menuItems"
@@ -20,12 +20,12 @@
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
       <v-toolbar-title id="title">
-        <router-link to="/" style="cursor: pointer">
-          {{ appTitle }}
+        <router-link class="d-flex" to="/" style="cursor: pointer">
+          <img src="https://img.icons8.com/fluency/48/000000/stack-of-photos.png"/>{{ appTitle }}
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
+      <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
@@ -41,6 +41,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -55,6 +56,9 @@ export default {
       axios.defaults.headers.common["Authorization"] = ""
     }
   },
+  computed: {
+    ...mapState(["username"])
+  },
   data() {
     return {
       appTitle: "ICG",
@@ -62,11 +66,11 @@ export default {
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         { title: "About", path: "/about", icon: "info" },
-        { title: "Demo", path: "/upload", icon: "file_upload" },
-        { title: "Signup", path: "/signup", icon: "person_add"},
-        { title: "Login", path: "/login", icon: "login"},
-        { title: "Profile", path: "/profile/dashboard", icon: "account_circle"},
-        { title: "Logout", path: "/logout", icon: "logout"},
+        { title: "Demo", path: "/demo", icon: "file_upload" },
+        { title: "Signup", path: "/signup", icon: "person_add" },
+        { title: "Login", path: "/login", icon: "login" },
+        { title: "Profile", path: "/profile/dashboard", icon: "account_circle" },
+        { title: "Logout", path: "/logout", icon: "logout" },
       ],
     };
   },

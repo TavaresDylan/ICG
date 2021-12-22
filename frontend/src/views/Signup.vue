@@ -1,13 +1,13 @@
 <template>
   <v-app class="d-flex justify-center align-center">
-    <h1 class="text-center mt-12">S'enregistrer</h1>
+    <h1 class="text-center mt-12">Sign Up</h1>
     <div class="container pa-12">
       <v-form ref="form" lazy-validation>
         <v-text-field
           v-model="form.username"
           :counter="10"
           :rules="[rules.required, rules.minName]"
-          label="Name"
+          label="Username"
           required
         ></v-text-field>
 
@@ -24,7 +24,7 @@
           :rules="[rules.required, rules.minPassword]"
           :type="show1 ? 'text' : 'password'"
           name="password"
-          label="Mot de passe"
+          label="Password"
           counter
           ref="password"
           @click:append="show1 = !show1"
@@ -36,7 +36,7 @@
           :rules="[rules.required, rules.minPassword]"
           :type="show2 ? 'text' : 'password'"
           name="confirmPassword"
-          label="Confirmez mot de passe"
+          label="Confirm password"
           counter
           required
           @click:append="show2 = !show2"
@@ -52,7 +52,7 @@
         ></v-checkbox>
 
         <v-btn color="success" class="mr-4" @click="validate">
-          S'enregistrer
+          Sign Up
         </v-btn>
       </v-form>
     </div>
@@ -87,7 +87,7 @@ export default {
           v.length >= 8 ||
           "Doit contenir au moins 8 caratères incluant au moins un caractère spécial.",
         // GeneralRules
-        required: (value) => !!value || "Requis.",
+        required: (value) => !!value || "required.",
       },
     };
   },
