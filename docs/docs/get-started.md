@@ -13,6 +13,17 @@ Prerequisites:
 - Python > 3.6
 - Mkdocs-material
 
+# Procédure rapide de demarrage
+
+- Cloner le repo
+- Copier le fichier de variable d'env se trouvant à la racine du projet afin de paramétré docker-compose
+- Copier le fichier de variable d'env se trouvant dans le dossier `backend/` afin de paramétré le fichier `settings.py` de django
+- Dans le dossier `frontend/` lancer la commande => `npm run watch` afin de compiler les fichiers statics
+- Dans le dossier `backend/` lancer la commande => `source ./venv/bin/activate` pour activer l'environement virtuel
+- Dans le dossier `backend/` lancer la commande => `pip install -r requirements.txt` pour installer les dépendences nécéssaires au projet
+- Dans le dossier `backend/` lancer la commande => `python3 manage.py collectstatic` afin de collecter les fichiers statiques précédement généré par la compilation de npm
+- A la racine du projet lancer la commande => `docker-compose up -d` afin de lancer toutes les applications
+
 ## With docker-compose 🐳
 
 ➤ Setup environment variables
@@ -30,6 +41,13 @@ docker-compose up -d
 ➤ Collectstatics
 
 *Tips :*
+
+**Exposed ports :**
+
+- UI : `localhost:8080`
+- Django App : `localhost:8085`
+- Adminer : `localhost: 31730`
+- Mkdocs : `localhost:5000`
 
 ----
 
