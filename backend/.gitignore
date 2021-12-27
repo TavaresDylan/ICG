@@ -1,3 +1,4 @@
 venv/
 var/
+static/
 __pycache__/
