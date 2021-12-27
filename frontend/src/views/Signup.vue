@@ -2,6 +2,9 @@
   <v-app class="d-flex justify-center align-center">
     <h1 class="text-center mt-12">Sign Up</h1>
     <div class="container pa-12">
+      <v-alert v-if="success_msg != ''" type="success" dismissible>{{
+        success_msg
+      }}</v-alert>
       <v-form ref="form" lazy-validation>
         <v-text-field
           v-model="form.username"
@@ -66,27 +69,25 @@ export default {
     return {
       show1: false,
       show2: false,
+      success_msg: "",
       form: {
         username: "",
         email: "",
         password: "",
         confirmPassword: "",
+        checkbox: false,
       },
       rules: {
-        // NameRules
         minName: (v) => v.length >= 3 || "Doit contenir au moins 3 caratères.",
-        // MailRules
         format: (v) =>
           !v ||
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           "L'e-mail doit être valide.",
         emailMatch: () => `The email and password you entered don't match`,
-        // PasswordRules
         //passwordMatch: (v) => v == this.form.password || `La confirmation du mot de passe ne correspond pas à votre mot de passe`,
         minPassword: (v) =>
           v.length >= 8 ||
           "Doit contenir au moins 8 caratères incluant au moins un caractère spécial.",
-        // GeneralRules
         required: (value) => !!value || "required.",
       },
     };
@@ -94,9 +95,12 @@ export default {
   methods: {
     validate() {
       axios
-        .post("http://localhost:8085/api/register/", this.form)
+        .post("/api/v1/register/", this.form)
         .then((res) => {
-          console.log(res.data);
+          if (res.status === 201){
+            this.success_msg = "Registration complete you can now login"
+            this.$refs.form.reset()
+          }
         })
         .catch((error) => {
           console.log(error);

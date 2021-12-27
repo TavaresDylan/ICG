@@ -1,34 +1,68 @@
 <template>
   <v-app class="container">
     <h1 class="text-center">Dashboard</h1>
-    <v-avatar
-      color="orange"
-      size="62"
-    >
-      <span class="white--text text-h5">62</span>
-    </v-avatar>
-    <p>Membre depuis le {{ userCreateAt }}</p>
-    <h2>Bienvenue sur ton profile {{ $store.state.username }}</h2>
-    <p>Tu as un total de {{ nbPictures }} photos</p>
-    <p>Status : {{ userStatus.statusName }} {{ userStatus.icon }}</p>
-    <p>{{ $store.state.isAuthenticated }}</p>
-    <div v-if="!$store.state.isAuthenticated"> okok </div>
+    <v-container>
+      <v-row>
+        <v-col cols="6">
+          <v-card>
+            <v-card-title>
+              <v-avatar color="orange" size="62">
+                <span class="white--text text-h5">62</span>
+              </v-avatar>
+              <h3 class="ml-4">{{ username | capitalize }}</h3>
+            </v-card-title>
+            <v-card-text class="text-h12 font-weight-bold">
+              <p>
+                ICG member since
+                {{ date_joined | moment("dddd, MMMM Do YYYY") }}
+              </p>
+              <p>Status : {{ userStatus.statusName }} {{ userStatus.icon }}</p>
+              <p>Tu as un total de {{ nbPictures }} photos</p>
+              <p>{{ email }}</p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card>
+            <v-card-title>
+              <v-icon color="green">mdi-plus-circle</v-icon>
+              <h3 class="ml-4">Add photos</h3>
+            </v-card-title>
+              <v-card-text class="text-h12 font-weight-bold">
+                <v-btn><v-icon>mdi-plus-circle</v-icon> Add photos</v-btn>
+              </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-app>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "dashboard",
   data: () => {
     return {
       nbPictures: 423,
       userStatus: { statusName: "Diamond", icon: "💎" },
-      userCreateAt: "17/08/2021"
     };
   },
+  methods: {
+    ...mapActions("user", ["getUser"]),
+  },
   computed: {
-    ...mapState(["username"])
-  }
+    ...mapState("user", ["username", "email", "date_joined"]),
+  },
+  mounted() {
+    this.getUser();
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
+  },
 };
 </script>

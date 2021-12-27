@@ -88,9 +88,9 @@
       <h2 class="display-2">Tarifs</h2>
       <div id="spacer"></div>
       <v-row class="pa-12">
-        <v-col cols="6">
+        <v-col cols="12" class="col-md-4">
           <v-card>
-            <v-card-title class="text-h5"> Starter pack </v-card-title>
+            <v-card-title class="text-h5"> Silver pack <v-icon color="grey">mdi-currency-usd-off</v-icon></v-card-title>
 
             <v-card-subtitle
               >Profitez de notre offre de découverte.</v-card-subtitle
@@ -98,8 +98,8 @@
 
             <v-card-text>
               <v-list>
-                ✔️ Profitez de l'hebergement jusqu'a 220 photos <br/>
-                ✔️
+                <p>✔️ Profitez de l'hebergement jusqu'a 220 photos</p>
+                <p>✔️</p>
               </v-list>
             </v-card-text>
 
@@ -108,9 +108,29 @@
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" class="col-md-4">
           <v-card>
-            <v-card-title class="text-h5"> Premium pack </v-card-title>
+            <v-card-title class="text-h5"> Gold pack <v-icon color="orange">mdi-gold</v-icon></v-card-title>
+
+            <v-card-subtitle
+              >Profitez de notre offre de découverte.</v-card-subtitle
+            >
+
+            <v-card-text>
+              <v-list>
+                <p>✔️ Profitez de l'hebergement jusqu'a 220 photos</p>
+                <p>✔️</p>
+              </v-list>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn color="primary" text> Commencer </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col cols="12" class="col-md-4">
+          <v-card>
+            <v-card-title class="text-h5"> Diamond pack <v-icon color="blue">mdi-diamond-stone</v-icon></v-card-title>
 
             <v-card-subtitle
               >Profitez de notre offre de complète et soutenez le projet.</v-card-subtitle
@@ -118,9 +138,9 @@
 
             <v-card-text>
               <v-list>
-                ✔️ Hebergement de photos illimité <br/>
-                ✔️ Accès à l'IA prioritaire <br/>
-                ✔️ Contribuez à l'amélioration des descriptions de l'IA <br/>
+                <p>✔️ Hebergement de photos illimité</p>
+                <p>✔️ Accès à l'IA prioritaire</p>
+                <p>✔️ Contribuez à l'amélioration des descriptions de l'IA</p>
               </v-list>
             </v-card-text>
 

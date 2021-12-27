@@ -2,6 +2,17 @@
   <v-app class="d-flex justify-center align-center">
     <h1 class="text-center mt-12">Log In</h1>
     <div class="container pa-12">
+      <v-alert
+        :value="errorLoginStatus"
+        dense
+        border="left"
+        v-if="errorLoginMsg != ''"
+        type="error"
+        dismissible
+        transition="scroll-y-reverse-transition"
+        >{{ errorLoginMsg }}</v-alert
+      >
+
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="credentials.username"
@@ -11,6 +22,7 @@
         ></v-text-field>
 
         <v-text-field
+          @keydown.enter.prevent="login"
           @click:append="show1 = !show1"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show1 ? 'text' : 'password'"
@@ -29,13 +41,12 @@
 </template>
 
 <script>
-import axios from "axios";
-import router from "../router";
+import { mapActions, mapState } from "vuex";
+import { mapFields } from "vuex-map-fields";
 export default {
   data: () => {
     return {
       show1: false,
-      credentials: {},
       loading: false,
       valid: true,
       rules: {
@@ -43,30 +54,16 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapFields(["auth.credentials"]),
+    ...mapState("auth", ["errorLoginMsg","errorLoginStatus"]),
+  },
   methods: {
+    ...mapActions("auth", ["logUser"]),
     login() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        axios
-          .post("api/v1/token/login/", this.credentials)
-          .then((res) => {
-
-            console.log(res)
-
-            const token = res.data.auth_token
-
-            this.$store.commit("setToken", token)
-
-            this.$store.commit("setUsername", this.credentials.username)
-
-            axios.defaults.headers.common["Authorization"] = "Token " + token
-
-            localStorage.setItem("Token",token)
-
-            router.push("/profile/dashboard/");
-          }).catch((err) => {
-            console.log(err)
-          });
+        this.logUser();
       }
     },
   },

@@ -8,7 +8,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6"> Mon compte </v-list-item-title>
-            <v-list-item-subtitle> {{ $store.state.username }} </v-list-item-subtitle>
+            <v-list-item-subtitle> {{ username }} </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -57,7 +57,7 @@ export default {
     };
   },
   computed: {
-      ...mapState(["username"])
+      ...mapState('user',["username"]),
     },
 };
 </script>
