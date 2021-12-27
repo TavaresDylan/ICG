@@ -1,39 +1,29 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VueAxios from 'vue-axios'
+import axios from 'axios'
+
+import { userModule } from "./modules/user";
+import { authModule } from "./modules/auth";
+
+import { getField, updateField } from 'vuex-map-fields';
 
 Vue.use(Vuex);
+Vue.use(VueAxios, axios)
 
 export default new Vuex.Store({
   state: {
-    token: "",
-    isAuthenticated: false,
-    username: "",
+    error: "",
   },
   getters: {
-
+    getField,
   },
   mutations: {
-    initializeStore(state) {
-      if (localStorage.getItem("token")) {
-        state.token = localStorage.getItem("token")
-        state.isAuthenticated = true
-      } else {
-        state.token = ''
-        state.isAuthenticated = false
-      }
-    },
-    setToken(state, token) {
-      state.token = token
-      state.isAuthenticated = true
-    },
-    removeToken(state) {
-      state.token = ""
-      state.isAuthenticated = false
-    },
-    setUsername(state, username){
-      state.username = username
-    }
+    updateField,
   },
   actions: {},
-  modules: {},
+  modules: {
+    user: userModule,
+    auth: authModule,
+  },
 });
