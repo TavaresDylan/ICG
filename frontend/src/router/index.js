@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Store from "../store/index.js";
 
 Vue.use(VueRouter);
 
@@ -13,53 +14,79 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
     path: "/demo",
     component: () =>
-      import(/*webpackChunckName: "about" */ "../views/Demo.vue"),
+      import(/*webpackChunckName: "demo" */ "../views/Demo.vue"),
   },
   {
     path: "/login",
     component: () =>
-      import(/* webpackChunckName: "about" */ "../views/Login.vue"),
+      import(/* webpackChunckName: "login" */ "../views/Login.vue"),
   },
   {
     path: "/signup",
     component: () =>
-      import(/* webpackChunckName: "about" */ "../views/Signup.vue"),
+      import(/* webpackChunckName: "signup" */ "../views/Signup.vue"),
   },
   {
     path: "/profile",
     component: () =>
-      import(/* webpackChunckName: "about" */ "../views/Profile.vue"),
+      import(/* webpackChunckName: "profile" */ "../views/Profile.vue"),
+      beforeEnter: (to, from, next) => {
+        if (Store.state.auth.isAuthenticated == false) {
+          router.push("/");
+        } else {
+          next();
+        }
+      },
     children: [
       {
         path: "/profile/dashboard",
         component: () =>
-          import(/* webpackChunckName: "about" */ "../views/profile/Dashboard.vue"),
+          import(
+            /* webpackChunckName: "dashboard" */ "../views/profile/Dashboard.vue"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (Store.state.auth.isAuthenticated == false) {
+            router.push("/");
+          } else {
+            next();
+          }
+        },
       },
       {
         path: "/profile/photos",
         component: () =>
-          import(/* webpackChunckName: "about" */ "../views/profile/Photos.vue"),
+          import(
+            /* webpackChunckName: "photos" */ "../views/profile/Photos.vue"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (Store.state.auth.isAuthenticated == false) {
+            router.push("/");
+          } else {
+            next();
+          }
+        },
       },
       {
         path: "/profile/settings",
         component: () =>
-          import(/* webpackChunckName: "about" */ "../views/profile/Settings.vue"),
+          import(
+            /* webpackChunckName: "settings" */ "../views/profile/Settings.vue"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (Store.state.auth.isAuthenticated == false) {
+            router.push("/");
+          } else {
+            next();
+          }
+        },
       },
     ],
-  },
-  {
-    path: "/api/user",
-    component: () =>
-      import(/* webpackChunckName: "about" */ "../views/Signup.vue"),
   },
 ];
 
