@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Setting up environement variables using .env file
 env = environ.Env()
-env.read_env('.env')
+environ.Env.read_env('../.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -89,7 +89,13 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
 
-CORS_ORIGIN_ALLOW_ALL = True#env('CORS_ORIGIN_ALLOW_ALL')
+DJOSER = {
+    'SERIALIZERS' : {
+        'current_user': 'api.serializer.CurrentUserSerializer',
+    }
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://localhost:8085',
@@ -126,10 +132,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': env('MYSQL_USER'),
-        'NAME': env('MYSQL_DATABASE'),
-        'PASSWORD': env('MYSQL_PASSWORD'),
-        'PORT': env('MYSQL_EXPOSED_PORT'),
+        'USER': "mysqluser",
+        'NAME': "mysqldatabase",
+        'PASSWORD': "mysqlpassword",
+        'PORT': 3306,
         'HOST': 'db',
     }
 }
@@ -173,7 +179,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'var/static_root/'
-STATICFILES_DIRS = ['../frontend/static']
+STATICFILES_DIRS = ['./static/']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -25,3 +25,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class CurrentUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'date_joined', 'email')
+
+    def get(self):
+        user = User.objects.filter(id=self.get(id))
+
+        return user
