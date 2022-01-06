@@ -1,0 +1,22 @@
+---
+name: create-labels
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/labels.yml
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: micnncim/action-label-syncer@3abd5ab72fda571e69fffd97bd4e0033dd5f495c
+        with:
+          manifest: .github/labels.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

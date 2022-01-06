@@ -1,0 +1,19 @@
+---
+name: conventional-title
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  run:
+    runs-on: self-hosted
+    steps:
+      - uses: aslafy-z/conventional-pr-title-action@92dffd1b6fc386c2a6041c4019905c9841cfa30f
+        with:
+          preset: conventional-changelog-angular@^5.0.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
