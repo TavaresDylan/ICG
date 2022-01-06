@@ -1,0 +1,13 @@
+---
+scope/ci:
+  - .github/**/*
+scope/documentation:
+  - docs/**/*
+scope/api:
+  - backend/api/**/*
+scope/backend:
+  - backend/backend/**/*
+scope/front:
+  - frontend/**/*
+scope/kblib:
+  - front/lib/**/*
