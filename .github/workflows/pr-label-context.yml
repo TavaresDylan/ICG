@@ -9,7 +9,7 @@ on:
 
 jobs:
   run:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: docker://cclorg/srvaroa-labeler:latest
         with:

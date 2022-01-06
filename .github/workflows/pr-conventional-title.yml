@@ -10,7 +10,7 @@ on:
 
 jobs:
   run:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: aslafy-z/conventional-pr-title-action@92dffd1b6fc386c2a6041c4019905c9841cfa30f
         with:
