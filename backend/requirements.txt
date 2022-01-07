@@ -11,7 +11,7 @@ django-cors-headers==3.10.1
 django-environ==0.8.1
 django-mysql==4.3.0
 django-templated-mail==1.1.1
-djangorestframework==3.12.4
+djangorestframework==3.13.1
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==4.6.0
 djoser==2.1.0
