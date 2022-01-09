@@ -112,10 +112,13 @@
       <h2 class="display-2">Features</h2>
       <div id="spacer"></div>
       <v-row>
-        <v-col class="col-6 d-flex justify-center align-center flex-column pa-6">
+        <v-col
+          class="col-6 d-flex justify-center align-center flex-column pa-6"
+        >
           <p class="display-1">Easily find your photos</p>
           <p>
-            Your photos on the cloud are automatically described by AI, find your memories by searching by keywords or description.
+            Your photos on the cloud are automatically described by AI, find
+            your memories by searching by keywords or description.
           </p>
         </v-col>
         <v-col class="col-6 d-flex align-center justify-center">
@@ -132,22 +135,26 @@
             src="https://cdn.pixabay.com/photo/2013/07/13/11/43/safety-158528_960_720.png"
           ></v-img>
         </v-col>
-        <v-col class="col-6 d-flex justify-center align-center flex-column pa-6">
+        <v-col
+          class="col-6 d-flex justify-center align-center flex-column pa-6"
+        >
           <p class="display-1">Stock all your photos on the cloud</p>
-          <p>
-            Unlimited storage space to secure your most precious memories.
-          </p>
+          <p>Unlimited storage space to secure your most precious memories.</p>
         </v-col>
       </v-row>
       <v-row class="pb-16">
         <v-col class="d-flex flex-column justify-center">
           <p class="display-1">Find the places where you took your pictures</p>
           <p>
-            An interactive map allow you to find all places you had take your best shots.
+            An interactive map allow you to find all places you had take your
+            best shots.
           </p>
         </v-col>
         <v-col>
-          <v-img max-width="22em" src="https://image.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_335657-1688.jpg"></v-img>
+          <v-img
+            max-width="22em"
+            src="https://image.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_335657-1688.jpg"
+          ></v-img>
         </v-col>
       </v-row>
     </div>
@@ -156,82 +163,44 @@
       <h2 class="display-2">Prices</h2>
       <div id="spacer"></div>
       <v-row class="pa-12">
-        <v-col cols="12" class="col-md-4">
-          <v-card>
-            <v-card-title class="text-h5">
-              Silver pack
-              <v-icon color="grey">mdi-currency-usd-off</v-icon></v-card-title
-            >
+        <v-col
+          v-for="item in priceCards"
+          :key="item"
+          cols="12"
+          class="col-md-4"
+        >
+          <v-card height="100%">
+            <v-card-title class="text-h5 justify-center font-weight-bold">
+              {{ item.title }}
+              <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
+            </v-card-title>
 
-            <v-card-subtitle
-              >Take advantage of our discovery offer.</v-card-subtitle
-            >
+            <v-card-subtitle class="pt-4 text-center">{{
+              item.subtitle
+            }}</v-card-subtitle>
 
-            <v-card-text>
-              <v-list>
-                <p>✔️ Enjoy hosting up to 220 photos</p>
-                <p>✔️ Completly free</p>
-                <p>✔️ Limited features</p>
+            <v-card-text class="text-center display-1 green--text">{{
+              item.price
+            }}</v-card-text>
+
+            <v-card-text class="text-center">
+              <v-list v-for="listItem in item.list" :key="listItem">
+                ✔️ {{ listItem }}
               </v-list>
+              <v-spacer></v-spacer>
             </v-card-text>
 
             <v-card-actions>
-              <v-btn color="primary" text> Start </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col cols="12" class="col-md-4">
-          <v-card>
-            <v-card-title class="text-h5">
-              Gold pack <v-icon color="orange">mdi-gold</v-icon></v-card-title
-            >
-
-            <v-card-subtitle
-              >Our classic offer.</v-card-subtitle
-            >
-
-            <v-card-text>
-              <v-list>
-                <p>✔️ Enjoy hosting up to 3200 photos</p>
-                <p>✔️ All realesed features</p>
-              </v-list>
-              <p class="display-1 text-center"><b>5$</b> per mouth</p>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-btn color="primary" to="/signup" text> Start </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col cols="12" class="col-md-4">
-          <v-card>
-            <v-card-title class="text-h5">
-              Diamond pack
-              <v-icon color="blue">mdi-diamond-stone</v-icon></v-card-title
-            >
-
-            <v-card-subtitle
-              >Take advantage of our comprehensive offer and support the application.</v-card-subtitle
-            >
-
-            <v-card-text>
-              <v-list>
-                <p>✔️ Enjoy hosting unlimited photos</p>
-                <p>✔️ Beta features</p>
-                <p>✔️ High priority AI</p>
-                <p>✔️ Contribute to the improvement of AI descriptions</p>
-              </v-list>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-btn color="primary" text> Subscribe </v-btn>
+              <v-btn block color="primary" :to="item.to" text>
+                {{ item.action }}
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
     </div>
     <v-container class="d-flex flex-column align-center">
-      <h2 class="display-2">Tryout our demo</h2>
+      <h2 class="display-2 text-center">Tryout our demo</h2>
       <div id="spacer"></div>
       <v-btn color="primary" class="my-16">Try Now</v-btn>
     </v-container>
@@ -263,7 +232,49 @@ export default {
           src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+          src: "https://cdn.pixabay.com/photo/2018/08/13/03/21/family-3602245_960_720.jpg",
+        },
+      ],
+      priceCards: [
+        {
+          title: "Silver pack",
+          subtitle: "Take advantage of our discovery offer.",
+          iconColor: "grey",
+          icon: "mdi-currency-usd-off",
+          list: [
+            "Enjoy hosting up to 220 photos",
+            "Completly free",
+            "Limited features",
+          ],
+          action: "Start",
+          to: "/signup",
+          price: "Free",
+        },
+        {
+          title: "Gold pack",
+          subtitle: "Our classic offer.",
+          iconColor: "orange",
+          icon: "mdi-gold",
+          list: ["Enjoy hosting up to 5500 photos", "All realesed features"],
+          action: "Start",
+          to: "/signup",
+          price: "10$/month",
+        },
+        {
+          title: "Diamond pack",
+          subtitle:
+            "Take advantage of our comprehensive offer and support the application.",
+          iconColor: "blue",
+          icon: "mdi-diamond-stone",
+          list: [
+            "Enjoy hosting unlimited photos",
+            "Beta features",
+            "High priority AI",
+            "Contribute to the improvement of AI descriptions",
+          ],
+          action: "Start",
+          to: "/signup",
+          price: "25$/month",
         },
       ],
     };
