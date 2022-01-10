@@ -15,7 +15,7 @@
           <v-list-item-content>{{ item.title }}</v-list-item-content>
         </v-list-item>
         <v-list-item class="d-flex justify-center pt-6"
-          ><v-btn color="primary" v-if="isAuthenticated" @click="logout"
+          ><v-btn color="primary" @click="logout"
             ><v-icon dark>mdi-logout</v-icon>Logout</v-btn
           ></v-list-item
         >
@@ -28,7 +28,7 @@
           :key="item.title"
           :to="item.path"
         >
-          <v-list-item-action @click="console.log('click')">
+          <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>{{ item.title }}</v-list-item-content>
@@ -67,7 +67,7 @@
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn text v-if="isAuthenticated" @click="logout"
+        <v-btn text @click="logout"
           ><v-icon left dark>mdi-logout</v-icon>Logout</v-btn
         >
       </v-toolbar-items>
