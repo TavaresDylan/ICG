@@ -1,4 +1,4 @@
-FROM node:15-buster as dev
+FROM node:17-buster as dev
 # Dossier de travail courant dans le container
 WORKDIR /app
 # Créer un point de montage pour le volume
