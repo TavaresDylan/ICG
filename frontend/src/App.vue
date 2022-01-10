@@ -6,13 +6,29 @@
       disable-resize-watcher
       app
     >
-      <v-list>
+      <!-- IF USER IS AUTHENTICATED -->
+      <v-list v-if="isAuthenticated">
+        <v-list-item v-for="item in menuCon" :key="item.title" :to="item.path">
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>{{ item.title }}</v-list-item-content>
+        </v-list-item>
+        <v-list-item class="d-flex justify-center pt-6"
+          ><v-btn color="primary" v-if="isAuthenticated" @click="logout"
+            ><v-icon dark>mdi-logout</v-icon>Logout</v-btn
+          ></v-list-item
+        >
+      </v-list>
+
+      <!-- IF USER IS NOT AUTHENTICATED -->
+      <v-list v-if="!isAuthenticated">
         <v-list-item
-          v-for="item in menuItems"
+          v-for="item in menuNotcon"
           :key="item.title"
           :to="item.path"
         >
-          <v-list-item-action>
+          <v-list-item-action @click="console.log('click')">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>{{ item.title }}</v-list-item-content>
@@ -34,26 +50,23 @@
       <v-spacer></v-spacer>
       <!-- IF USER IS NOT AUTHENTICATED -->
       <v-toolbar-items v-if="!isAuthenticated" class="hidden-sm-and-down">
-        <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">
+        <v-btn
+          text
+          v-for="item in menuNotcon"
+          :key="item.title"
+          :to="item.path"
+        >
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn text v-if="!isAuthenticated" to="/signup"
-          ><v-icon left dark>mdi-account-plus</v-icon>Sign up</v-btn
-        >
-        <v-btn text v-if="!isAuthenticated" to="/login"
-          ><v-icon left dark>mdi-login</v-icon>Log in</v-btn
-        >
       </v-toolbar-items>
+
       <!-- IF USER IS AUTHENTICATED -->
       <v-toolbar-items v-if="isAuthenticated" class="hidden-sm-and-down">
-        <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">
+        <v-btn text v-for="item in menuCon" :key="item.title" :to="item.path">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn text v-if="isAuthenticated" to="/profile/dashboard"
-          ><v-icon left dark>mdi-account-circle</v-icon>Profile</v-btn
-        >
         <v-btn text v-if="isAuthenticated" @click="logout"
           ><v-icon left dark>mdi-logout</v-icon>Logout</v-btn
         >
@@ -148,10 +161,22 @@ export default {
     return {
       appTitle: "ICG",
       sidebar: false,
-      menuItems: [
+      menuNotcon: [
         { title: "Home", path: "/", icon: "home" },
         { title: "About", path: "/about", icon: "info" },
         { title: "Demo", path: "/demo", icon: "file_upload" },
+        { title: "Signup", path: "/signup", icon: "mdi-account-plus" },
+        { title: "Login", path: "/login", icon: "login" },
+      ],
+      menuCon: [
+        { title: "Home", path: "/", icon: "home" },
+        { title: "About", path: "/about", icon: "info" },
+        { title: "Demo", path: "/demo", icon: "file_upload" },
+        {
+          title: "Profile",
+          path: "/profile/dashboard",
+          icon: "mdi-account-circle",
+        },
       ],
     };
   },
