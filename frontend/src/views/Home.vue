@@ -5,18 +5,20 @@
         cols="12"
         class="col-md-6 d-flex flex-column align-center justify-center"
       >
-      <div>
-        <v-img
-          contain
-          src="https://img.icons8.com/fluency/198/000000/stack-of-photos.png"
-        />
-      </div>
+        <div>
+          <v-img
+            contain
+            src="https://img.icons8.com/fluency/198/000000/stack-of-photos.png"
+          />
+        </div>
         <h1
           class="display-2 text-md-h2 text-center font-weight-bold white--text shadow px-6"
         >
           Your online picture sorter
         </h1>
-        <h2 class="display-7 text-md-h4 pt-6 pt-md-3 text-center white--text shadow px-6">
+        <h2
+          class="display-7 text-md-h4 pt-6 pt-md-3 text-center white--text shadow px-6"
+        >
           Automatic tool for generating photographic descriptions
         </h2>
       </v-col>
@@ -115,14 +117,23 @@
     </svg>
 
     <v-container>
-      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">Features</h2>
+      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">
+        Features
+      </h2>
       <div id="spacer"></div>
-      <v-row :class="feature.class" class="py-md-12" v-for="feature in features" :key="feature.title">
+      <v-row
+        :class="feature.class"
+        class="py-md-12"
+        v-for="feature in features"
+        :key="feature.title"
+      >
         <v-col
           cols="12"
           class="col-md-6 d-flex justify-center align-center flex-column"
         >
-          <h3 class="text-sm-h4 text-h4 text-md-h2 text-center pt-12 font-weight-bold">
+          <h3
+            class="text-sm-h4 text-h4 text-md-h2 text-center pt-12 font-weight-bold"
+          >
             {{ feature.title }}
           </h3>
           <p class="text-center text-h6 pt-8 mx-16">
@@ -181,7 +192,9 @@
       </v-row>
     </v-container>
     <v-container class="d-flex flex-column align-center">
-      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">Tryout our demo</h2>
+      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">
+        Tryout our demo
+      </h2>
       <div id="spacer"></div>
       <v-btn color="primary" class="my-16" to="/demo">Try Now</v-btn>
     </v-container>
@@ -228,9 +241,9 @@ export default {
           iconColor: "grey",
           icon: "mdi-currency-usd-off",
           list: [
-            {name:"Enjoy hosting up to 220 photos"},
-            {name:"Completly free"},
-            {name:"Limited features"},
+            { name: "Enjoy hosting up to 220 photos" },
+            { name: "Completly free" },
+            { name: "Limited features" },
           ],
           action: "Start",
           to: "/signup",
@@ -253,15 +266,14 @@ export default {
         {
           id: 2,
           title: "Diamond pack",
-          subtitle:
-            "Take advantage of our complete offer.",
+          subtitle: "Take advantage of our complete offer.",
           iconColor: "blue",
           icon: "mdi-diamond-stone",
           list: [
-            {name: "Enjoy hosting unlimited photos"},
-            {name: "Beta features"},
-            {name:"High priority AI"},
-            {name:"Contribute to the improvement of AI descriptions"},
+            { name: "Enjoy hosting unlimited photos" },
+            { name: "Beta features" },
+            { name: "High priority AI" },
+            { name: "Contribute to the improvement of AI descriptions" },
           ],
           action: "Start",
           to: "/signup",
@@ -278,7 +290,7 @@ export default {
           title: "All your photos on the cloud",
           img: "https://cdn.pixabay.com/photo/2013/07/13/11/43/safety-158528_960_720.png",
           desc: "Unlimited storage space to secure your most precious memories. With our diamond premium membership we offer you an unlimited space in the cloud to store all your pictures with guaranty of your privacy.",
-          class: "flex-row-reverse"
+          class: "flex-row-reverse",
         },
         {
           title: "Your pictures all around the globe",
@@ -292,7 +304,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 p {
   font-family: "Work Sans";
   color: #303030;
