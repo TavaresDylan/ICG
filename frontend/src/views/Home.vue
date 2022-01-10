@@ -1,42 +1,48 @@
 <template>
   <v-app id="home">
-    <v-row id="title-container" class="pa-16">
+    <v-row id="title-container" class="pt-6">
       <v-col
-        class="col-md-6 col-xs-12 d-flex flex-column align-center justify-center"
+        cols="12"
+        class="col-md-6 d-flex flex-column align-center justify-center"
       >
+      <div>
         <v-img
           contain
           src="https://img.icons8.com/fluency/198/000000/stack-of-photos.png"
         />
-        <h1 class="display-3 pb-12 font-weight-bold white--text">
+      </div>
+        <h1
+          class="display-2 text-md-h2 text-center font-weight-bold white--text shadow px-6"
+        >
           Your online picture sorter
         </h1>
-        <h2 class="display-1 pt-12 white--text">
+        <h2 class="display-7 text-md-h4 pt-6 pt-md-3 text-center white--text shadow px-6">
           Automatic tool for generating photographic descriptions
         </h2>
       </v-col>
-      <div
-        class="col-md-6 col-xs-12 d-flex flex-column align-center justify-center"
-      >
+      <v-col cols="12" class="col-md-6">
         <v-carousel
+          height="auto"
           hide-delimiters
           :cycle="false"
           ref="carousel"
           :show-arrows="false"
         >
           <v-carousel-item
-            v-for="(image, i) in images"
-            :key="i"
+            contain
+            v-for="image in images"
+            :key="image.id"
             :src="image.src"
           ></v-carousel-item>
         </v-carousel>
-        <div id="typer-container">
+        <div>
           <vue-typer
+            class="d-flex justify-center pt-3 px-6"
             :text="[
-              'Squirrel eating gland',
-              'Cloudy sky with sunset',
-              'Eagle',
-              'Planets in space',
+              'A cat and a dog',
+              'Two people seems to be dancing in white suit',
+              'Two girls on back of camel in the desert',
+              'Two people with baby in the middle at the park',
             ]"
             :repeat="Infinity"
             :shuffle="false"
@@ -51,7 +57,7 @@
             @erased="onComplete"
           ></vue-typer>
         </div>
-      </div>
+      </v-col>
     </v-row>
 
     <svg
@@ -108,101 +114,76 @@
       ></path>
     </svg>
 
-    <div class="d-flex justify-center align-center flex-column">
-      <h2 class="display-2">Features</h2>
+    <v-container>
+      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">Features</h2>
       <div id="spacer"></div>
-      <v-row>
+      <v-row :class="feature.class" class="py-md-12" v-for="feature in features" :key="feature.title">
         <v-col
-          class="col-6 d-flex justify-center align-center flex-column pa-6"
+          cols="12"
+          class="col-md-6 d-flex justify-center align-center flex-column"
         >
-          <p class="display-1">Easily find your photos</p>
-          <p>
-            Your photos on the cloud are automatically described by AI, find
-            your memories by searching by keywords or description.
+          <h3 class="text-sm-h4 text-h4 text-md-h2 text-center pt-12 font-weight-bold">
+            {{ feature.title }}
+          </h3>
+          <p class="text-center text-h6 pt-8 mx-16">
+            {{ feature.desc }}
           </p>
         </v-col>
-        <v-col class="col-6 d-flex align-center justify-center">
+        <v-col cols="12" class="col-md-6 d-flex align-center justify-center">
           <v-img
+            width="6em"
+            min-width="6em"
             max-width="19em"
-            src="https://cdn.pixabay.com/photo/2016/03/31/19/16/images-1294872_1280.png"
+            :src="feature.img"
           ></v-img>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col class="col-6 d-flex align-center justify-center">
-          <v-img
-            max-width="18em"
-            src="https://cdn.pixabay.com/photo/2013/07/13/11/43/safety-158528_960_720.png"
-          ></v-img>
-        </v-col>
-        <v-col
-          class="col-6 d-flex justify-center align-center flex-column pa-6"
-        >
-          <p class="display-1">Stock all your photos on the cloud</p>
-          <p>Unlimited storage space to secure your most precious memories.</p>
-        </v-col>
-      </v-row>
-      <v-row class="pb-16">
-        <v-col class="d-flex flex-column justify-center">
-          <p class="display-1">Find the places where you took your pictures</p>
-          <p>
-            An interactive map allow you to find all places you had take your
-            best shots.
-          </p>
-        </v-col>
-        <v-col>
-          <v-img
-            max-width="22em"
-            src="https://image.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_335657-1688.jpg"
-          ></v-img>
-        </v-col>
-      </v-row>
-    </div>
+    </v-container>
 
-    <div class="d-flex justify-center align-center flex-column">
-      <h2 class="display-2">Prices</h2>
+    <v-container class="d-flex justify-center align-center flex-column">
+      <h2 class="display-1 text-md-h3 font-weight-black pt-6">Prices</h2>
       <div id="spacer"></div>
       <v-row class="pa-12">
         <v-col
-          v-for="item in priceCards"
-          :key="item"
+          v-for="card in priceCards"
+          :key="card.id"
           cols="12"
           class="col-md-4"
         >
           <v-card height="100%">
             <v-card-title class="text-h5 justify-center font-weight-bold">
-              {{ item.title }}
-              <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
+              {{ card.title }}
+              <v-icon :color="card.iconColor">{{ card.icon }}</v-icon>
             </v-card-title>
 
             <v-card-subtitle class="pt-4 text-center">{{
-              item.subtitle
+              card.subtitle
             }}</v-card-subtitle>
 
             <v-card-text class="text-center display-1 green--text">{{
-              item.price
+              card.price
             }}</v-card-text>
 
             <v-card-text class="text-center">
-              <v-list v-for="listItem in item.list" :key="listItem">
-                ✔️ {{ listItem }}
+              <v-list v-for="(listItem, i) in card.list" :key="i">
+                ✔️ {{ listItem.name }}
               </v-list>
               <v-spacer></v-spacer>
             </v-card-text>
 
             <v-card-actions>
-              <v-btn block color="primary" :to="item.to" text>
-                {{ item.action }}
+              <v-btn block color="primary" :to="card.to" text>
+                {{ card.action }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
-    </div>
+    </v-container>
     <v-container class="d-flex flex-column align-center">
-      <h2 class="display-2 text-center">Tryout our demo</h2>
+      <h2 class="display-1 text-md-h3 text-center font-weight-black pt-6">Tryout our demo</h2>
       <div id="spacer"></div>
-      <v-btn color="primary" class="my-16">Try Now</v-btn>
+      <v-btn color="primary" class="my-16" to="/demo">Try Now</v-btn>
     </v-container>
   </v-app>
 </template>
@@ -223,58 +204,86 @@ export default {
     return {
       images: [
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+          id: 0,
+          src: "https://cdn.pixabay.com/photo/2021/01/02/23/55/dog-5883275_1280.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+          id: 1,
+          src: "https://cdn.pixabay.com/photo/2017/06/24/22/32/danzon-2439132_960_720.jpg",
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+          id: 2,
+          src: "https://cdn.pixabay.com/photo/2020/01/22/17/21/camel-4785794_960_720.jpg",
         },
         {
+          id: 3,
           src: "https://cdn.pixabay.com/photo/2018/08/13/03/21/family-3602245_960_720.jpg",
         },
       ],
       priceCards: [
         {
+          id: 0,
           title: "Silver pack",
           subtitle: "Take advantage of our discovery offer.",
           iconColor: "grey",
           icon: "mdi-currency-usd-off",
           list: [
-            "Enjoy hosting up to 220 photos",
-            "Completly free",
-            "Limited features",
+            {name:"Enjoy hosting up to 220 photos"},
+            {name:"Completly free"},
+            {name:"Limited features"},
           ],
           action: "Start",
           to: "/signup",
           price: "Free",
         },
         {
+          id: 1,
           title: "Gold pack",
           subtitle: "Our classic offer.",
           iconColor: "orange",
           icon: "mdi-gold",
-          list: ["Enjoy hosting up to 5500 photos", "All realesed features"],
+          list: [
+            { name: "Enjoy hosting up to 5500 photos" },
+            { name: "All realesed features" },
+          ],
           action: "Start",
           to: "/signup",
           price: "10$/month",
         },
         {
+          id: 2,
           title: "Diamond pack",
           subtitle:
-            "Take advantage of our comprehensive offer and support the application.",
+            "Take advantage of our complete offer.",
           iconColor: "blue",
           icon: "mdi-diamond-stone",
           list: [
-            "Enjoy hosting unlimited photos",
-            "Beta features",
-            "High priority AI",
-            "Contribute to the improvement of AI descriptions",
+            {name: "Enjoy hosting unlimited photos"},
+            {name: "Beta features"},
+            {name:"High priority AI"},
+            {name:"Contribute to the improvement of AI descriptions"},
           ],
           action: "Start",
           to: "/signup",
           price: "25$/month",
+        },
+      ],
+      features: [
+        {
+          title: "Easily find your photos",
+          img: "https://cdn.pixabay.com/photo/2016/03/31/19/16/images-1294872_1280.png",
+          desc: "Your photos are automatically described by AI, find your memories by searching it by keywords, description location and more. Find picture was never be so easy.",
+        },
+        {
+          title: "All your photos on the cloud",
+          img: "https://cdn.pixabay.com/photo/2013/07/13/11/43/safety-158528_960_720.png",
+          desc: "Unlimited storage space to secure your most precious memories. With our diamond premium membership we offer you an unlimited space in the cloud to store all your pictures with guaranty of your privacy.",
+          class: "flex-row-reverse"
+        },
+        {
+          title: "Your pictures all around the globe",
+          img: "https://image.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_335657-1688.jpg",
+          desc: "An interactive map allow you to find all places you had take your best shots. Retrace your journeys and share where you get.",
         },
       ],
     };
@@ -283,20 +292,30 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+p {
+  font-family: "Work Sans";
+  color: #303030;
+}
 #spacer {
+  margin: auto;
   width: 12em;
   height: 0.2em;
-  border: 2px solid black;
   border-radius: 4px;
-  background: black;
   margin-top: 1.2em;
+  background-image: linear-gradient(
+    to right,
+    #bf2ecd 0%,
+    #d4923b 50%,
+    #b01f5e 100%
+  );
 }
-#typer-container {
-  min-height: 38.4px;
+.shadow {
+  text-shadow: 0 0 6px rgb(51, 50, 50);
 }
 #title-container {
   background-image: linear-gradient(180deg, white 0%, #b0205e 100%);
-  border: 2px solid green;
+  margin: 0;
 }
 .vue-typer .custom.char {
   color: white;
