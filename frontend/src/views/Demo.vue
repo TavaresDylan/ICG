@@ -68,4 +68,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+::v-deep .vue-typer {
+  .custom.char {
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+}
+</style>
