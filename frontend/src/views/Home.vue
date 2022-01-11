@@ -303,7 +303,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 p {
   font-family: "Work Sans";
@@ -329,9 +329,11 @@ p {
   background-image: linear-gradient(180deg, white 0%, #b0205e 100%);
   margin: 0;
 }
-.vue-typer .custom.char {
-  color: white;
-  font-weight: bold;
-  font-size: 1.6em;
+::v-deep .vue-typer {
+  .custom.char {
+    color: white;
+    font-weight: bold;
+    font-size: 1.6em;
+  }
 }
 </style>
