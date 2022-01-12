@@ -1,5 +1,5 @@
 <template>
-  <v-main class="ma-0 pa-0">
+  <v-main>
     <v-tabs color="black" class="pt-3">
       <v-tabs-slider color="#CB275F"></v-tabs-slider>
       <v-tab v-for="item in items" :key="item.title" :to="item.path">

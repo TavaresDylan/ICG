@@ -1,6 +1,5 @@
 <template>
-  <v-container>
-    <h1 class="text-center">Demonstration</h1>
+  <v-main>
     <div class="d-flex align-self-center mb-12" id="spacer"></div>
     <v-container>
       <v-row>
@@ -53,7 +52,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-container>
+  </v-main>
 </template>
 
 <script>

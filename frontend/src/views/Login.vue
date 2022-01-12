@@ -1,6 +1,8 @@
 <template>
-  <v-content class="d-flex justify-center align-center">
-    <h1 class="text-center mt-12">Log In</h1>
+  <v-main>
+    <h1 class="text-center mt-12">
+      <v-icon color="black">mdi-login</v-icon> Log In
+    </h1>
     <v-container class="pa-12">
       <v-alert
         :value="errorLoginStatus"
@@ -45,7 +47,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

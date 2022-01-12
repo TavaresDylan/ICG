@@ -72,9 +72,7 @@
         >
       </v-toolbar-items>
     </v-app-bar>
-    <v-main>
       <router-view />
-    </v-main>
     <svg
       id="wave"
       style="transform: rotate(0deg); transition: 0.3s"

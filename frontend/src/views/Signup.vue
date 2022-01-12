@@ -1,5 +1,5 @@
 <template>
-  <v-content class="d-flex justify-center align-center">
+  <v-main>
     <h1 class="text-center mt-12">
       <v-icon color="black">mdi-account-plus</v-icon> Sign Up
     </h1>
@@ -67,7 +67,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
