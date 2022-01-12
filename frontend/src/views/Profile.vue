@@ -1,38 +1,13 @@
 <template>
-  <v-app class="d-flex">
-    <div>
-      <router-view />
-    </div>
-    <div>
-      <v-navigation-drawer app permanent>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="text-h6"> Mon compte </v-list-item-title>
-            <v-list-item-subtitle> {{ username }} </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-divider></v-divider>
-
-        <v-list dense nav>
-          <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            :to="item.path"
-            link
-          >
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-    </div>
-  </v-app>
+  <v-main class="ma-0 pa-0">
+    <v-tabs color="black" class="pt-3">
+      <v-tabs-slider color="#CB275F"></v-tabs-slider>
+      <v-tab v-for="item in items" :key="item.title" :to="item.path">
+        {{ item.title }}
+      </v-tab>
+    </v-tabs>
+    <router-view />
+  </v-main>
 </template>
 
 <script>
@@ -48,7 +23,7 @@ export default {
         { title: "Dashboard", icon: "dashboard", path: "/profile/dashboard" },
         { title: "Photos", icon: "image", path: "/profile/photos" },
         {
-          title: "Paramètres du compte",
+          title: "Account settings",
           icon: "settings",
           path: "/profile/settings",
         },
@@ -57,7 +32,7 @@ export default {
     };
   },
   computed: {
-      ...mapState('user',["username"]),
-    },
+    ...mapState("user", ["username"]),
+  },
 };
 </script>

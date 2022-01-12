@@ -1,9 +1,7 @@
 <template>
-  <v-app class="container">
-    <h1 class="text-center">Dashboard</h1>
     <v-container>
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12" class="col-md-6">
           <v-card>
             <v-card-title>
               <v-avatar color="orange" size="62">
@@ -22,7 +20,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" class="col-md-6">
           <v-card>
             <v-card-title>
               <v-icon color="green">mdi-plus-circle</v-icon>
@@ -35,7 +33,6 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
 </template>
 
 <script>
