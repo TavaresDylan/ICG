@@ -96,9 +96,7 @@
                 counter
                 @click:append="show = !show"
               ></v-text-field>
-              <v-btn color="error" @click="deleteAccount"
-                >Confirm</v-btn
-              >
+              <v-btn color="error" @click="deleteAccount">Confirm</v-btn>
             </v-form>
           </v-card>
         </v-col>

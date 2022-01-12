@@ -4,7 +4,10 @@
     <div class="d-flex align-self-center mb-12" id="spacer"></div>
     <v-container>
       <v-row>
-        <v-col cols="12" class="col-md-6 d-flex flex-column justify-space-around">
+        <v-col
+          cols="12"
+          class="col-md-6 d-flex flex-column justify-space-around"
+        >
           <div class="d-flex flex-column align-center">
             <p class="px-lg-16">
               As a non-registered user, during the pre-alpha period of the

@@ -1,6 +1,8 @@
 <template>
   <v-content class="d-flex justify-center align-center">
-    <h1 class="text-center mt-12"><v-icon color="black">mdi-account-plus</v-icon> Sign Up</h1>
+    <h1 class="text-center mt-12">
+      <v-icon color="black">mdi-account-plus</v-icon> Sign Up
+    </h1>
     <v-container class="pa-12">
       <v-alert v-if="success_msg != ''" type="success" dismissible>{{
         success_msg
