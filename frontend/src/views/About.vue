@@ -1,5 +1,5 @@
 <template>
-  <v-app class="container">
+  <v-main>
     <h1 class="text-center">About us</h1>
     <div class="d-flex align-self-center mb-12" id="spacer"></div>
     <h2 class="text-center">How this project was born ?</h2>
@@ -110,7 +110,7 @@
         >Flickr8k</a
       >
     </p>
-  </v-app>
+  </v-main>
 </template>
 
 <script>

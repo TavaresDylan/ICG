@@ -1,5 +1,5 @@
 <template>
-  <v-app id="home">
+  <v-main id="home">
     <v-row id="title-container" class="pt-6">
       <v-col
         cols="12"
@@ -198,7 +198,7 @@
       <div id="spacer"></div>
       <v-btn color="primary" class="my-16" to="/demo">Try Now</v-btn>
     </v-container>
-  </v-app>
+  </v-main>
 </template>
 
 <script>
