@@ -15,6 +15,13 @@ nav:
   - License:
     - License: Development/License.md
 
+extra_javascript:
+  - javascripts/swagger-ui-bundle.js
+  - javascripts/swagger-ui-standalone-preset.js
+  - javascripts/swagger-ui-link.js
+extra_css:
+  - stylesheets/swagger-ui.css
+
 extra:
   social:
     - icon: fontawesome/brands/linkedin
