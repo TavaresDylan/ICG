@@ -13,9 +13,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include , re_path
 from backend import views as myapp_views
-from django.conf.urls import url, include
 
 urlpatterns = [
     # pages
@@ -30,5 +29,5 @@ urlpatterns = [
     path('profile/photos/', myapp_views.index),
     path('profile/settings/', myapp_views.index),
     # API
-    url(r'^', include('api.urls')),
+    re_path(r'^', include('api.urls')),
 ]
