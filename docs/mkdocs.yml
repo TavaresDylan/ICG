@@ -1,7 +1,36 @@
 site_name: ICG Documentation
+repo_url: https://github.com/TavaresDylan/ICG
+edit_uri: ""
+repo_name: TavaresDylan/ICG
+copyright: Copyright &copy; 2021 - 2022 Dylan Tavares
+
+nav:
+  - Home:
+    - Home/index.md
+  - Api:
+    - Api/swagger.md
+  - Get Started:
+    - Installation: Development/get-started.md
+    - Contributing: Development/contributing.md
+  - License:
+    - License: Development/License.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/dylan-tavar%C3%A8s-727b23187/
+    - icon: material/web
+      link: https://www.dt-developpement.fr/
 
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.top
   palette:
       - scheme: default
         accent: indigo
@@ -10,7 +39,7 @@ theme:
           icon: material/weather-night
           name: Switch to dark mode
       - scheme: slate
-        primary: black
+        primary: grey
         accent: white
         toggle:
           icon: material/weather-sunny
