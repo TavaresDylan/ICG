@@ -9,8 +9,9 @@ services:
     env_file:
       - .env
     ports:
-      - ${VUE_CONTAINER_PORTS}
-    volumes: ["./frontend:/app", "./backend:/backend"]
+      - ${VUE_EXPOSE_PORT}:8080
+    volumes: 
+      - ./frontend:/app
     depends_on:
       - db
     networks:
@@ -21,12 +22,11 @@ services:
     restart: always
     container_name: django_server
     build: ./backend/
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8085"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8085"
     ports:
-      - ${DJANGO_CONTAINER_PORTS}
+      - ${DJANGO_EXPOSE_PORT}:8085
     volumes:
       - ./backend:/app
-      - ./backend/var/static_root/:/app/static
     env_file:
       - .env
     depends_on:
@@ -40,7 +40,7 @@ services:
     container_name: database_server
     image: mysql:${MYSQL_VERSION}
     ports:
-      - ${MYSQL_CONTAINER_PORTS}
+      - ${MYSQL_EXPOSE_PORT}:3306
     env_file:
       - .env
     volumes:
@@ -57,7 +57,9 @@ services:
     image: adminer
     restart: always
     ports:
-      - 31730:8080
+      - ${ADMINER_EXPOSE_PORT}:8080
+    env_file:
+      - .env
     networks:
       - net
 
@@ -66,7 +68,7 @@ services:
     container_name: mkdocs-material
     image: squidfunk/mkdocs-material
     ports:
-      - ${MKDOCS_CONTAINER_PORTS}
+      - ${MKDOCS_EXPOSE_PORT}:5000
     volumes: 
       - ./docs/:/docs
     entrypoint: ["mkdocs", "serve", "-a", "0.0.0.0:5000"]
@@ -74,12 +76,6 @@ services:
       - .env
     networks:
       - net
-
-  redis:
-      image: redis:alpine
-      container_name: redis
-      networks:
-        - net
 
 networks:
   net:
