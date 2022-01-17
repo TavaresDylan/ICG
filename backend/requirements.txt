@@ -9,7 +9,7 @@ defusedxml==0.7.1
 Django==4.0.1
 django-cors-headers==3.10.1
 django-environ==0.8.1
-django-mysql==4.3.0
+django-mysql==4.4.0
 django-templated-mail==1.1.1
 djangorestframework==3.13.1
 djangorestframework-simplejwt==4.6.0
