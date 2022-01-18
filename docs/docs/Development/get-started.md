@@ -1,55 +1,71 @@
+<div style="text-align:center;">
+    <img src="../../../Logo-Github.png">
+</div>
+
+Made by [Dylan Tavarès](https://www/dt-developpement.fr) with ❤️
+
+[Full Documentation](https://tavaresdylan.github.io/ICG/)
+
 # Get started
 
-Prerequisites:
+## With Docker 🐳
 
-- Mysql
-- Docker
-- Docker-compose
-- Python > 3.6
-- Mkdocs-material
+Requirements:
 
-# Procédure rapide de demarrage
+-   Docker
+-   Docker-compose
 
-- Cloner le repo
-- Copier le fichier de variable d'env se trouvant à la racine du projet afin de paramétré docker-compose
-- Copier le fichier de variable d'env se trouvant dans le dossier `backend/` afin de paramétré le fichier `settings.py` de django
-- Dans le dossier `frontend/` lancer la commande => `npm run watch` afin de compiler les fichiers statics
-- Dans le dossier `backend/` lancer la commande => `source ./venv/bin/activate` pour activer l'environement virtuel
-- Dans le dossier `backend/` lancer la commande => `pip install -r requirements.txt` pour installer les dépendences nécéssaires au projet
-- Dans le dossier `backend/` lancer la commande => `python3 manage.py collectstatic` afin de collecter les fichiers statiques précédement généré par la compilation de npm
-- A la racine du projet lancer la commande => `docker-compose up -d` afin de lancer toutes les applications
+---
 
-## With docker-compose 🐳
+**Pre-config :**
 
-➤ Setup environment variables
+You must define your environement in project root `.env` and `backend/.env` files to configure docker containers.
+
+---
 
 ➤ From root directory
 
 ```sh
-docker-compose up -d
+docker-compose up -d 
 ```
 
-➤ Make migrations
+ℹ️ use this command to re-build containers if you had edit them
 
-➤ Migrate
+```sh
+docker-compose up -d --build
+```
 
-➤ Collectstatics
-
-*Tips :*
-
-**Exposed ports :**
+**Default ports :**
 
 - UI : `localhost:8080`
 - Django App : `localhost:8085`
 - Adminer : `localhost: 31730`
 - Mkdocs : `localhost:5000`
 
-----
+➤ Stop containers
+
+```sh
+docker-compose down
+```
 
 ## Without docker
 
-⚠️ Must be setup first of all
-**Frontend VueJs :**
+Requirements:
+
+-   Mysql:5.6
+-   NodeJs > 15
+-   Python > 3.6
+-   Mkdocs-material
+
+---
+
+**Pre-config :**
+
+You must define your environement in `backend/.env` file to make backend work.
+
+---
+
+<img src="https://img.icons8.com/color/54/000000/vue-js.png"/> **Frontend VueJs :**
 
 ➤ From root directory go in frontend directory
 
@@ -63,26 +79,15 @@ cd ICG/frontend/
 npm install
 ```
 
-***If you want to develop frontend with hotreload***
-
-➤ Run dev server (on [localhost:8080]())
+➤ Run dev server with hotreload
 
 ```sh
 npm run serve
 ```
 
-***If you want to compile each time file change to feed django backend static files***
+---
 
-➤ Run watcher builder
-
-```sh
-npm run watch
-```
-
-
-**Backend Django :**
-
-(require frontend builded static files)
+<img src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/48/000000/external-django-a-high-level-python-web-framework-that-encourages-rapid-development-logo-color-tal-revivo.png"/> **Backend Django :**
 
 ➤ Go in backend directory from root directory
 
@@ -114,19 +119,15 @@ pip install -r requirements.txt
 python3 manage.py migrate
 ```
 
-➤ Collect VueJs static files
+➤ Run dev server
 
 ```sh
-python3 manage.py collectstatic
+python3 manage.py runserver <PORT>
 ```
 
-➤ Run dev server (on [localhost:8085]())
+---
 
-```sh
-python3 manage.py runserver 8085
-```
-
-**Documentation Mkdocs :**
+<img src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/44/000000/external-info-contact-flatart-icons-flat-flatarticons.png"/> **Documentation Mkdocs :**
 
 ➤ Go in docs directory from root directory
 
@@ -134,7 +135,7 @@ python3 manage.py runserver 8085
 cd CGI/docs/
 ```
 
-➤ Run server (on [localhost:8000]())
+➤ Run server
 
 ```sh
 mkdocs serve
