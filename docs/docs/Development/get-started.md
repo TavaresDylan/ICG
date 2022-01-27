@@ -1,5 +1,5 @@
 <div style="text-align:center;">
-    <img src="../../../Logo-Github.png">
+    <img src="../../assets/Logo-Github.png">
 </div>
 
 Made by [Dylan Tavarès](https://www/dt-developpement.fr) with ❤️
