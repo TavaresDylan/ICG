@@ -14,7 +14,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = false
 
-[*.js]
+[{*.js,*.vue}]
 indent_style = space
 indent_size = 2
 block_comment_start = /*
