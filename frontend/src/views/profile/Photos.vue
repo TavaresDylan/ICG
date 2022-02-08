@@ -1,5 +1,10 @@
 <template>
   <v-container class="px-12">
+    <v-row>
+      <picture-upload class="ma-2"></picture-upload>
+      <create-folder class="ma-2"></create-folder>
+    </v-row>
+
     <v-row dense>
       <v-col
         :class="card.flexMd"
@@ -46,8 +51,18 @@
 </template>
 
 <script>
+import PictureUpload from "@/components/PictureUpload.vue";
+import CreateFolder from "@/components/CreateFolder.vue";
 export default {
+  components: {
+    PictureUpload,
+    CreateFolder,
+  },
   name: "photos",
+  component: {
+    PictureUpload,
+    CreateFolder,
+  },
   data: () => ({
     page: 1,
     cards: [
@@ -83,5 +98,8 @@ export default {
       },
     ],
   }),
+  mounted() {
+		document.title = "Photos | ICG"
+	},
 };
 </script>
