@@ -149,6 +149,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
+MEDIA_URL='/media/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

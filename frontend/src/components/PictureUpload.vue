@@ -135,6 +135,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -144,6 +145,9 @@ export default {
       dialog: false,
       enabled: false,
     };
+  },
+  computed: {
+    ...mapState("user", ["username"]),
   },
   methods: {
     handleFilesUpload(event) {
@@ -158,12 +162,16 @@ export default {
         formData.append("files", []);
       } else {
         for (let i = 0; i < this.files.length; i++) {
-          formData.append("files", this.files[i]);
+          formData.append("file", this.files[i]);
           formData.append("name", this.files[i].name);
+          formData.append("owner", this.username);
+          formData.append("image_url", URL.createObjectURL(this.files[i]));
+          formData.append("size", this.files[i]["size"]);
+          //console.log(this.files[i]);
         }
-        for (var key of formData.entries()) {
+        /* for (var key of formData.entries()) {
           console.log(key[0] + ", " + key[1]);
-        }
+        } */
       }
       axios
         .post("api/v1/upload/", formData, {

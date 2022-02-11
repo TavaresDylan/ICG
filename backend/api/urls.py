@@ -1,9 +1,10 @@
 from django.urls import path, include
 from rest_framework import routers
-from api.views import RegisterViewset
+from api.views import RegisterViewset, UploadViewset
 
 router = routers.SimpleRouter()
 router.register('register', RegisterViewset, basename='register')
+router.register('upload', UploadViewset , basename='upload')
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
