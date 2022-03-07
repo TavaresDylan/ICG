@@ -1,8 +1,7 @@
-from datetime import datetime
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from api.models import Image
+from api.models import Upload
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -38,21 +37,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
         return user
 
-
-class ImageSerializer(serializers.ModelSerializer):
+class UploadSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Image
-		fields = ("name", "owner", "size", "file")
-
-	def post(self, object):
-		upload = Image.objects.create(
-			file=object["file"],
-			name=object["name"],
-			owner=object["owner"],
-			size=object["size"],
-		)
-		upload.save()
-		return upload
-
-	def get_img(self):
-		uploader = Image.object.filter(owner=self.get(id))
+		model = Upload
+		fields = ('file', 'name', 'size', 'owner')
