@@ -94,18 +94,18 @@
                               </template>
                               <span
                                 >When you describe yourself your images we use
-                                your descriptions we will be used to train AI
-                                model</span
+                                your descriptions to train AI model</span
                               >
                             </v-tooltip>
                             <v-checkbox
-                              v-model="enabled"
+                              @change="selectEdit({ $event, key })"
+                              v-model="checkboxStatus[key]"
                               hide-details
                               label="Desactivate AI auto-description"
                               class="shrink mr-2 mt-0"
                             ></v-checkbox>
                             <v-text-field
-                              :disabled="!enabled"
+                              :disabled="!checkboxStatus[key]"
                               label="Write your own description"
                             ></v-text-field>
                           </v-row>
@@ -143,7 +143,7 @@ export default {
       files: [],
       imgUrls: [],
       dialog: false,
-      enabled: false,
+      checkboxStatus: [],
     };
   },
   computed: {
@@ -167,11 +167,7 @@ export default {
           formData.append("owner", this.username);
           formData.append("image_url", URL.createObjectURL(this.files[i]));
           formData.append("size", this.files[i]["size"]);
-          //console.log(this.files[i]);
         }
-        /* for (var key of formData.entries()) {
-          console.log(key[0] + ", " + key[1]);
-        } */
       }
       axios
         .post("api/v1/upload/", formData, {
@@ -193,6 +189,10 @@ export default {
     removeFile(key) {
       this.files.splice(key, 1);
     },
+    selectEdit(event, key) {
+      let checkbox = event;
+      this.checkboxStatus[key] = checkbox
+    }
   },
 };
 </script>
