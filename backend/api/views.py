@@ -21,16 +21,19 @@ class RegisterViewset(ModelViewSet):
 class UploadViewset(ModelViewSet):
 	queryset = Upload.objects.all()
 	serializer_class = UploadSerializer(queryset, many=True)
-	print("\n serializer_class : \n", serializer_class, "\n")
-	print("\n queryset : \n", queryset, "\n")
 
 	# Insert all images passed in formData in DB and save them in local media folder
 	def create(self, request):
 		if request.method == 'POST':
-			my_file=request.FILES.getlist('file')
-			for f in my_file:
-				Upload.objects.create(file=f, size=f.size, name=f.name)
-			return Response(self.serializer_class.data, status=status.HTTP_200_OK)
+			description = request.POST.getlist('description')
+			owner = request.POST.getlist('owner')
+			files=request.FILES.getlist('file')
+			name=request.POST.getlist('name')
+			i = 0
+			for f in files:
+				Upload.objects.create(file=f, size=f.size, name=name[i], description=description[i], owner=owner[i])
+				i = i+1
+			return Response(status=status.HTTP_200_OK)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 	# List all images in DB

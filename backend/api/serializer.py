@@ -40,4 +40,4 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class UploadSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Upload
-		fields = ('file', 'name', 'size', 'owner')
+		fields = ('file', 'name', 'size', 'owner', 'description')
