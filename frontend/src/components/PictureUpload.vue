@@ -75,7 +75,9 @@
                         </div>
 
                         <v-card-title>
-                          <v-text-field :value="file.name"></v-text-field>
+                          <v-text-field
+                            v-model="fileNames[key]"
+                          ></v-text-field>
                         </v-card-title>
                         <v-img contain :src="previewImage(file)"></v-img>
                         <v-card-text class="my-2 d-flex flex-column">
@@ -98,7 +100,7 @@
                               >
                             </v-tooltip>
                             <v-checkbox
-                              @change="selectEdit({ $event, key })"
+                              @change="handleCheckboxes({ $event, key })"
                               v-model="checkboxStatus[key]"
                               hide-details
                               label="Desactivate AI auto-description"
@@ -106,6 +108,8 @@
                             ></v-checkbox>
                             <v-text-field
                               :disabled="!checkboxStatus[key]"
+                              v-model="descriptions[key]"
+                              @change="handleDescription({ $event, key })"
                               label="Write your own description"
                             ></v-text-field>
                           </v-row>
@@ -123,7 +127,7 @@
         <!-- FORM SUBMIT -->
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="cancelUpload">
+          <v-btn color="blue darken-1" text @click="resetForm()">
             Cancel
           </v-btn>
           <v-btn color="blue darken-1" text @click="onSubmit()"> Add </v-btn>
@@ -135,7 +139,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -144,17 +148,27 @@ export default {
       imgUrls: [],
       dialog: false,
       checkboxStatus: [],
+      descriptions: [],
+      fileNames: [],
     };
   },
   computed: {
     ...mapState("user", ["username"]),
   },
   methods: {
+    ...mapActions("upload", ["upload"]),
     handleFilesUpload(event) {
       let uploadedFiles = event;
       for (var i = 0; i < uploadedFiles.length; i++) {
         this.files.push(uploadedFiles[i]);
       }
+      for (var j = 0; j < this.files.length; j++) {
+        this.fileNames.push(this.files[j].name);
+      }
+    },
+    handleDescription(event, key) {
+      let description = event;
+      this.descriptions[key] = description;
     },
     onSubmit() {
       const formData = new FormData();
@@ -163,10 +177,11 @@ export default {
       } else {
         for (let i = 0; i < this.files.length; i++) {
           formData.append("file", this.files[i]);
-          formData.append("name", this.files[i].name);
+          formData.append("name", this.fileNames[i]);
           formData.append("owner", this.username);
           formData.append("image_url", URL.createObjectURL(this.files[i]));
           formData.append("size", this.files[i]["size"]);
+          formData.append("description", this.descriptions[i]);
         }
       }
       axios
@@ -176,23 +191,32 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          if( res.status === 200){
+            console.log(res);
+            this.resetForm();
+            this.updateData();
+          } else {
+            console.log("Request error")
+          }
         });
     },
     previewImage(img) {
       return URL.createObjectURL(img);
     },
-    cancelUpload() {
+    resetForm() {
       this.files = null;
       this.dialog = false;
+      this.descriptions = [];
+      this.checkboxStatus = [];
+      this.fileNames = [];
     },
     removeFile(key) {
       this.files.splice(key, 1);
     },
-    selectEdit(event, key) {
+    handleCheckboxes(event, key) {
       let checkbox = event;
-      this.checkboxStatus[key] = checkbox
-    }
+      this.checkboxStatus[key] = checkbox;
+    },
   },
 };
 </script>
