@@ -22,6 +22,6 @@ jobs:
         with:
           # Check all markdown and html files in doc folder
           args: --verbose --no-progress './docs/docs/**/*.md'
-          fail: false
+          fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
