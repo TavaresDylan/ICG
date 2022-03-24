@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
-from api.models import Upload
-
+from api.models import Photo, Demo, Folder
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -30,14 +29,24 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("username", "date_joined", "email")
+        fields = ("id", "username", "date_joined", "email")
 
     def get(self):
         user = User.objects.filter(id=self.get(id))
 
         return user
 
-class UploadSerializer(serializers.ModelSerializer):
+class PhotoSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Upload
-		fields = ('file', 'name', 'size', 'owner', 'description')
+		model = Photo
+		fields = ('file', 'name', 'size', 'description')
+
+class DemoSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Demo
+		fields = ('id', 'file', 'description')
+
+class FolderSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Folder
+		fields = ('__all__')
