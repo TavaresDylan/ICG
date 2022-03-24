@@ -18,7 +18,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-form lazy-validation>
+                <v-form ref="form" lazy-validation>
                   <v-file-input
                     ref="files"
                     v-model="files"
@@ -75,9 +75,7 @@
                         </div>
 
                         <v-card-title>
-                          <v-text-field
-                            v-model="fileNames[key]"
-                          ></v-text-field>
+                          <v-text-field v-model="fileNames[key]"></v-text-field>
                         </v-card-title>
                         <v-img contain :src="previewImage(file)"></v-img>
                         <v-card-text class="my-2 d-flex flex-column">
@@ -138,14 +136,12 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
       rules: [],
       files: [],
-      imgUrls: [],
       dialog: false,
       checkboxStatus: [],
       descriptions: [],
@@ -159,11 +155,14 @@ export default {
     ...mapActions("upload", ["upload"]),
     handleFilesUpload(event) {
       let uploadedFiles = event;
-      for (var i = 0; i < uploadedFiles.length; i++) {
+      for (let i = 0; i < uploadedFiles.length; i++) {
         this.files.push(uploadedFiles[i]);
       }
-      for (var j = 0; j < this.files.length; j++) {
-        this.fileNames.push(this.files[j].name);
+      for (let j = 0; j < this.files.length; j++) {
+        let name = this.files[j].name;
+        let cleanName = name.indexOf(".");
+        name = name.substring(0, cleanName != -1 ? cleanName : name.length);
+        this.fileNames.push(name);
       }
     },
     handleDescription(event, key) {
@@ -178,27 +177,13 @@ export default {
         for (let i = 0; i < this.files.length; i++) {
           formData.append("file", this.files[i]);
           formData.append("name", this.fileNames[i]);
-          formData.append("owner", this.username);
           formData.append("image_url", URL.createObjectURL(this.files[i]));
           formData.append("size", this.files[i]["size"]);
           formData.append("description", this.descriptions[i]);
         }
       }
-      axios
-        .post("api/v1/upload/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          if( res.status === 200){
-            console.log(res);
-            this.resetForm();
-            this.updateData();
-          } else {
-            console.log("Request error")
-          }
-        });
+      this.upload(formData);
+      this.resetForm();
     },
     previewImage(img) {
       return URL.createObjectURL(img);
