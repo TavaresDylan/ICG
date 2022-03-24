@@ -19,7 +19,11 @@ export const userModule = {
   },
   actions: {
     getUser({ state }) {
-      return Vue.axios.get("/api/v1/users/me/").then((res) => {
+      return Vue.axios.get("/api/v1/users/me/", {
+        headers: {
+          "Authorization": "JWT " + localStorage.getItem("JWT"),
+        },
+      }).then((res) => {
         if (res.status === 200) {
           state.username = res.data.username;
           state.email = res.data.email;
@@ -56,7 +60,7 @@ export const userModule = {
     },
     registerUser() {
       return Vue.axios
-        .post("/api/v1/register/", this.form)
+        .post("/api/v1/users/", this.form)
         .then((res) => {
           if (res.status === 201) {
             this.success_msg = "Registration complete you can now login";
