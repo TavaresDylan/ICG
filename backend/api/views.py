@@ -1,43 +1,54 @@
 from django.contrib.auth.models import User
-from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.decorators import permission_classes
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from api.models import Upload
-from api.serializer import RegisterSerializer, UploadSerializer
+from api.models import Photo, Demo, Folder
+from api.serializer import RegisterSerializer, PhotoSerializer, DemoSerializer, FolderSerializer
 
-@authentication_classes([])
-@permission_classes([])
+@permission_classes([AllowAny])
 class RegisterViewset(ModelViewSet):
-
     serializer_class = RegisterSerializer
 
     def get_queryset(self):
         return User.objects.all()
 
-@authentication_classes([])
-@permission_classes([])
+@permission_classes([IsAuthenticated])
 class UploadViewset(ModelViewSet):
-	queryset = Upload.objects.all()
-	serializer_class = UploadSerializer(queryset, many=True)
+	queryset = Photo.objects.all()
+	serializer_class = PhotoSerializer(queryset, many=True)
 
 	# Insert all images passed in formData in DB and save them in local media folder
 	def create(self, request):
 		if request.method == 'POST':
 			description = request.POST.getlist('description')
-			owner = request.POST.getlist('owner')
 			files=request.FILES.getlist('file')
 			name=request.POST.getlist('name')
-			i = 0
-			for f in files:
-				Upload.objects.create(file=f, size=f.size, name=name[i], description=description[i], owner=owner[i])
-				i = i+1
+			folderID = Folder.objects.get(pk=1)
+			for i, f in enumerate(files):
+				Photo.objects.create(file=f, size=f.size, name=name[i], description=description[i], user_id=request.user, folder_id=folderID)
 			return Response(status=status.HTTP_200_OK)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
-	# List all images in DB
+	# List all images by User
 	def list(self, request):
-		queryset = Upload.objects.all()
-		serializer = UploadSerializer(queryset, many=True)
+		queryset = Photo.objects.filter(user_id=request.user)
+		serializer = PhotoSerializer(queryset, many=True)
 		return Response(serializer.data)
+
+@permission_classes([AllowAny])
+class DemoViewset(ModelViewSet):
+	queryset = Demo.objects.all()
+	serializer_class = DemoSerializer(queryset)
+
+	def create(self, request):
+		if request.method == 'POST':
+			print(request.FILES.getlist('file'))
+			return Response(status=status.HTTP_200_OK)
+
+@permission_classes([IsAuthenticated])
+class FolderViewset(ModelViewSet):
+	queryset = Folder.objects.all()
+	Serializer_class = FolderSerializer(queryset)
