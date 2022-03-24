@@ -2,10 +2,23 @@
   <v-container class="px-12">
     <v-row>
       <picture-upload class="ma-2"></picture-upload>
-      <create-folder class="ma-2"></create-folder>
     </v-row>
 
-    <v-row dense>
+    <v-row class="ma-8 pa-8">
+      <v-col cols="3" v-for="(img, index) in imgUrls" :key="img">
+        <v-card>
+          <v-card-title class="text-subtitle-1">
+            {{ imgNames[index] }}
+          </v-card-title>
+          <v-img :src="'http://localhost:8085' + img"></v-img>
+          <v-card-text v-if="imgDescs[index] != 'undefined'">{{
+            imgDescs[index]
+          }}</v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!--<v-row dense>
       <v-col
         :class="card.flexMd"
         v-for="card in cards"
@@ -39,7 +52,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-pagination
       class="py-6"
       v-model="page"
@@ -52,16 +65,11 @@
 
 <script>
 import PictureUpload from "@/components/PictureUpload.vue";
-import CreateFolder from "@/components/CreateFolder.vue";
+import { mapActions, mapState } from "vuex";
 export default {
+  name: "photos",
   components: {
     PictureUpload,
-    CreateFolder,
-  },
-  name: "photos",
-  component: {
-    PictureUpload,
-    CreateFolder,
   },
   data: () => ({
     page: 1,
@@ -98,8 +106,15 @@ export default {
       },
     ],
   }),
+  methods: {
+    ...mapActions("upload", ["getAll"]),
+  },
+  computed: {
+    ...mapState("upload", ["imgUrls", "imgNames", "imgDescs"]),
+  },
   mounted() {
-		document.title = "Photos | ICG"
-	},
+    document.title = "Photos | ICG";
+    this.getAll();
+  },
 };
 </script>
