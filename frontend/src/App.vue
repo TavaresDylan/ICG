@@ -147,7 +147,7 @@ export default {
     this.$store.commit("auth/initializeStore");
     const token = this.$store.state.auth.token;
     if (token) {
-      axios.defaults.headers.common["Authorization"] = "Token " + token;
+      axios.defaults.headers.common["Authorization"] = "JWT " + token;
     } else {
       axios.defaults.headers.common["Authorization"] = "";
     }
