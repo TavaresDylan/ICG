@@ -20,7 +20,7 @@ itypes==1.2.0
 Jinja2==3.0.3
 MarkupSafe==2.0.1
 mysqlclient==2.1.0
-oauthlib==3.1.1
+oauthlib==3.2.0
 Pillow==9.0.1
 pycparser==2.21
 PyJWT==2.3.0
@@ -34,5 +34,5 @@ social-auth-core==4.2.0
 sqlparse==0.4.2
 typing_extensions==4.0.1
 uritemplate==4.1.1
-urllib3==1.26.8
+urllib3==1.26.9
 zipp==3.7.0
