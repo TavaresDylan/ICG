@@ -19,15 +19,18 @@
           <v-card class="pa-6 ma-4">
             <h1>Upload your file</h1>
             <p>Esssayer notre I.A de description en envoyant une photo.</p>
-            <v-file-input
-              :rules="rules"
-              label="Envoyez votre image"
-              outlined
-              dense
-              accept="image/png, image/jpeg, image/bmp"
-              placeholder="Pick an image"
-            ></v-file-input>
-            <v-btn color="primary">Envoyer</v-btn>
+            <v-form lazy-validation>
+              <v-file-input
+                :rules="rules"
+                label="Send your picture"
+                outlined
+                dense
+                @change="handleFile({ $event })"
+                accept="image/png, image/jpeg, image/bmp"
+                placeholder="Pick an image"
+              ></v-file-input>
+              <v-btn @click="upload()" color="primary">Send</v-btn>
+            </v-form>
           </v-card>
         </v-col>
         <v-col cols="12" class="col-md-6 align-self-center">
@@ -57,6 +60,7 @@
 
 <script>
 import { VueTyper } from "vue-typer";
+import { mapActions } from "vuex";
 export default {
   name: "Upload",
   components: {
@@ -70,7 +74,25 @@ export default {
           value.size < 13000000 ||
           "Le fichier ne doit pas exéder 13mo",
       ],
+      file: [],
     };
+  },
+  methods: {
+    ...mapActions("demo", ["post"]),
+    upload() {
+      const formData = new FormData();
+      if (this.file === null) {
+        formData.append("file", []);
+      }
+      formData.append("file", this.file);
+      this.post();
+    },
+    handleFile(event) {
+      let uploadedFiles = event;
+      for (var i = 0; i < uploadedFiles.length; i++) {
+        this.files.push(uploadedFiles[i]);
+      }
+    },
   },
 };
 </script>

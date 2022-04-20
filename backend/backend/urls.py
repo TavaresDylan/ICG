@@ -14,10 +14,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from rest_framework import routers
+from django.conf.urls.static import static
+from api.urls import router as api_router
+from django.conf import settings
+
+router = routers.DefaultRouter()
+router.registry.extend(api_router.registry)
 
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
     # API
     re_path(r'^', include('api.urls')),
-]
+	path('', include(router.urls)),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

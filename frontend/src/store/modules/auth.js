@@ -17,36 +17,52 @@ export const authModule = {
   mutations: {
     updateField,
     initializeStore(state) {
-      if (localStorage.getItem("Token")) {
-        state.token = localStorage.getItem("Token")
-        state.isAuthenticated = true
+      if (localStorage.getItem("JWT")) {
+        state.token = localStorage.getItem("JWT");
+        state.isAuthenticated = true;
       } else {
-        state.token = ''
-        state.isAuthenticated = false
+        state.token = "";
+        state.isAuthenticated = false;
       }
     },
     setToken(state, token) {
-      state.token = token
-      state.isAuthenticated = true
+      state.token = token;
+      state.isAuthenticated = true;
     },
     removeToken(state) {
-      state.token = ""
-      state.isAuthenticated = false
+      state.token = "";
+      state.isAuthenticated = false;
     },
   },
   actions: {
+    refreshToken({ state }) {
+      return Vue.axios.post("api/v1/jwt/refresh/").then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+        }
+      });
+    },
+    verifyToken({ state }) {
+      return Vue.axios
+        .post("api/v1/jwt/verify/", state.credentials)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data);
+          }
+        });
+    },
     logUser({ state, commit }) {
       return Vue.axios
-        .post("api/v1/token/login/", state.credentials)
+        .post("api/v1/jwt/create/", state.credentials)
         .then((res) => {
-          if (res.status === 200){
-            const token = res.data.auth_token;
+          if (res.status === 200) {
+            const token = res.data.access;
             commit("setToken", token);
-            Vue.axios.defaults.headers.common["Authorization"] = "Token " + token;
-            localStorage.setItem("Token", token);
+            localStorage.setItem("JWT", token);
+            Vue.axios.defaults.headers.common["Authorization"] = "JWT " + token;
             router.push("/profile/dashboard/");
-          }else {
-            console.log("pas bon")
+          } else {
+            console.log("Authentification failed");
           }
         })
         .catch((err) => {
@@ -55,10 +71,12 @@ export const authModule = {
           state.errorLoginMsg = "Incorrect username or password";
         });
     },
-    logoutUser({ commit }){
+    logoutUser({ commit }) {
       commit("removeToken");
-      localStorage.removeItem("Token")
-      router.push("/");
-    }
+      localStorage.removeItem("JWT");
+      if (router.currentRoute.name != "Home") {
+        router.push("/");
+      }
+    },
   },
 };

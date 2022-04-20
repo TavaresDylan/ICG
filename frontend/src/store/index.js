@@ -1,15 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import VueAxios from 'vue-axios'
-import axios from 'axios'
+import VueAxios from "vue-axios";
+import axios from "axios";
 
 import { userModule } from "./modules/user";
 import { authModule } from "./modules/auth";
+import { uploadModule } from "./modules/upload";
+import { demoModule } from "./modules/demo";
 
-import { getField, updateField } from 'vuex-map-fields';
+import { getField, updateField } from "vuex-map-fields";
 
 Vue.use(Vuex);
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios);
 
 export default new Vuex.Store({
   state: {
@@ -25,5 +27,7 @@ export default new Vuex.Store({
   modules: {
     user: userModule,
     auth: authModule,
+    upload: uploadModule,
+    demo: demoModule,
   },
 });
