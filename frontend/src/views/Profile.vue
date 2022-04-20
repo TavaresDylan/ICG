@@ -20,7 +20,6 @@ export default {
   data() {
     return {
       items: [
-        { title: "Dashboard", icon: "dashboard", path: "/profile/dashboard" },
         { title: "Photos", icon: "image", path: "/profile/photos" },
         {
           title: "Account settings",

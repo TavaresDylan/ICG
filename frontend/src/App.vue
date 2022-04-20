@@ -172,7 +172,7 @@ export default {
         { title: "Demo", path: "/demo", icon: "file_upload" },
         {
           title: "Profile",
-          path: "/profile/dashboard",
+          path: "/profile/photos",
           icon: "mdi-account-circle",
         },
       ],
