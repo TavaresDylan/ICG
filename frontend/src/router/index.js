@@ -48,21 +48,6 @@ const routes = [
     },
     children: [
       {
-        path: "/profile/dashboard",
-        name: "Dashboard",
-        component: () =>
-          import(
-            /* webpackChunckName: "dashboard" */ "../views/profile/Dashboard.vue"
-          ),
-        beforeEnter: (to, from, next) => {
-          if (Store.state.auth.isAuthenticated == false) {
-            router.push("/");
-          } else {
-            next();
-          }
-        },
-      },
-      {
         path: "/profile/photos",
         name: "Photos",
         component: () =>
