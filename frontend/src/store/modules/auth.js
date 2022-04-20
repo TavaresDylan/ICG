@@ -35,7 +35,7 @@ export const authModule = {
     },
   },
   actions: {
-    refreshToken({ state }) {
+    refreshToken() {
       return Vue.axios.post("api/v1/jwt/refresh/").then((res) => {
         if (res.status === 200) {
           console.log(res.data);
@@ -60,7 +60,7 @@ export const authModule = {
             commit("setToken", token);
             localStorage.setItem("JWT", token);
             Vue.axios.defaults.headers.common["Authorization"] = "JWT " + token;
-            router.push("/profile/dashboard/");
+            router.push("/profile/photos/");
           } else {
             console.log("Authentification failed");
           }
