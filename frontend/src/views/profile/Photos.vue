@@ -46,14 +46,14 @@ export default {
     page: 1,
   }),
   methods: {
-    ...mapActions("upload", ["getAll"]),
+    ...mapActions("auth", ["fetchUser"]),
   },
   computed: {
     ...mapState("upload", ["imgUrls", "imgNames", "imgDescs"]),
   },
   mounted() {
     document.title = "Photos | ICG";
-    this.getAll();
+    this.fetchUser();
   },
 };
 </script>
