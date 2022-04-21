@@ -16,20 +16,23 @@ export const uploadModule = {
   },
   actions: {
     getAll({ state }) {
-      return Vue.axios.get("api/v1/upload/?page=1").then((res) => {
-        if (res.status === 200) {
-          state.imgUrls = [];
-          state.imgNames = [];
-          state.imgDescs = [];
-          for (let i = 0; i < res.data.length; i++) {
-            state.imgUrls.push(res.data[i].file);
-            state.imgNames.push(res.data[i].name);
-            state.imgDescs.push(res.data[i].description);
+      return Vue.axios
+        .get("api/v1/upload/?page=1")
+        .then((res) => {
+          if (res.status === 200) {
+            state.imgUrls = [];
+            state.imgNames = [];
+            state.imgDescs = [];
+            for (let i = 0; i < res.data.length; i++) {
+              state.imgUrls.push(res.data[i].file);
+              state.imgNames.push(res.data[i].name);
+              state.imgDescs.push(res.data[i].description);
+            }
           }
-        } else {
-          console.log("FAIL");
-        }
-      });
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
     },
     upload({ dispatch }, formData) {
       return Vue.axios
@@ -41,7 +44,7 @@ export const uploadModule = {
         .then((res) => {
           if (res.status === 200) {
             console.log(res);
-            dispatch("getAll")
+            dispatch("getAll");
           } else {
             console.log("Request error");
           }
