@@ -31,7 +31,7 @@ export default function axiosSetUp() {
         err.response.status === 401 &&
         originalRequest.url.includes("/api/v1/jwt/refresh")
       ) {
-        store.commit("clearUserData");
+        store.commit("auth/clearUserData");
         router.push("/login");
         return Promise.reject(JSON.stringify(err));
       } else if (err.response.status === 401 && !originalRequest._retry) {
