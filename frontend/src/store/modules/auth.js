@@ -28,20 +28,13 @@ export const authModule = {
         state.isAuthenticated = false;
       }
     },
-    setLoggedInUser: function (state, user) {
+    setLoggedInUser(state, user) {
       state.loggedInUser = user;
-      state.isAuthenticated = true;
     },
     setToken(state, token) {
       state.token = token;
       localStorage.setItem("JWT", token);
       state.isAuthenticated = true;
-    },
-    removeToken(state) {
-      state.token = "";
-      localStorage.removeItem("JWT");
-      localStorage.removeItem("Refresh");
-      state.isAuthenticated = false;
     },
     setRefreshToken(state, refreshToken) {
       state.refreshToken = refreshToken;
@@ -50,7 +43,10 @@ export const authModule = {
     clearUserData(state) {
       state.token = "";
       state.refreshToken = "";
+      localStorage.removeItem("JWT");
+      localStorage.removeItem("Refresh");
       state.isAuthenticated = false;
+      state.loggedInUser = {};
     },
     setError(state, errorMsg) {
       state.errorLoginMsg = errorMsg;
@@ -78,9 +74,8 @@ export const authModule = {
       }
     },
     logUser: async ({ commit, dispatch }, creds) => {
-      return Vue.axios
-        .post("api/v1/jwt/create/", creds)
-        .then((res) => {
+      try {
+        await Vue.axios.post("api/v1/jwt/create/", creds).then((res) => {
           if (res.status === 200) {
             const token = res.data.access;
             const refreshToken = res.data.refresh;
@@ -90,11 +85,10 @@ export const authModule = {
             dispatch("fetchUser");
             router.push("/profile/photos/");
           }
-        })
-        .catch((err) => {
-          console.error(JSON.stringify(err));
-          commit("setError", err.response.data.detail);
         });
+      } catch (e) {
+        console.error(JSON.stringify(e));
+      }
     },
     fetchUser: async ({ commit }) => {
       const currentUserUrl = "/api/v1/users/me/";
