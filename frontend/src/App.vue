@@ -72,7 +72,7 @@
         >
       </v-toolbar-items>
     </v-app-bar>
-      <router-view />
+    <router-view />
     <svg
       id="wave"
       style="transform: rotate(0deg); transition: 0.3s"
@@ -139,18 +139,11 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import axios from "axios";
 
 export default {
   name: "App",
   beforeCreate() {
     this.$store.commit("auth/initializeStore");
-    const token = this.$store.state.auth.token;
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "JWT " + token;
-    } else {
-      axios.defaults.headers.common["Authorization"] = "";
-    }
   },
   computed: {
     ...mapState("auth", ["isAuthenticated", "token"]),

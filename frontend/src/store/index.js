@@ -14,9 +14,6 @@ Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 
 export default new Vuex.Store({
-  state: {
-    error: "",
-  },
   getters: {
     getField,
   },

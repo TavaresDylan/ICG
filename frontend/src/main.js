@@ -6,10 +6,11 @@ import vuetify from "@/plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import VueSession from "vue-session";
 
+import axiosSetUp from "./helper/axios";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
-Vue.axios.defaults.baseURL = "http://127.0.0.1:8085";
+axiosSetUp()
 
 Vue.config.productionTip = false;
 

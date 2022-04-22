@@ -8,7 +8,6 @@
         :value="errorLoginStatus"
         dense
         border="left"
-        v-if="errorLoginMsg != ''"
         type="error"
         dismissible
         transition="scroll-y-reverse-transition"
@@ -18,7 +17,8 @@
         <v-col cols="12" class="col-sm-8 col-md-6 col-lg-4">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
-              v-model="credentials.username"
+              @focus="handleError()"
+              v-model="creds.username"
               :rules="[rules.required]"
               label="Name"
               required
@@ -29,7 +29,7 @@
               @click:append="show1 = !show1"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show1 ? 'text' : 'password'"
-              v-model="credentials.password"
+              v-model="creds.password"
               :rules="[rules.required]"
               label="Password"
               required
@@ -51,11 +51,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import { mapFields } from "vuex-map-fields";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   data: () => {
     return {
+      username: "",
+      password: "",
+      creds: {
+        name: "",
+        password: "",
+      },
       show1: false,
       loading: false,
       valid: true,
@@ -65,16 +70,19 @@ export default {
     };
   },
   computed: {
-    ...mapFields(["auth.credentials"]),
     ...mapState("auth", ["errorLoginMsg", "errorLoginStatus"]),
   },
   methods: {
     ...mapActions("auth", ["logUser"]),
+    ...mapMutations("auth", ["resetError"]),
     login() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        this.logUser();
+        this.logUser(this.creds);
       }
+    },
+    handleError() {
+      this.resetError();
     },
   },
 };
