@@ -32,9 +32,21 @@ class UploadViewset(ModelViewSet):
 			return Response(status=status.HTTP_200_OK)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
-	# List all images by User
+	# Get all images by User paginated by 8
 	def list(self, request):
 		queryset = Photo.objects.filter(user_id=request.user)
+		page = self.paginate_queryset(queryset)
+		serializer = PhotoSerializer(queryset, many=True)
+		if page is not None:
+			serializer = PhotoSerializer(page, many=True)
+			return Response(serializer.data)
+		return Response(serializer.data)
+
+	# Get image by name
+	def retrieve(self, request, pk=None):
+		lookup_field = 'name'
+		lookup_url_kwarg = 'name'
+		queryset = Photo.objects.filter(name=pk)
 		serializer = PhotoSerializer(queryset, many=True)
 		return Response(serializer.data)
 
