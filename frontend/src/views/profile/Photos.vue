@@ -1,33 +1,43 @@
 <template>
   <v-container class="px-12">
-    <v-row>
-      <picture-upload class="ma-2"></picture-upload>
+    <v-row class="align-center">
+      <picture-upload :page="page" class="ma-2"></picture-upload>
+      <search-bar :items="items"></search-bar>
     </v-row>
 
-    <v-row v-if="imgUrls.length > 0" class="ma-8 pa-8">
-      <v-col cols="3" v-for="(img, index) in imgUrls" :key="img">
+    <v-row v-if="items.length > 0" class="ma-8 pa-8">
+      <v-col cols="3" v-for="item in items" :key="item.name">
         <v-card>
           <v-card-title class="text-subtitle-1">
-            {{ imgNames[index] }}
+            {{ item.name }}
           </v-card-title>
-          <v-img :src="'http://localhost:8085' + img"></v-img>
-          <v-card-text v-if="imgDescs[index] != 'undefined'">{{
-            imgDescs[index]
+          <v-img :src="'http://localhost:8085' + item.file"></v-img>
+          <v-card-text v-if="item.description != 'undefined'">{{
+            item.description
           }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
 
-    <v-container v-if="imgUrls.length <= 0">
-      <v-img contain max-height="460" :src="require('@/assets/search.png')"></v-img>
-      <p class="text-center font-weight-bold display-1">No files found, try to upload one 📸</p>
+    <v-container v-if="items.length <= 0">
+      <v-img
+        contain
+        max-height="460"
+        :src="require('@/assets/search.png')"
+      ></v-img>
+      <p class="text-center font-weight-bold display-1">
+        No files found, try to upload one 📸
+      </p>
     </v-container>
 
     <v-pagination
-      v-if="imgUrls.length > 0"
+      @click="getPage(page)"
+      v-if="items.length > 0"
       class="py-6"
+      @input="getPage(page)"
       v-model="page"
-      :length="4"
+      :value="page"
+      :length="len"
       prev-icon="mdi-menu-left"
       next-icon="mdi-menu-right"
     ></v-pagination>
@@ -36,24 +46,33 @@
 
 <script>
 import PictureUpload from "@/components/PictureUpload.vue";
+import SearchBar from "@/components/SearchBar.vue";
 import { mapActions, mapState } from "vuex";
+import { mapFields } from "vuex-map-fields";
 export default {
   name: "photos",
   components: {
     PictureUpload,
+    SearchBar,
   },
   data: () => ({
-    page: 1,
+    len: 4,
   }),
   methods: {
     ...mapActions("auth", ["fetchUser"]),
+    ...mapActions("upload", ["getAll", "getByPage", "getByName"]),
+    getPage(page) {
+      this.getByPage(page);
+    },
   },
   computed: {
-    ...mapState("upload", ["imgUrls", "imgNames", "imgDescs"]),
+    ...mapFields("upload", ["page"]),
+    ...mapState("upload", ["imgUrls", "imgNames", "imgDescs", "items"]),
   },
   mounted() {
     document.title = "Photos | ICG";
     this.fetchUser();
+    this.getByPage(this.page);
   },
 };
 </script>

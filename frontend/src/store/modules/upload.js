@@ -4,9 +4,8 @@ import { getField, updateField } from "vuex-map-fields";
 export const uploadModule = {
   namespaced: true,
   state: () => ({
-    imgUrls: [],
-    imgNames: [],
-    imgDescs: [],
+    items: [],
+    page: 1,
   }),
   getters: {
     getField,
@@ -17,24 +16,38 @@ export const uploadModule = {
   actions: {
     getAll({ state }) {
       return Vue.axios
-        .get("api/v1/upload/?page=1")
+        .get("api/v1/upload/")
         .then((res) => {
           if (res.status === 200) {
-            state.imgUrls = [];
-            state.imgNames = [];
-            state.imgDescs = [];
-            for (let i = 0; i < res.data.length; i++) {
-              state.imgUrls.push(res.data[i].file);
-              state.imgNames.push(res.data[i].name);
-              state.imgDescs.push(res.data[i].description);
-            }
+            state.items = res.data
           }
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
         });
     },
-    upload({ dispatch }, formData) {
+    getByPage({state}, npage){
+      return Vue.axios
+        .get("api/v1/upload/?page="+npage)
+        .then((res) => {
+          if (res.status === 200) {
+            state.items = res.data
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
+    },
+    getByName({ state }, name) {
+      return Vue.axios
+        .get("api/v1/upload/"+name)
+        .then((res) => {
+          if (res.status === 200) {
+            state.items = res.data
+          }
+        })
+    },
+    upload({ state, dispatch }, formData) {
       return Vue.axios
         .post("api/v1/upload/", formData, {
           headers: {
@@ -43,8 +56,7 @@ export const uploadModule = {
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
-            dispatch("getAll");
+            dispatch("getByPage", state.page);
           } else {
             console.log("Request error");
           }
