@@ -139,7 +139,7 @@
 import { mapActions, mapState } from "vuex";
 export default {
   props: {
-    page: Number,
+    actualPage: Number,
   },
   data() {
     return {
@@ -185,7 +185,7 @@ export default {
           formData.append("description", this.descriptions[i]);
         }
       }
-      this.upload(formData, this.page);
+      this.upload(formData);
       this.resetForm();
     },
     previewImage(img) {
