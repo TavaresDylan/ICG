@@ -164,8 +164,8 @@ export default {
         { title: "About", path: "/about", icon: "info" },
         { title: "Demo", path: "/demo", icon: "file_upload" },
         {
-          title: "Profile",
-          path: "/profile/photos",
+          title: "Dashboard",
+          path: "/dashboard/folders",
           icon: "mdi-account-circle",
         },
       ],
