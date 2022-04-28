@@ -8,50 +8,54 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title v-bind="folderName"> Create folder </v-card-title>
-        <v-card-text>
-          <v-text-field
-            label="folder name"
-            placeholder="Folder Name"
-          ></v-text-field>
-          <v-btn>OK</v-btn>
-        </v-card-text>
+        <v-card-title> Create folder </v-card-title>
+        <v-form>
+          <v-card-text>
+            <v-text-field
+              :rules="[rules.minName]"
+              label="folder name"
+              placeholder="Folder Name"
+              v-model="folderName"
+            ></v-text-field>
+            <v-btn @click="submit()">OK</v-btn>
+          </v-card-text>
+        </v-form>
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
+  props: {
+    actualPage: Number,
+  },
   data() {
     return {
       folderName: "",
       dialog: false,
+      rules: {
+        minName: (v) => v.length >= 1 || "Must contain at least 1 characters",
+      },
     };
   },
-  methods: {
-    upload() {
-      this.progress = 0;
-      UploadService.upload(this.currentImage, (event) => {
-        this.progress = Math.round((100 * event.loaded) / event.total);
-      })
-        .then((response) => {
-          this.message = response.data.message;
-          return UploadService.getFiles();
-        })
-        .then((images) => {
-          this.imageInfos = images.data;
-        })
-        .catch((err) => {
-          this.progress = 0;
-          this.message = "Could not upload the image! " + err;
-          this.currentImage = undefined;
-        });
+  computed: {
+    userId() {
+      return this.getUserId();
     },
   },
-  computed: {
-    createFolder() {
-      this.folderList = [this.folderName];
+  methods: {
+    ...mapActions("folder", ["createFolder"]),
+    ...mapGetters("auth", ["getUserId"]),
+    resetForm() {
+      this.folderName = "";
+      this.dialog = false;
+    },
+    submit() {
+      this.createFolder({ name: this.folderName, user_id: this.userId }, this.actualPage);
+      this.dialog = false;
+      this.resetForm();
     },
   },
 };
