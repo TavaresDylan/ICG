@@ -5,13 +5,16 @@
       <v-tab v-for="item in items" :key="item.title" :to="item.path">
         {{ item.title }}
       </v-tab>
+      <div>
+        {{loggedInUser.username}}
+      </div>
     </v-tabs>
     <router-view />
   </v-main>
 </template>
 
 <script>
-import settings from "./profile/Settings.vue";
+import settings from "./dashboardSections/Settings.vue";
 import { mapState } from "vuex";
 export default {
   component: {
@@ -20,18 +23,18 @@ export default {
   data() {
     return {
       items: [
-        { title: "Photos", icon: "image", path: "/profile/photos" },
+        { title: "Folders", icon: "image", path: "/dashboard/folders" },
         {
           title: "Account settings",
           icon: "settings",
-          path: "/profile/settings",
+          path: "/dashboard/settings",
         },
       ],
       right: null,
     };
   },
   computed: {
-    ...mapState("user", ["username"]),
+    ...mapState("auth", ["loggedInUser"]),
   },
 };
 </script>
