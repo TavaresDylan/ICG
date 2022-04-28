@@ -11,7 +11,7 @@
     hide-selected
     item-text="name"
     item-value="symbol"
-    label="Search for a photo..."
+    :label="searchLabel"
     solo
   >
     <template v-slot:no-data>
@@ -42,6 +42,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   props: {
     items: Array,
+    searchLabel: String,
   },
   data: () => ({
     isLoading: false,
@@ -54,7 +55,6 @@ export default {
   methods: {
     ...mapActions("upload", ["getByName", "getAll", "getByPage"]),
     getBySearch() {
-      console.log(this.page);
       if (this.model === null) {
         this.getByPage(this.page);
       } else {
