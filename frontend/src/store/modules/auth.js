@@ -15,6 +15,7 @@ export const authModule = {
   getters: {
     getField,
     token: (state) => state.token,
+    getUserId: (state) => state.loggedInUser.id
   },
   mutations: {
     updateField,
@@ -83,7 +84,7 @@ export const authModule = {
             commit("setRefreshToken", refreshToken);
             Vue.axios.defaults.headers.common["Authorization"] = "JWT " + token;
             dispatch("fetchUser");
-            router.push("/profile/photos/");
+            router.push("/dashboard/folders/");
           }
         });
       } catch (e) {

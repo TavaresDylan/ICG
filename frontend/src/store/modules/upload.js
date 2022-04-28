@@ -5,7 +5,8 @@ export const uploadModule = {
   namespaced: true,
   state: () => ({
     items: [],
-    page: 1,
+    actualPage: 1,
+    imageCount: 0,
   }),
   getters: {
     getField,
@@ -14,24 +15,13 @@ export const uploadModule = {
     updateField,
   },
   actions: {
-    getAll({ state }) {
+    getByPage({state}, page){
       return Vue.axios
-        .get("api/v1/upload/")
+        .get("api/v1/upload/?page="+page)
         .then((res) => {
           if (res.status === 200) {
-            state.items = res.data
-          }
-        })
-        .catch((err) => {
-          console.error(JSON.stringify(err));
-        });
-    },
-    getByPage({state}, npage){
-      return Vue.axios
-        .get("api/v1/upload/?page="+npage)
-        .then((res) => {
-          if (res.status === 200) {
-            state.items = res.data
+            state.items = res.data.data
+            state.imageCount = res.data.count
           }
         })
         .catch((err) => {
@@ -55,10 +45,8 @@ export const uploadModule = {
           },
         })
         .then((res) => {
-          if (res.status === 200) {
-            dispatch("getByPage", state.page);
-          } else {
-            console.log("Request error");
+          if (res.status === 201) {
+            dispatch("getByPage", state.actualPage);
           }
         })
         .catch((err) => {
