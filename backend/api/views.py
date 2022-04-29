@@ -1,3 +1,4 @@
+from ast import arg
 from django.contrib.auth.models import User
 from rest_framework.decorators import permission_classes
 from rest_framework.viewsets import ModelViewSet
@@ -34,7 +35,7 @@ class UploadViewset(ModelViewSet):
 
 	# Get all images by User paginated by 8
 	def list(self, request):
-		queryset = Photo.objects.filter(user_id=request.user)
+		queryset = Photo.objects.filter(user_id=request.user, folder_id=request.GET.get("folder"))
 		page = self.paginate_queryset(queryset)
 		serializer = PhotoSerializer(queryset, many=True)
 		if page is not None:
