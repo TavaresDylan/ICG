@@ -13,14 +13,12 @@ export const uploadModule = {
   },
   mutations: {
     updateField,
+    resetPage(state) {
+      state.actualPage = 1;
+    },
   },
   actions: {
     getByPage({ state }, payload) {
-      console.log("page passed as parameter in store vuex", payload.page);
-      console.log(
-        "folder id passed as parameter in store vuex : ",
-        payload.folder_id
-      );
       return Vue.axios
         .get(
           "api/v1/upload/?page=" + payload.page + "&folder=" + payload.folder_id
@@ -36,11 +34,16 @@ export const uploadModule = {
         });
     },
     getByName({ state }, name) {
-      return Vue.axios.get("api/v1/upload/" + name).then((res) => {
-        if (res.status === 200) {
-          state.items = res.data;
-        }
-      });
+      return Vue.axios
+        .get("api/v1/upload/" + name)
+        .then((res) => {
+          if (res.status === 200) {
+            state.items = res.data;
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
     },
     upload({ state, dispatch }, formData) {
       return Vue.axios
@@ -51,11 +54,14 @@ export const uploadModule = {
         })
         .then((res) => {
           if (res.status === 201) {
-            dispatch("getByPage", state.actualPage);
+            dispatch("getByPage", {
+              page: state.actualPage,
+              folder_id: this.state.folder.selectedFolder.id,
+            });
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(JSON.stringify(err));
         });
     },
   },
