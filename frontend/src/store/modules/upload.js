@@ -15,13 +15,20 @@ export const uploadModule = {
     updateField,
   },
   actions: {
-    getByPage({state}, page){
+    getByPage({ state }, payload) {
+      console.log("page passed as parameter in store vuex", payload.page);
+      console.log(
+        "folder id passed as parameter in store vuex : ",
+        payload.folder_id
+      );
       return Vue.axios
-        .get("api/v1/upload/?page="+page)
+        .get(
+          "api/v1/upload/?page=" + payload.page + "&folder=" + payload.folder_id
+        )
         .then((res) => {
           if (res.status === 200) {
-            state.items = res.data.data
-            state.imageCount = res.data.count
+            state.items = res.data.data;
+            state.imageCount = res.data.count;
           }
         })
         .catch((err) => {
@@ -29,13 +36,11 @@ export const uploadModule = {
         });
     },
     getByName({ state }, name) {
-      return Vue.axios
-        .get("api/v1/upload/"+name)
-        .then((res) => {
-          if (res.status === 200) {
-            state.items = res.data
-          }
-        })
+      return Vue.axios.get("api/v1/upload/" + name).then((res) => {
+        if (res.status === 200) {
+          state.items = res.data;
+        }
+      });
     },
     upload({ state, dispatch }, formData) {
       return Vue.axios

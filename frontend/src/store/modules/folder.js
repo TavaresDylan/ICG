@@ -7,12 +7,16 @@ export const folderModule = {
     folders: [],
     folderCount: 0,
     actualPage: 1,
+    selectedFolder: {},
   },
   getters: {
     getField,
   },
   mutations: {
     updateField,
+    selectedFolder(state, folder){
+      state.selectedFolder = folder
+    }
   },
   actions: {
     createFolder({ state, dispatch }, folderinfos) {

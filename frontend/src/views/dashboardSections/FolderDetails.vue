@@ -12,7 +12,7 @@
       <search-bar :items="items"></search-bar>
     </v-row>
 
-    <h1>Folder Name</h1>
+    <h1>{{ selectedFolder.name }}</h1>
 
     <v-row v-if="items.length > 0" class="ma-8 pa-8">
       <v-col cols="12" sm="6" md="3" v-for="item in items" :key="item.id">
@@ -62,10 +62,10 @@
     </v-container>
 
     <v-pagination
-      @click="getPage(actualPage)"
+      @click="getPage()"
       v-if="items.length > 1"
       class="py-6"
-      @input="getPage(actualPage)"
+      @input="getPage()"
       v-model="actualPage"
       :value="actualPage"
       :length="getNbPages()"
@@ -101,6 +101,7 @@ export default {
       "items",
       "isLoading",
     ]),
+    ...mapState("folder", ["selectedFolder"]),
   },
   methods: {
     ...mapActions("auth", ["fetchUser"]),
@@ -111,8 +112,11 @@ export default {
     backToDashboard() {
       router.push("/dashboard/folders");
     },
-    getPage(actualPage) {
-      this.getByPage(actualPage);
+    getPage() {
+      this.getByPage({
+        page: this.actualPage,
+        folder_id: this.selectedFolder.id,
+      });
     },
     getNbPages() {
       return Math.ceil(this.imageCount / 8);
@@ -129,7 +133,10 @@ export default {
     document.title = "Photos | ICG";
     this.getRouteId();
     this.fetchUser();
-    this.getByPage(this.actualPage);
+    this.getByPage({
+      page: this.actualPage,
+      folder_id: this.selectedFolder.id,
+    });
   },
 };
 </script>
