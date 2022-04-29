@@ -1,4 +1,3 @@
-from ast import arg
 from django.contrib.auth.models import User
 from rest_framework.decorators import permission_classes
 from rest_framework.viewsets import ModelViewSet
@@ -27,7 +26,7 @@ class UploadViewset(ModelViewSet):
 			description = request.POST.getlist('description')
 			files=request.FILES.getlist('file')
 			name=request.POST.getlist('name')
-			folderID = Folder.objects.get(pk=1)
+			folderID = Folder.objects.get(pk=int(request.POST.get('folder_id')))
 			for i, f in enumerate(files):
 				Photo.objects.create(file=f, size=f.size, name=name[i], description=description[i], user_id=request.user, folder_id=folderID)
 			return Response(status=status.HTTP_201_CREATED)
