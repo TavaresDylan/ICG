@@ -59,6 +59,7 @@ export default {
     ...mapActions("auth", ["fetchUser"]),
     ...mapActions("folder", ["getAllFolders"]),
     ...mapMutations("folder", ["selectedFolder"]),
+    ...mapMutations("upload", ["resetPage"]),
     redirectOnFolder(folder){
       this.selectedFolder(folder)
       router.push("/dashboard/folders/"+folder.id)
@@ -78,6 +79,7 @@ export default {
     document.title = "Dashboard | ICG";
     this.fetchUser();
     this.getAllFolders(this.actualPage);
+    this.resetPage()
   },
 };
 </script>
