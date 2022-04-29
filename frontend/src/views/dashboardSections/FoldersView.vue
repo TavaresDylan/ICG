@@ -7,7 +7,7 @@
 
     <v-row v-if="folders.length > 0">
       <v-col cols="12" sm="6" md="6" lg="3" v-for="folder in folders" :key="folder.id">
-        <v-card hover @click="redirectOnFolder(folder.id)"
+        <v-card hover @click="redirectOnFolder(folder)"
           >
           <v-container class="d-flex">
             <v-card-title>{{ folder.name }}</v-card-title>
@@ -46,7 +46,7 @@
 <script>
 import SearchBar from "@/components/SearchBar.vue";
 import CreateFolder from "@/components/CreateFolder.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import router from "@/router/index";
 import { mapFields } from "vuex-map-fields";
 export default {
@@ -58,8 +58,10 @@ export default {
   methods: {
     ...mapActions("auth", ["fetchUser"]),
     ...mapActions("folder", ["getAllFolders"]),
-    redirectOnFolder(id){
-      router.push("/dashboard/folders/"+id)
+    ...mapMutations("folder", ["selectedFolder"]),
+    redirectOnFolder(folder){
+      this.selectedFolder(folder)
+      router.push("/dashboard/folders/"+folder.id)
     },
     getPage(actualPage){
       this.getAllFolders(actualPage)
