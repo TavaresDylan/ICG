@@ -64,5 +64,15 @@ export const uploadModule = {
           console.error(JSON.stringify(err));
         });
     },
+    deleteById({ dispatch, state }, imageId) {
+      return Vue.axios.delete("api/v1/upload/" + imageId).then((res) => {
+        if (res.status === 204) {
+          dispatch("getByPage", {
+            page: state.actualPage,
+            folder_id: this.state.folder.selectedFolder.id,
+          });
+        }
+      });
+    },
   },
 };
