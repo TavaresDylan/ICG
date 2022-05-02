@@ -15,9 +15,9 @@ export const folderModule = {
   },
   mutations: {
     updateField,
-    selectedFolder(state, folder){
-      state.selectedFolder = folder
-    }
+    selectedFolder(state, folder) {
+      state.selectedFolder = folder;
+    },
   },
   actions: {
     createFolder({ state, dispatch }, folderinfos) {
@@ -32,15 +32,20 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    deleteFolderById({state}, id){
-      return Vue.axios.delete("api/v1/folder/"+id).then((res) => {
-        if (res.status === 204){
-          console.log("Succefully deleted", state.selectedFolder.name)
-          router.push("/dashboard/folders")
-        }
-      }).catch((err) => {
-        console.error(JSON.stringify(err))
-      })
+    deleteFolderById({ state, dispatch }, id) {
+      return Vue.axios
+        .delete("api/v1/folder/" + id)
+        .then((res) => {
+          if (res.status === 204) {
+            dispatch("getAllFolders", state.actualPage);
+            if (router.currentRoute.path != "/dashboard/folders") {
+              router.push("/dashboard/folders");
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
     },
     getFolderByName({ state }, name) {
       return Vue.axios.get("api/v1/folder/" + name).then((res) => {
