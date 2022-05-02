@@ -9,9 +9,10 @@
       </template>
       <v-card>
         <v-card-title> Create folder </v-card-title>
-        <v-form>
+        <v-form lazy-validation>
           <v-card-text>
             <v-text-field
+              @keydown.enter.prevent="submit"
               :rules="[rules.minName]"
               label="folder name"
               placeholder="Folder Name"
