@@ -39,7 +39,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Photo
-		fields = ('file', 'name', 'size', 'description')
+		fields = ('file', 'name', 'size', 'description', 'id')
 
 class DemoSerializer(serializers.ModelSerializer):
 	class Meta:
