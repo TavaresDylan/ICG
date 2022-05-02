@@ -9,9 +9,10 @@
       </template>
       <v-card>
         <v-card-title> Create folder </v-card-title>
-        <v-form>
+        <v-form lazy-validation>
           <v-card-text>
             <v-text-field
+              @keydown.enter.prevent="submit"
               :rules="[rules.minName]"
               label="folder name"
               placeholder="Folder Name"
@@ -53,7 +54,10 @@ export default {
       this.dialog = false;
     },
     submit() {
-      this.createFolder({ name: this.folderName, user_id: this.userId }, this.actualPage);
+      this.createFolder(
+        { name: this.folderName, user_id: this.userId },
+        this.actualPage
+      );
       this.dialog = false;
       this.resetForm();
     },
