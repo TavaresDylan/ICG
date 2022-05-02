@@ -5,8 +5,9 @@
       <v-tab v-for="item in items" :key="item.title" :to="item.path">
         {{ item.title }}
       </v-tab>
-      <div>
-        {{loggedInUser.username}}
+      <v-spacer></v-spacer>
+      <div v-if="loggedInUser != {}" class="d-flex justify-center align-center flex-end mr-4">
+        {{loggedInUser.username | capitalize}}
       </div>
     </v-tabs>
     <router-view />
