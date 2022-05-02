@@ -54,7 +54,10 @@ export default {
       this.dialog = false;
     },
     submit() {
-      this.createFolder({ name: this.folderName, user_id: this.userId }, this.actualPage);
+      this.createFolder(
+        { name: this.folderName, user_id: this.userId },
+        this.actualPage
+      );
       this.dialog = false;
       this.resetForm();
     },

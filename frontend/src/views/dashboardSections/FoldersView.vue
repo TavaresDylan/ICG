@@ -60,10 +60,7 @@
         v-for="folder in folders"
         :key="folder.id"
       >
-        <v-checkbox
-          :value="folder.id"
-          v-model="selectedFolders"
-        ></v-checkbox>
+        <v-checkbox :value="folder.id" v-model="selectedFolders"></v-checkbox>
         <v-card hover @click="redirectOnFolder(folder)">
           <v-container class="d-flex">
             <v-card-title>{{ folder.name }}</v-card-title>
