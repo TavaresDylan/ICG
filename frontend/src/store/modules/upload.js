@@ -4,37 +4,48 @@ import { getField, updateField } from "vuex-map-fields";
 export const uploadModule = {
   namespaced: true,
   state: () => ({
-    imgUrls: [],
-    imgNames: [],
-    imgDescs: [],
+    items: [],
+    actualPage: 1,
+    imageCount: 0,
   }),
   getters: {
     getField,
   },
   mutations: {
     updateField,
+    resetPage(state) {
+      state.actualPage = 1;
+    },
   },
   actions: {
-    getAll({ state }) {
+    getByPage({ state }, payload) {
       return Vue.axios
-        .get("api/v1/upload/?page=1")
+        .get(
+          "api/v1/upload/?page=" + payload.page + "&folder=" + payload.folder_id
+        )
         .then((res) => {
           if (res.status === 200) {
-            state.imgUrls = [];
-            state.imgNames = [];
-            state.imgDescs = [];
-            for (let i = 0; i < res.data.length; i++) {
-              state.imgUrls.push(res.data[i].file);
-              state.imgNames.push(res.data[i].name);
-              state.imgDescs.push(res.data[i].description);
-            }
+            state.items = res.data.data;
+            state.imageCount = res.data.count;
           }
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
         });
     },
-    upload({ dispatch }, formData) {
+    getByName({ state }, name) {
+      return Vue.axios
+        .get("api/v1/upload/" + name)
+        .then((res) => {
+          if (res.status === 200) {
+            state.items = res.data;
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
+    },
+    upload({ state, dispatch }, formData) {
       return Vue.axios
         .post("api/v1/upload/", formData, {
           headers: {
@@ -42,16 +53,26 @@ export const uploadModule = {
           },
         })
         .then((res) => {
-          if (res.status === 200) {
-            console.log(res);
-            dispatch("getAll");
-          } else {
-            console.log("Request error");
+          if (res.status === 201) {
+            dispatch("getByPage", {
+              page: state.actualPage,
+              folder_id: this.state.folder.selectedFolder.id,
+            });
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(JSON.stringify(err));
         });
+    },
+    deleteById({ dispatch, state }, imageId) {
+      return Vue.axios.delete("api/v1/upload/" + imageId).then((res) => {
+        if (res.status === 204) {
+          dispatch("getByPage", {
+            page: state.actualPage,
+            folder_id: this.state.folder.selectedFolder.id,
+          });
+        }
+      });
     },
   },
 };

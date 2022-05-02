@@ -36,9 +36,9 @@ const routes = [
       import(/* webpackChunckName: "signup" */ "../views/Signup.vue"),
   },
   {
-    path: "/profile",
+    path: "/dashboard",
     component: () =>
-      import(/* webpackChunckName: "profile" */ "../views/Profile.vue"),
+      import(/* webpackChunckName: "profile" */ "../views/Dashboard.vue"),
     beforeEnter: (to, from, next) => {
       if (Store.state.auth.isAuthenticated == false) {
         router.push("/");
@@ -48,11 +48,20 @@ const routes = [
     },
     children: [
       {
-        path: "/profile/photos",
+        path: "/dashboard/folders/:id",
+        props: true,
+        name: "FoldersDetails",
+        component: () =>
+          import(
+            /* webpackChunckName "folderdetails" */ "../views/dashboardSections/FolderDetails.vue"
+          )
+      },
+      {
+        path: "/dashboard/folders",
         name: "Photos",
         component: () =>
           import(
-            /* webpackChunckName: "photos" */ "../views/profile/Photos.vue"
+            /* webpackChunckName: "photos" */ "../views/dashboardSections/FoldersView.vue"
           ),
         beforeEnter: (to, from, next) => {
           if (Store.state.auth.isAuthenticated == false) {
@@ -63,11 +72,11 @@ const routes = [
         },
       },
       {
-        path: "/profile/settings",
+        path: "/dashboard/settings",
         name: "Settings",
         component: () =>
           import(
-            /* webpackChunckName: "settings" */ "../views/profile/Settings.vue"
+            /* webpackChunckName: "settings" */ "../views/dashboardSections/Settings.vue"
           ),
         beforeEnter: (to, from, next) => {
           if (Store.state.auth.isAuthenticated == false) {

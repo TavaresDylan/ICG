@@ -138,6 +138,9 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
+  props: {
+    actualPage: Number,
+  },
   data() {
     return {
       rules: [],
@@ -150,6 +153,7 @@ export default {
   },
   computed: {
     ...mapState("user", ["username"]),
+    ...mapState("folder", ["selectedFolder"])
   },
   methods: {
     ...mapActions("upload", ["upload"]),
@@ -180,6 +184,7 @@ export default {
           formData.append("image_url", URL.createObjectURL(this.files[i]));
           formData.append("size", this.files[i]["size"]);
           formData.append("description", this.descriptions[i]);
+          formData.append("folder_id", this.selectedFolder.id)
         }
       }
       this.upload(formData);

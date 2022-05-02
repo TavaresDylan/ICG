@@ -7,6 +7,7 @@ import { userModule } from "./modules/user";
 import { authModule } from "./modules/auth";
 import { uploadModule } from "./modules/upload";
 import { demoModule } from "./modules/demo";
+import { folderModule } from "./modules/folder";
 
 import { getField, updateField } from "vuex-map-fields";
 
@@ -26,5 +27,6 @@ export default new Vuex.Store({
     auth: authModule,
     upload: uploadModule,
     demo: demoModule,
+    folder: folderModule,
   },
 });
