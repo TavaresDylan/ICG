@@ -99,6 +99,9 @@ DATABASES = {
         'PASSWORD': env('MYSQL_PASSWORD'),
         'PORT': env('MYSQL_EXPOSED_PORT'),
         'HOST': env('MYSQL_HOST'),
+		'TEST': {
+			'NAME': 'test_mysqldatabase',
+		},
     }
 }
 
