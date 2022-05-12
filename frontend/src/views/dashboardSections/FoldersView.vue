@@ -8,7 +8,7 @@
       ></search-bar>
     </v-row>
 
-    <v-row v-if="folders.length > 0" align="center">
+    <v-row v-if="folders.length > 1" align="center">
       <v-checkbox label="select all" v-model="selectAll"></v-checkbox>
       <v-tooltip v-if="selectedFolders.length > 0" bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -61,7 +61,7 @@
         :key="folder.id"
       >
         <v-checkbox :value="folder.id" v-model="selectedFolders"></v-checkbox>
-        <v-card hover @click="redirectOnFolder(folder)">
+        <v-card v-model="selectedFolders" @contextmenu="show($event,folder.id)" hover @click="redirectOnFolder(folder)">
           <v-container class="d-flex">
             <v-card-title>{{ folder.name }}</v-card-title>
             <v-icon class="ml-2" x-large>folder</v-icon>
@@ -70,6 +70,31 @@
       </v-col>
     </v-row>
 
+    <!-- RIGHT CLICK FOLDER MENU -->
+    <v-menu
+      v-model="showMenu"
+      :position-x="x"
+      :position-y="y"
+      absolute
+      offset-y
+    >
+      <v-list>
+        <v-list-item-group color="primary">
+          <v-list-item
+            @click="test(item.action)"
+            v-for="(item, index) in items"
+            :key="index"
+          >
+            <v-list-item-icon :color="item.color">
+              <v-icon :color="item.color" v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>{{ item.title }}</v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-menu>
+
+    <!-- PLACEHOLDER -->
     <v-container v-if="folders.length <= 0">
       <v-img
         class="mb-4"
@@ -82,6 +107,7 @@
       </p>
     </v-container>
 
+    <!-- PAGINATION -->
     <v-pagination
       @click="getPage(actualPage)"
       @input="getPage(actualPage)"
@@ -111,6 +137,15 @@ export default {
   data: () => ({
     selectedFolders: [],
     confirmDelete: false,
+    showMenu: false,
+    items: [
+      { title: "Rename", icon: "mdi-pen", color: "primary", action: "rename" },
+      { title: "Delete", icon: "mdi-delete", color: "red", action: "delete" },
+      { title: "Add favorite", icon: "mdi-star", color: "orange", action: "fav" },
+    ],
+    x: 0,
+    y: 0,
+    clickedFolderId: null,
   }),
   methods: {
     ...mapActions("auth", ["fetchUser"]),
@@ -131,6 +166,35 @@ export default {
       this.confirmDelete = false;
       for (let i = 0; i < selectedFolders.length; i++) {
         this.deleteFolderById(selectedFolders[i]);
+      }
+    },
+    // Contextual menu
+    show(e, folderId) {
+      console.log("folder id right clicked : ",folderId)
+      e.preventDefault();
+      this.clickedFolderId = folderId
+      this.showMenu = false;
+      this.x = e.clientX;
+      this.y = e.clientY;
+      this.$nextTick(() => {
+        this.showMenu = true;
+      });
+    },
+    // Test of right click actions
+    test(action) {
+      console.log("clickedFolderId : ", this.clickedFolderId)
+      switch (action) {
+        case "delete":
+          this.deleteFolderById(this.clickedFolderId)
+          break;
+        case "rename":
+          console.log("clicked contextual action : ",action);
+          break;
+        case "fav":
+          console.log("clicked contextual action : ",action);
+          break;
+        default:
+          break;
       }
     },
   },
