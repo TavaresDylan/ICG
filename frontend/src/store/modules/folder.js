@@ -67,5 +67,17 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
+    renameFolderById({ dispatch }, id) {
+      return Vue.axios
+        .patch("api/v1/folder/" + id + "/")
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch("getAllFolders");
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
+    },
   },
 };
