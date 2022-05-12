@@ -67,12 +67,12 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    renameFolderById({ dispatch }, id) {
+    renameFolderById({ dispatch, state }, v) {
       return Vue.axios
-        .patch("api/v1/folder/" + id + "/")
+        .patch("api/v1/folder/" + v.folderId + "/", {"name": v.name, "user_id": v.userId})
         .then((res) => {
           if (res.status === 200) {
-            dispatch("getAllFolders");
+            dispatch("getAllFolders", state.actualPage);
           }
         })
         .catch((err) => {

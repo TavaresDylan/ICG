@@ -69,7 +69,9 @@
           @click.prevent="redirectOnFolder(folder)"
           class="ma-0 pa-0"
         >
-          <v-card-subtitle class="ma-0 pa-0 d-flex align-center justify-space-between">
+          <v-card-subtitle
+            class="ma-0 pa-0 d-flex align-center justify-space-between"
+          >
             <v-checkbox
               :ripple="false"
               hide-details
@@ -86,12 +88,39 @@
               color="orange"
               v-model="fav"
               class="pa-0 ma-0 pr-1"
-            ></v-checkbox
-          >
+            ></v-checkbox>
           </v-card-subtitle>
           <v-container class="d-flex align-center justify-space-around"
-            >{{ folder.name }} <v-icon class="ml-2" x-large>folder</v-icon
-            ></v-container>
+            ><form
+              class="d-flex align-center"
+              v-if="renameForm.status && renameForm.folderId === folder.id"
+            >
+              <v-text-field
+                validate-on-blur
+                prepend-icon="mdi-pen"
+                v-model="folder.name"
+                @click.prevent.stop
+              ></v-text-field>
+              <v-btn
+                icon
+                submit
+                @keydown.enter.prevent="renameFolder(folder.id, folder.name)"
+                @click.prevent.stop="renameFolder(folder.id, folder.name)"
+                ><v-icon color="success">mdi-check</v-icon></v-btn
+              >
+            </form>
+            <div v-if="renameForm.folderId != folder.id">
+              {{ folder.name }}
+            </div>
+
+            <v-icon
+              v-if="renameForm.folderId != folder.id"
+              class="ml-2"
+              color="primary"
+              x-large
+              >folder</v-icon
+            ></v-container
+          >
           <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
@@ -180,6 +209,7 @@ export default {
     y: 0,
     clickedFolderId: null,
     fav: false,
+    renameForm: {},
   }),
   methods: {
     ...mapActions("auth", ["fetchUser"]),
@@ -224,7 +254,8 @@ export default {
           this.deleteFolderById(this.clickedFolderId);
           break;
         case "rename":
-          this.renameFolderById(this.clickedFolderId);
+          this.renameForm.status = true;
+          this.renameForm.folderId = this.clickedFolderId;
           break;
         case "fav":
           console.log("clicked contextual action : ", action);
@@ -236,9 +267,18 @@ export default {
     test() {
       console.log("stared");
     },
+    renameFolder(folderId, newname) {
+      this.renameFolderById({
+        name: newname,
+        folderId: folderId,
+        userId: this.loggedInUser.id,
+      });
+      this.renameForm = {};
+    },
   },
   computed: {
     ...mapState("folder", ["folders", "folderCount"]),
+    ...mapState("auth", ["loggedInUser"]),
     ...mapFields("folder", ["actualPage"]),
     selectAll: {
       get() {
