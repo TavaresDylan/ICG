@@ -26,6 +26,7 @@
       </v-tooltip>
     </v-row>
 
+    <!-- DELETE MODAL -->
     <v-row justify="center">
       <v-dialog multiple v-model="confirmDelete" persistent max-width="290">
         <v-card>
@@ -51,21 +52,47 @@
       </v-dialog>
     </v-row>
 
+    <!-- FOLDER CARDS -->
     <v-row v-if="folders.length > 0">
       <v-col
         cols="12"
         sm="6"
-        md="6"
+        md="3"
         lg="3"
         v-for="folder in folders"
         :key="folder.id"
       >
-        <v-checkbox :value="folder.id" v-model="selectedFolders"></v-checkbox>
-        <v-card v-model="selectedFolders" @contextmenu="show($event,folder.id)" hover @click="redirectOnFolder(folder)">
-          <v-container class="d-flex">
-            <v-card-title>{{ folder.name }}</v-card-title>
-            <v-icon class="ml-2" x-large>folder</v-icon>
-          </v-container>
+        <v-card
+          v-model="selectedFolders"
+          @contextmenu="show($event, folder.id)"
+          hover
+          @click.prevent="redirectOnFolder(folder)"
+          class="ma-0 pa-0"
+        >
+          <v-card-subtitle class="ma-0 pa-0 d-flex align-center justify-space-between">
+            <v-checkbox
+              :ripple="false"
+              hide-details
+              class="ma-0 pa-3"
+              @click.prevent.stop
+              :value="folder.id"
+              v-model="selectedFolders"
+            ></v-checkbox>
+            <v-checkbox
+              hide-details
+              @click.prevent.stop="test()"
+              on-icon="mdi-star"
+              off-icon="mdi-star"
+              color="orange"
+              v-model="fav"
+              class="pa-0 ma-0 pr-1"
+            ></v-checkbox
+          >
+          </v-card-subtitle>
+          <v-container class="d-flex align-center justify-space-around"
+            >{{ folder.name }} <v-icon class="ml-2" x-large>folder</v-icon
+            ></v-container>
+          <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -81,7 +108,7 @@
       <v-list>
         <v-list-item-group color="primary">
           <v-list-item
-            @click="test(item.action)"
+            @click="contextualAction(item.action)"
             v-for="(item, index) in items"
             :key="index"
           >
@@ -128,6 +155,7 @@ import CreateFolder from "@/components/CreateFolder.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import router from "@/router/index";
 import { mapFields } from "vuex-map-fields";
+
 export default {
   name: "photos",
   components: {
@@ -141,15 +169,25 @@ export default {
     items: [
       { title: "Rename", icon: "mdi-pen", color: "primary", action: "rename" },
       { title: "Delete", icon: "mdi-delete", color: "red", action: "delete" },
-      { title: "Add favorite", icon: "mdi-star", color: "orange", action: "fav" },
+      {
+        title: "Add favorite",
+        icon: "mdi-star",
+        color: "orange",
+        action: "fav",
+      },
     ],
     x: 0,
     y: 0,
     clickedFolderId: null,
+    fav: false,
   }),
   methods: {
     ...mapActions("auth", ["fetchUser"]),
-    ...mapActions("folder", ["getAllFolders", "deleteFolderById"]),
+    ...mapActions("folder", [
+      "getAllFolders",
+      "deleteFolderById",
+      "renameFolderById",
+    ]),
     ...mapMutations("folder", ["selectedFolder"]),
     ...mapMutations("upload", ["resetPage"]),
     redirectOnFolder(folder) {
@@ -170,9 +208,8 @@ export default {
     },
     // Contextual menu
     show(e, folderId) {
-      console.log("folder id right clicked : ",folderId)
       e.preventDefault();
-      this.clickedFolderId = folderId
+      this.clickedFolderId = folderId;
       this.showMenu = false;
       this.x = e.clientX;
       this.y = e.clientY;
@@ -180,22 +217,24 @@ export default {
         this.showMenu = true;
       });
     },
-    // Test of right click actions
-    test(action) {
-      console.log("clickedFolderId : ", this.clickedFolderId)
+    // Right click actions on folder card
+    contextualAction(action) {
       switch (action) {
         case "delete":
-          this.deleteFolderById(this.clickedFolderId)
+          this.deleteFolderById(this.clickedFolderId);
           break;
         case "rename":
-          console.log("clicked contextual action : ",action);
+          this.renameFolderById(this.clickedFolderId);
           break;
         case "fav":
-          console.log("clicked contextual action : ",action);
+          console.log("clicked contextual action : ", action);
           break;
         default:
           break;
       }
+    },
+    test() {
+      console.log("stared");
     },
   },
   computed: {
