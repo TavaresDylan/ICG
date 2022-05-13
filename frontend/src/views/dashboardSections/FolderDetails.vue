@@ -53,13 +53,11 @@
 
     <h1 class="pt-6">{{ selectedFolder.name }}</h1>
 
+    <!-- TOOLBAR MULTI SELECTIONS AND ACTIONS -->
     <v-row v-if="items.length > 0" align="center">
-      <v-checkbox
-        v-model="selectAll"
-        label="select all"
-      ></v-checkbox>
+      <v-checkbox v-model="selectAll" label="select all"></v-checkbox>
 
-      <v-tooltip bottom>
+      <v-tooltip v-if="selectedImages.length > 0" bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             class="ml-3"
@@ -75,19 +73,49 @@
       </v-tooltip>
     </v-row>
 
-    <v-row v-if="items.length > 0" class="mx-8 mb-8 px-8">
-      <v-col cols="12" sm="6" md="3" v-for="item in items" :key="item.id">
-        <v-checkbox :value="item" v-model="selectedImages"></v-checkbox>
-        <v-card class="d-flex" hover @click="zoomOnCard(item)">
+    <!-- IMAGE CARDS -->
+    <v-row v-if="items.length > 0" class="mb-8">
+      <v-col
+        cols="12"
+        sm="6"
+        md="6"
+        lg="3"
+        v-for="item in items"
+        :key="item.id"
+      >
+        <v-card
+          min-height="100%"
+          class="d-flex"
+          hover
+          @click="zoomOnCard(item)"
+        >
           <v-img
-            position="top center"
+            class="white--text"
+            position="center center"
             max-height="22vh"
             :src="'http://localhost:8085' + item.file"
-          ></v-img>
+          >
+            <div class="d-flex">
+              <v-checkbox
+                class="ma-0 pa-2"
+                hide-details
+                :ripple="false"
+                @click.stop.prevent
+                dark
+                color="white"
+                :value="item.id"
+                v-model="selectedImages"
+              ></v-checkbox>
+              <p class="text-truncate ma-2 d-flex self-end">
+                {{ item.name }}
+              </p>
+            </div>
+          </v-img>
         </v-card>
       </v-col>
     </v-row>
 
+    <!-- ZOOMED IMAGE CARD -->
     <v-dialog v-model="dial" width="700px">
       <v-card flat tile>
         <v-row justify="end" class="pa-0 ma-0">
@@ -139,6 +167,7 @@
       </v-card>
     </v-dialog>
 
+    <!-- PLACEHOLDER -->
     <v-container v-if="items.length <= 0">
       <v-img
         contain
@@ -150,6 +179,7 @@
       </p>
     </v-container>
 
+    <!-- PAGINATION -->
     <div class="text-center">
       <v-pagination
         @click="getPage()"
@@ -204,7 +234,7 @@ export default {
 
         if (value) {
           this.items.forEach((item) => {
-            this.selectedImages.push(item);
+            this.selectedImages.push(item.id);
           });
         }
       },
@@ -247,7 +277,7 @@ export default {
     },
     deleteImages(selectedImages) {
       for (let i = 0; i < selectedImages.length; i++) {
-        this.deleteById(selectedImages[i].id);
+        this.deleteById(selectedImages[i]);
       }
     },
   },
