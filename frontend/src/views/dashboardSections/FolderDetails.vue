@@ -84,6 +84,7 @@
         :key="item.id"
       >
         <v-card
+          @contextmenu.prevent
           min-height="100%"
           class="d-flex"
           hover
@@ -118,20 +119,20 @@
     <!-- ZOOMED IMAGE CARD -->
     <v-dialog v-model="dial" width="700px">
       <v-card flat tile>
-        <v-row justify="end" class="pa-0 ma-0">
+        <v-row justify="space-between" class="pa-0 ma-0">
+          <v-card-title class="ma-0 pl-4 py-0">{{
+            selectedItem.name | capitalize
+          }}</v-card-title>
           <v-btn @click="closeModal()" class="my-3 mr-3" icon>
-            <v-icon>close</v-icon>
+            <v-icon color="red">close</v-icon>
           </v-btn>
         </v-row>
-        <v-card-title class="ma-0 pl-4 py-0">{{
-          selectedItem.name | capitalize
-        }}</v-card-title>
         <v-img
           contain
           width="700px"
           :src="'http://localhost:8085' + selectedItem.file"
         ></v-img>
-        <v-card-text class="pa-2">
+        <v-card-text v-if="infos" class="pa-2">
           <p v-if="selectedItem.description != 'undefined'">
             {{ selectedItem.description }}
           </p>
@@ -162,6 +163,21 @@
               </v-btn>
             </template>
             <span>Edit</span>
+          </v-tooltip>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">
+                <v-checkbox
+                  hide-details
+                  on-icon="mdi-information"
+                  off-icon="mdi-information"
+                  color="primary"
+                  v-model="infos"
+                  class="pa-0 ma-0 pr-1"
+                ></v-checkbox>
+              </span>
+            </template>
+            <span>Infos</span>
           </v-tooltip>
         </v-card-actions>
       </v-card>
@@ -209,6 +225,7 @@ export default {
     SearchBar,
   },
   data: () => ({
+    infos: false,
     routeId: "",
     dial: false,
     confirmDelete: false,
