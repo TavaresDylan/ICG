@@ -58,11 +58,12 @@
         cols="12"
         sm="6"
         md="3"
-        lg="3"
+        lg="2"
         v-for="folder in folders"
         :key="folder.id"
       >
         <v-card
+          :ripple="false"
           v-model="selectedFolders"
           @contextmenu="show($event, folder.id)"
           hover
@@ -96,12 +97,13 @@
               v-if="renameForm.status && renameForm.folderId === folder.id"
             >
               <v-text-field
+                hide-details="true"
                 validate-on-blur
-                prepend-icon="mdi-pen"
                 v-model="folder.name"
                 @click.prevent.stop
               ></v-text-field>
               <v-btn
+                class="ml-1"
                 icon
                 submit
                 @keydown.enter.prevent="renameFolder(folder.id, folder.name)"
@@ -109,7 +111,7 @@
                 ><v-icon color="success">mdi-check</v-icon></v-btn
               >
             </form>
-            <div v-if="renameForm.folderId != folder.id">
+            <div v-if="renameForm.folderId != folder.id" class="text-truncate">
               {{ folder.name }}
             </div>
 
