@@ -74,5 +74,18 @@ export const uploadModule = {
         }
       });
     },
+    renameById({dispatch, state}, payload) {
+      return Vue.axios.patch("api/v1/upload/" + payload.id + "/", payload ).then((res) => {
+          if (res.status  === 200){
+            dispatch("getByPage", {
+              page: state.actualPage,
+              folder_id: this.state.folder.selectedFolder.id,
+            });
+          }
+      })
+      .catch((err) => {
+        console.error(JSON.stringify(err));
+      });
+    }
   },
 };

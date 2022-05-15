@@ -1,5 +1,6 @@
 <template>
   <v-container class="px-12">
+    <!-- TOOLBAR -->
     <v-row class="align-center mt-2">
       <v-btn class="mr-8" icon color="primary" @click="backToDashboard()"
         ><v-icon>mdi-arrow-left</v-icon></v-btn
@@ -26,6 +27,7 @@
       </v-tooltip>
     </v-row>
 
+    <!-- CONFIRM DELETE MODAL -->
     <v-row justify="center">
       <v-dialog v-model="confirmDelete" persistent max-width="290">
         <v-card>
@@ -120,9 +122,33 @@
     <v-dialog v-model="dial" width="700px">
       <v-card flat tile>
         <v-row justify="space-between" class="pa-0 ma-0">
-          <v-card-title class="ma-0 pl-4 py-0">{{
-            selectedItem.name | capitalize
-          }}</v-card-title>
+          <div class="d-flex align-center">
+            <v-form v-if="renameForm" class="d-flex align-center pl-4">
+              <v-text-field v-model="selectedItem.name"></v-text-field>
+              <v-btn
+                submit
+                @click="renamePhoto(selectedItem.id, selectedItem.name)"
+                icon
+                ><v-icon color="success">mdi-check</v-icon></v-btn
+              >
+            </v-form>
+            <v-card-title v-if="!renameForm" class="ma-0 pl-4 py-0"
+              >{{ selectedItem.name | capitalize }}
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    @click="renameForm = true"
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                  >
+                    <v-icon color="primary">mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <span>Rename</span>
+              </v-tooltip>
+            </v-card-title>
+          </div>
           <v-btn @click="closeModal()" class="my-3 mr-3" icon>
             <v-icon color="red">close</v-icon>
           </v-btn>
@@ -231,6 +257,7 @@ export default {
     confirmDelete: false,
     selectedItem: {},
     selectedImages: [],
+    renameForm: false,
   }),
   computed: {
     ...mapFields("upload", ["actualPage", "imageCount"]),
@@ -242,6 +269,7 @@ export default {
       "isLoading",
     ]),
     ...mapState("folder", ["selectedFolder"]),
+    ...mapState("auth", ["loggedInUser"]),
     selectAll: {
       get() {
         return this.selectedImages.length === this.items.length;
@@ -264,6 +292,7 @@ export default {
       "getByName",
       "getByFolderId",
       "deleteById",
+      "renameById",
     ]),
     ...mapActions("folder", ["deleteFolderById"]),
     getRouteId() {
@@ -296,6 +325,14 @@ export default {
       for (let i = 0; i < selectedImages.length; i++) {
         this.deleteById(selectedImages[i]);
       }
+    },
+    renamePhoto(photoId, newName) {
+      this.renameById({
+        id: photoId,
+        userId: this.loggedInUser.id,
+        name: newName,
+      });
+      this.renameForm = false;
     },
   },
   mounted() {
