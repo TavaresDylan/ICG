@@ -88,31 +88,30 @@
         <v-card
           @contextmenu.prevent
           min-height="100%"
-          class="d-flex"
+          class="d-flex flex-column"
           hover
           @click="zoomOnCard(item)"
         >
+          <div class="d-flex card-title-bar align-center">
+            <v-checkbox
+              class="ma-0 py-2 pl-2"
+              hide-details
+              :ripple="false"
+              @click.stop.prevent
+              dark
+              color="white"
+              :value="item.id"
+              v-model="selectedImages"
+            ></v-checkbox>
+            <p class="white--text font-weight-bold text-truncate ma-0">
+              {{ item.name }}
+            </p>
+          </div>
           <v-img
-            class="white--text"
             position="center center"
             max-height="22vh"
             :src="'http://localhost:8085' + item.file"
           >
-            <div class="d-flex">
-              <v-checkbox
-                class="ma-0 pa-2"
-                hide-details
-                :ripple="false"
-                @click.stop.prevent
-                dark
-                color="white"
-                :value="item.id"
-                v-model="selectedImages"
-              ></v-checkbox>
-              <p class="text-truncate ma-2 d-flex self-end">
-                {{ item.name }}
-              </p>
-            </div>
           </v-img>
         </v-card>
       </v-col>
@@ -357,3 +356,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.card-title-bar {
+  background: linear-gradient(
+    95deg,
+    rgba(251, 84, 111, 1) 0%,
+    rgba(221, 21, 107, 1) 54%,
+    rgba(207, 44, 125, 1) 100%
+  );
+}
+</style>
