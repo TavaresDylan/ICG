@@ -123,8 +123,15 @@
       <v-card flat tile>
         <v-row justify="space-between" class="pa-0 ma-0">
           <div class="d-flex align-center">
-            <v-form v-if="renameForm" class="d-flex align-center pl-4">
-              <v-text-field v-model="selectedItem.name"></v-text-field>
+            <v-form
+              ref="renameForm"
+              v-if="renameForm"
+              class="d-flex align-center pl-4"
+            >
+              <v-text-field
+                :rules="[(v) => v.length > 0 || 'Name should not be empty.']"
+                v-model="selectedItem.name"
+              ></v-text-field>
               <v-btn
                 submit
                 @click="renamePhoto(selectedItem.id, selectedItem.name)"
@@ -258,6 +265,7 @@ export default {
     selectedItem: {},
     selectedImages: [],
     renameForm: false,
+    rules: { minName: (v) => v.lenght > 0 || "Name should not be empty" },
   }),
   computed: {
     ...mapFields("upload", ["actualPage", "imageCount"]),
@@ -327,12 +335,14 @@ export default {
       }
     },
     renamePhoto(photoId, newName) {
-      this.renameById({
-        id: photoId,
-        userId: this.loggedInUser.id,
-        name: newName,
-      });
-      this.renameForm = false;
+      if (this.$refs.renameForm.validate() === true) {
+        this.renameById({
+          id: photoId,
+          userId: this.loggedInUser.id,
+          name: newName,
+        });
+        this.renameForm = false;
+      }
     },
   },
   mounted() {
