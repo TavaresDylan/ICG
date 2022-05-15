@@ -67,5 +67,17 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
+    renameFolderById({ dispatch, state }, payload) {
+      return Vue.axios
+        .patch("api/v1/folder/" + payload.folderId + "/", {"name": payload.newName, "user_id": payload.userId})
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch("getAllFolders", state.actualPage);
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
+    },
   },
 };
