@@ -83,7 +83,7 @@
             ></v-checkbox>
             <v-checkbox
               hide-details
-              @click.prevent.stop="test()"
+              @click.prevent.stop
               on-icon="mdi-star"
               off-icon="mdi-star"
               color="orange"
@@ -266,12 +266,9 @@ export default {
           break;
       }
     },
-    test() {
-      console.log("stared");
-    },
-    renameFolder(folderId, newname) {
+    renameFolder(folderId, newName) {
       this.renameFolderById({
-        name: newname,
+        newName: newName,
         folderId: folderId,
         userId: this.loggedInUser.id,
       });
