@@ -119,7 +119,7 @@
     </v-row>
 
     <!-- ZOOMED IMAGE CARD -->
-    <v-dialog v-model="dial" width="700px">
+    <v-dialog @click:outside="renameForm = false" v-model="dial" width="700px">
       <v-card flat tile>
         <v-row justify="space-between" class="pa-0 ma-0">
           <div class="d-flex align-center">
@@ -324,6 +324,7 @@ export default {
     },
     closeModal() {
       this.dial = false;
+      this.renameForm = false;
     },
     deleteFolder(id) {
       this.confirmDelete = false;
