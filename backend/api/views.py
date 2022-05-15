@@ -50,6 +50,14 @@ class UploadViewset(ModelViewSet):
 		serializer = PhotoSerializer(queryset, many=True)
 		return Response(serializer.data)
 
+	# Update photo name by id
+	def update(self, request, pk=None, partial=None):
+		if request.method == 'PATCH':
+			queryset = Photo.objects.filter(id=pk, user_id_id=request.data.get("userId"))
+			queryset.update(name=request.data.get("name"))
+			return Response(request.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
 @permission_classes([AllowAny])
 class DemoViewset(ModelViewSet):
 	queryset = Demo.objects.all()
