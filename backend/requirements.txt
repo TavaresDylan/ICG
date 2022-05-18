@@ -12,7 +12,7 @@ django-environ==0.8.1
 django-mysql==4.6.0
 django-templated-mail==1.1.1
 djangorestframework==3.13.1
-djangorestframework-simplejwt==4.6.0
+djangorestframework-simplejwt==5.1.0
 djoser==2.1.0
 idna==3.3
 importlib-metadata==4.11.3
