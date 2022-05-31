@@ -4,6 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.utils import timezone
 
 from api.models import Photo, Demo, Folder
 from api.serializer import RegisterSerializer, PhotoSerializer, DemoSerializer, FolderSerializer
@@ -51,10 +52,10 @@ class UploadViewset(ModelViewSet):
 		return Response(serializer.data)
 
 	# Update photo name by id
-	def update(self, request, pk=None, partial=None):
+	def update(self, request, pk=None, partial=True):
 		if request.method == 'PATCH':
 			queryset = Photo.objects.filter(id=pk, user_id_id=request.data.get("userId"))
-			queryset.update(name=request.data.get("name"))
+			queryset.update(name=request.data.get("name"), updated_at=timezone.now())
 			return Response(request.data, status=status.HTTP_200_OK)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 

@@ -13,6 +13,7 @@ class Photo(models.Model):
 	name = models.CharField(max_length=120)
 	file = models.ImageField(upload_to="images/", default=None, blank=True)
 	upload_date = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 	size = models.IntegerField()
 	description = models.CharField(max_length=220, null=True)
 	user_id = models.ForeignKey(User,on_delete=models.CASCADE)
