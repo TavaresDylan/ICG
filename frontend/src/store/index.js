@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { userModule } from "./modules/user";
 import { authModule } from "./modules/auth";
-import { uploadModule } from "./modules/upload";
+import { photoModule } from "./modules/photo";
 import { demoModule } from "./modules/demo";
 import { folderModule } from "./modules/folder";
 
@@ -25,7 +25,7 @@ export default new Vuex.Store({
   modules: {
     user: userModule,
     auth: authModule,
-    upload: uploadModule,
+    photo: photoModule,
     demo: demoModule,
     folder: folderModule,
   },

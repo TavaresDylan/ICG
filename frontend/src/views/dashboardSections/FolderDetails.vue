@@ -277,8 +277,8 @@ export default {
     }
   },
   computed: {
-    ...mapFields("upload", ["actualPage", "imageCount"]),
-    ...mapState("upload", [
+    ...mapFields("photo", ["actualPage", "imageCount"]),
+    ...mapState("photo", [
       "imgUrls",
       "imgNames",
       "imgDescs",
@@ -304,7 +304,7 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["fetchUser"]),
-    ...mapActions("upload", [
+    ...mapActions("photo", [
       "getByPage",
       "getByName",
       "getByFolderId",

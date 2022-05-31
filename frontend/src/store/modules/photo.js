@@ -1,7 +1,7 @@
 import Vue from "vue";
 import { getField, updateField } from "vuex-map-fields";
 
-export const uploadModule = {
+export const photoModule = {
   namespaced: true,
   state: () => ({
     items: [],
@@ -21,7 +21,7 @@ export const uploadModule = {
     getByPage({ state }, payload) {
       return Vue.axios
         .get(
-          "api/v1/upload/?page=" + payload.page + "&folder=" + payload.folder_id
+          "api/v1/photo/?page=" + payload.page + "&folder=" + payload.folder_id
         )
         .then((res) => {
           if (res.status === 200) {
@@ -35,7 +35,7 @@ export const uploadModule = {
     },
     getByName({ state }, name) {
       return Vue.axios
-        .get("api/v1/upload/" + name)
+        .get("api/v1/photo/" + name)
         .then((res) => {
           if (res.status === 200) {
             state.items = res.data;
@@ -47,7 +47,7 @@ export const uploadModule = {
     },
     upload({ state, dispatch }, formData) {
       return Vue.axios
-        .post("api/v1/upload/", formData, {
+        .post("api/v1/photo/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -65,7 +65,7 @@ export const uploadModule = {
         });
     },
     deleteById({ dispatch, state }, imageId) {
-      return Vue.axios.delete("api/v1/upload/" + imageId).then((res) => {
+      return Vue.axios.delete("api/v1/photo/" + imageId).then((res) => {
         if (res.status === 204) {
           dispatch("getByPage", {
             page: state.actualPage,
@@ -75,7 +75,7 @@ export const uploadModule = {
       });
     },
     renameById({dispatch, state}, payload) {
-      return Vue.axios.patch("api/v1/upload/" + payload.id + "/", payload ).then((res) => {
+      return Vue.axios.patch("api/v1/photo/" + payload.id + "/", payload ).then((res) => {
           if (res.status  === 200){
             dispatch("getByPage", {
               page: state.actualPage,
