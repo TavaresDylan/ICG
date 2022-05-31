@@ -50,10 +50,10 @@ export default {
     search: null,
   }),
   computed: {
-    ...mapState("upload", ["page"]),
+    ...mapState("photo", ["page"]),
   },
   methods: {
-    ...mapActions("upload", ["getByName", "getAll", "getByPage"]),
+    ...mapActions("photo", ["getByName", "getAll", "getByPage"]),
     getBySearch() {
       if (this.model === null) {
         this.getByPage(this.page);

@@ -156,7 +156,7 @@ export default {
     ...mapState("folder", ["selectedFolder"])
   },
   methods: {
-    ...mapActions("upload", ["upload"]),
+    ...mapActions("photo", ["upload"]),
     handleFilesUpload(event) {
       let uploadedFiles = event;
       for (let i = 0; i < uploadedFiles.length; i++) {

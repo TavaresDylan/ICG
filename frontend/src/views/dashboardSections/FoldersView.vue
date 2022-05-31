@@ -221,7 +221,7 @@ export default {
       "renameFolderById",
     ]),
     ...mapMutations("folder", ["selectedFolder"]),
-    ...mapMutations("upload", ["resetPage"]),
+    ...mapMutations("photo", ["resetPage"]),
     redirectOnFolder(folder) {
       this.selectedFolder(folder);
       router.push("/dashboard/folders/" + folder.id);

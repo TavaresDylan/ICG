@@ -4,7 +4,7 @@ from api.views import RegisterViewset, UploadViewset, DemoViewset, FolderViewset
 
 router = routers.SimpleRouter()
 router.register('register', RegisterViewset, basename='register')
-router.register('upload', UploadViewset , basename='upload')
+router.register('photo', UploadViewset , basename='photo')
 router.register('demo', DemoViewset, basename='demo')
 router.register('folder', FolderViewset, basename='folder')
 
