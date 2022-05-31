@@ -168,6 +168,8 @@
           <p v-if="selectedItem.description != 'undefined'">
             {{ selectedItem.description }}
           </p>
+          <p>Last modified : {{ selectedItem.updated_at | moment("DD-MM-YYYY HH:mm:ss") }}</p>
+          <p>Uploaded at : {{ selectedItem.upload_date | moment("DD-MM-YYYY HH:mm") }}</p>
           <p><v-icon>mdi-weight</v-icon> {{ selectedItem.size | bytesize }}</p>
           <p>{{ selectedItem.file | extension }}</p>
         </v-card-text>
@@ -266,6 +268,14 @@ export default {
     renameForm: false,
     rules: { minName: (v) => v.lenght > 0 || "Name should not be empty" },
   }),
+  watch: {
+    items(newitems, olditems) {
+      if (newitems != olditems && Object.keys(this.selectedItem).length > 0) {
+        let id = this.selectedItem.id
+        this.selectedItem.updated_at = newitems[id - 1].updated_at
+      }
+    }
+  },
   computed: {
     ...mapFields("upload", ["actualPage", "imageCount"]),
     ...mapState("upload", [
