@@ -4,7 +4,8 @@ from django.contrib import admin
 from .models import Photo, Demo, Folder
 
 class PhotoAdmin(admin.ModelAdmin):
-	list_display = ['name', 'id', 'user_id', 'folder_id', 'upload_date']
+	readonly_fields = ("upload_date", "updated_at")
+	list_display = ['name', 'id', 'user_id', 'folder_id', 'upload_date', 'updated_at']
 
 admin.site.register(Photo, PhotoAdmin)
 
