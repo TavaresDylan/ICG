@@ -26,6 +26,15 @@
       </v-tooltip>
     </v-row>
 
+    <!-- LOADER -->
+    <v-progress-linear
+      class="mb-4"
+      indeterminate
+      rounded
+      color="#B83AC2"
+      v-if="isLoading"
+    ></v-progress-linear>
+
     <!-- DELETE MODAL -->
     <v-row justify="center">
       <v-dialog multiple v-model="confirmDelete" persistent max-width="290">
@@ -153,7 +162,7 @@
     </v-menu>
 
     <!-- PLACEHOLDER -->
-    <v-container v-if="folders.length <= 0">
+    <v-container v-if="folders.length <= 0 && !isLoading">
       <v-img
         class="mb-4"
         contain
@@ -278,7 +287,7 @@ export default {
   computed: {
     ...mapState("folder", ["folders", "folderCount"]),
     ...mapState("auth", ["loggedInUser"]),
-    ...mapFields("folder", ["actualPage"]),
+    ...mapFields("folder", ["actualPage", "isLoading"]),
     selectAll: {
       get() {
         return this.selectedFolders.length === this.folders.length;

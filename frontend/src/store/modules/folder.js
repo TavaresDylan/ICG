@@ -9,6 +9,7 @@ export const folderModule = {
     folderCount: 0,
     actualPage: 1,
     selectedFolder: {},
+    isLoading: false,
   },
   getters: {
     getField,
@@ -54,7 +55,8 @@ export const folderModule = {
         }
       });
     },
-    getAllFolders({ state }, page) {
+    async getAllFolders({ state }, page) {
+      state.isLoading = true;
       return Vue.axios
         .get("api/v1/folder/?page=" + page)
         .then((res) => {
@@ -65,6 +67,9 @@ export const folderModule = {
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
+        })
+        .finally(() => {
+          state.isLoading = false;
         });
     },
     renameFolderById({ dispatch, state }, payload) {

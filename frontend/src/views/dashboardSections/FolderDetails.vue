@@ -27,6 +27,15 @@
       </v-tooltip>
     </v-row>
 
+    <!-- LOADER -->
+    <v-progress-linear
+      class="mb-4"
+      indeterminate
+      rounded
+      color="#B83AC2"
+      v-if="isLoading"
+    ></v-progress-linear>
+
     <!-- CONFIRM DELETE MODAL -->
     <v-row justify="center">
       <v-dialog v-model="confirmDelete" persistent max-width="290">
@@ -76,7 +85,7 @@
     </v-row>
 
     <!-- IMAGE CARDS -->
-    <v-row v-if="items.length > 0" class="mb-8">
+    <v-row v-if="items.length > 0 && !isLoading" class="mb-8">
       <v-col
         cols="12"
         sm="6"
@@ -218,7 +227,7 @@
     </v-dialog>
 
     <!-- PLACEHOLDER -->
-    <v-container v-if="items.length <= 0">
+    <v-container v-if="items.length <= 0 && !isLoading">
       <v-img
         contain
         max-height="460"

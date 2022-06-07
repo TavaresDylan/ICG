@@ -7,6 +7,7 @@ export const photoModule = {
     items: [],
     actualPage: 1,
     imageCount: 0,
+    isLoading: false,
   }),
   getters: {
     getField,
@@ -18,7 +19,8 @@ export const photoModule = {
     },
   },
   actions: {
-    getByPage({ state }, payload) {
+    async getByPage({ state }, payload) {
+      state.isLoading = true;
       return Vue.axios
         .get(
           "api/v1/photo/?page=" + payload.page + "&folder=" + payload.folder_id
@@ -31,6 +33,9 @@ export const photoModule = {
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
+        })
+        .finally(() => {
+          state.isLoading = false;
         });
     },
     getByName({ state }, name) {
