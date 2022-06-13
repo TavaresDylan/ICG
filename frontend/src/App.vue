@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <v-navigation-drawer
-    id="mobile-nav"
+      id="mobile-nav"
       class="hidden-md-and-up"
       v-model="sidebar"
       disable-resize-watcher
@@ -74,19 +74,21 @@
       </v-toolbar-items>
     </v-app-bar>
 
-      <v-alert
-        class="alert ma-0"
-        max-width="30%"
-        min-width="90vw"
-        :value="alertStatus"
-        elevation="4"
-        dense
-        border="left"
-        :type="alertType"
-        dismissible
-        transition="scroll-y-reverse-transition"
-        >{{ alertMsg }}</v-alert
-      >
+    <!-- ALERT BAR -->
+    <v-alert
+      class="alert ma-0"
+      width="370px"
+      :value="alertStatus"
+      elevation="4"
+      dense
+      colored-border
+      border="left"
+      :type="alertType"
+      dismissible
+      @click="resetAlert()"
+      transition="scroll-y-reverse-transition"
+      >{{ alertMsg }}</v-alert
+    >
 
     <router-view />
 
@@ -156,7 +158,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "App",
@@ -192,6 +194,7 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logoutUser"]),
+    ...mapMutations(["resetAlert"]),
     logout() {
       this.logoutUser();
     },
@@ -216,7 +219,7 @@ export default {
   right: 50%;
   transform: translate(-50%, -50%);
 }
-#mobile-nav{
+#mobile-nav {
   z-index: 1000;
 }
 footer {
