@@ -11,6 +11,7 @@
         <v-col cols="12" class="col-sm-8 col-md-6 col-lg-4">
           <v-form ref="form">
             <v-text-field
+              @focus="resetAlert()"
               v-model="form.username"
               :counter="10"
               :rules="[rules.required, rules.minName]"
@@ -19,13 +20,16 @@
             ></v-text-field>
 
             <v-text-field
+              @focus="resetAlert()"
               v-model="form.email"
               :rules="[rules.required, rules.format]"
+              name="mail"
               label="E-mail"
               required
             ></v-text-field>
 
             <v-text-field
+              @focus="resetAlert()"
               v-model="form.password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[rules.required, rules.minPassword]"
@@ -38,6 +42,7 @@
             ></v-text-field>
 
             <v-text-field
+              @focus="resetAlert()"
               v-model="form.confirmPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[rules.required, passwordMatch]"
@@ -55,6 +60,7 @@
               v-model="form.checkbox"
               :rules="[(v) => !!v || 'You must agree to continue.']"
               label="Do you accept terms of use ?"
+              name="terms"
               required
             ></v-checkbox>
 
@@ -69,7 +75,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data: () => {
     return {
@@ -104,24 +110,20 @@ export default {
     },
   },
   methods: {
+    ...mapActions("user", ["registerUser"]),
+    ...mapMutations(["resetAlert", "updateAlert"]),
     validate() {
       if (this.$refs.form.validate() === true) {
-        axios
-          .post("/api/v1/register/", this.form)
-          .then((res) => {
-            if (res.status === 201) {
-              this.success_msg = "Registration complete you can now login";
-              this.$refs.form.reset();
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(function () {
-            this.$refs.form.reset();
-          });
+        this.registerUser(this.form);
       } else {
-        console.log("Form is not valid");
+        this.$store.commit(
+            "updateAlert",
+            {
+              msg: "The form is not valid",
+              type: "warning",
+            },
+            { root: true }
+          );
       }
     },
   },
