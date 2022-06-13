@@ -21,7 +21,7 @@ export const folderModule = {
     },
   },
   actions: {
-    createFolder({ state, dispatch }, folderinfos) {
+    async createFolder({ state, dispatch }, folderinfos) {
       return Vue.axios
         .post("api/v1/folder/", folderinfos)
         .then((res) => {
@@ -33,7 +33,7 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    deleteFolderById({ state, dispatch }, id) {
+    async deleteFolderById({ state, dispatch }, id) {
       return Vue.axios
         .delete("api/v1/folder/" + id)
         .then((res) => {
@@ -72,9 +72,12 @@ export const folderModule = {
           state.isLoading = false;
         });
     },
-    renameFolderById({ dispatch, state }, payload) {
+    async renameFolderById({ dispatch, state }, payload) {
       return Vue.axios
-        .patch("api/v1/folder/" + payload.folderId + "/", {"name": payload.newName, "user_id": payload.userId})
+        .patch("api/v1/folder/" + payload.folderId + "/", {
+          name: payload.newName,
+          user_id: payload.userId,
+        })
         .then((res) => {
           if (res.status === 200) {
             dispatch("getAllFolders", state.actualPage);
