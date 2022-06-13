@@ -13,13 +13,11 @@
 import { mapActions, mapState } from "vuex";
 export default {
   props: {
-    items: Array,
     searchLabel: String,
     page: Number,
   },
   data: () => ({
     isLoading: false,
-    model: null,
     search: null,
   }),
   computed: {
