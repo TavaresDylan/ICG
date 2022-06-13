@@ -33,22 +33,17 @@ class UploadViewset(ModelViewSet):
 			return Response(status=status.HTTP_201_CREATED)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
-	# Get all images by User paginated by 8
+	# Get images by User paginated by 8
 	def list(self, request):
-		queryset = Photo.objects.filter(user_id=request.user, folder_id=request.GET.get("folder"))
+		if request.GET.get("name") != None:
+			queryset = Photo.objects.filter(user_id=request.user, folder_id=request.GET.get("folder_id"), name__icontains=request.GET.get("name"))
+		else:
+			queryset = Photo.objects.filter(user_id=request.user, folder_id=request.GET.get("folder_id"))
 		page = self.paginate_queryset(queryset)
 		serializer = PhotoSerializer(queryset, many=True)
 		if page is not None:
 			serializer = PhotoSerializer(page, many=True)
 			return Response({"data":serializer.data, "count": len(queryset)})
-		return Response(serializer.data)
-
-	# Get image by name
-	def retrieve(self, request, pk=None):
-		lookup_field = 'name'
-		lookup_url_kwarg = 'name'
-		queryset = Photo.objects.filter(name=pk)
-		serializer = PhotoSerializer(queryset, many=True)
 		return Response(serializer.data)
 
 	# Update photo name by id
@@ -74,8 +69,12 @@ class FolderViewset(ModelViewSet):
 	queryset = Folder.objects.all()
 	serializer_class = FolderSerializer
 
+	# Get folder by userID paginated by 8
 	def list(self, request):
-		queryset = Folder.objects.filter(user_id=request.user)
+		if request.GET.get("name") != None:
+			queryset = Folder.objects.filter(user_id=request.user, name__icontains=request.GET.get("name"))
+		else:
+			queryset = Folder.objects.filter(user_id=request.user)
 		page = self.paginate_queryset(queryset)
 		serializer = FolderSerializer(queryset, many=True)
 		if page is not None:
