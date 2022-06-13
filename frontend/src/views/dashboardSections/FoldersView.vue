@@ -1,10 +1,11 @@
 <template>
   <v-container class="px-12">
-    <v-row class="align-center">
+    <!-- TOOLBAR -->
+    <v-row class="align-center mt-2">
       <create-folder :actualPage="actualPage" class="ma-2"></create-folder>
       <search-bar
         :searchLabel="'Search for a folder ...'"
-        :items="folders"
+        :page="actualPage"
       ></search-bar>
     </v-row>
 
@@ -25,6 +26,15 @@
         <span>Delete selected folders</span>
       </v-tooltip>
     </v-row>
+
+    <!-- LOADER -->
+    <v-progress-linear
+      class="mb-4"
+      indeterminate
+      rounded
+      color="#B83AC2"
+      v-if="isLoading"
+    ></v-progress-linear>
 
     <!-- DELETE MODAL -->
     <v-row justify="center">
@@ -153,7 +163,7 @@
     </v-menu>
 
     <!-- PLACEHOLDER -->
-    <v-container v-if="folders.length <= 0">
+    <v-container v-if="folders.length <= 0 && !isLoading">
       <v-img
         class="mb-4"
         contain
@@ -278,7 +288,7 @@ export default {
   computed: {
     ...mapState("folder", ["folders", "folderCount"]),
     ...mapState("auth", ["loggedInUser"]),
-    ...mapFields("folder", ["actualPage"]),
+    ...mapFields("folder", ["actualPage", "isLoading"]),
     selectAll: {
       get() {
         return this.selectedFolders.length === this.folders.length;

@@ -9,6 +9,7 @@ export const folderModule = {
     folderCount: 0,
     actualPage: 1,
     selectedFolder: {},
+    isLoading: false,
   },
   getters: {
     getField,
@@ -20,7 +21,7 @@ export const folderModule = {
     },
   },
   actions: {
-    createFolder({ state, dispatch }, folderinfos) {
+    async createFolder({ state, dispatch }, folderinfos) {
       return Vue.axios
         .post("api/v1/folder/", folderinfos)
         .then((res) => {
@@ -32,7 +33,7 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    deleteFolderById({ state, dispatch }, id) {
+    async deleteFolderById({ state, dispatch }, id) {
       return Vue.axios
         .delete("api/v1/folder/" + id)
         .then((res) => {
@@ -47,14 +48,20 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    getFolderByName({ state }, name) {
-      return Vue.axios.get("api/v1/folder/" + name).then((res) => {
-        if (res.status === 200) {
-          state.folders = res.data;
-        }
-      });
+    async getFolderByName({ state }, payload) {
+      return Vue.axios
+        .get("api/v1/folder/?name=" + payload.name)
+        .then((res) => {
+          if (res.status === 200) {
+            state.folders = res.data.data;
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
     },
-    getAllFolders({ state }, page) {
+    async getAllFolders({ state }, page) {
+      state.isLoading = true;
       return Vue.axios
         .get("api/v1/folder/?page=" + page)
         .then((res) => {
@@ -65,11 +72,17 @@ export const folderModule = {
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
+        })
+        .finally(() => {
+          state.isLoading = false;
         });
     },
-    renameFolderById({ dispatch, state }, payload) {
+    async renameFolderById({ dispatch, state }, payload) {
       return Vue.axios
-        .patch("api/v1/folder/" + payload.folderId + "/", {"name": payload.newName, "user_id": payload.userId})
+        .patch("api/v1/folder/" + payload.folderId + "/", {
+          name: payload.newName,
+          user_id: payload.userId,
+        })
         .then((res) => {
           if (res.status === 200) {
             dispatch("getAllFolders", state.actualPage);

@@ -5,12 +5,11 @@
       <v-btn class="mr-8" icon color="primary" @click="backToDashboard()"
         ><v-icon>mdi-arrow-left</v-icon></v-btn
       >
-      <picture-upload
+      <picture-upload :actualPage="actualPage" class="ma-2"></picture-upload>
+      <search-bar
+        :page="actualPage"
         :searchLabel="'Search for a photo ...'"
-        :actualPage="actualPage"
-        class="ma-2"
-      ></picture-upload>
-      <search-bar :items="items"></search-bar>
+      ></search-bar>
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -26,6 +25,15 @@
         <span>Delete this folder</span>
       </v-tooltip>
     </v-row>
+
+    <!-- LOADER -->
+    <v-progress-linear
+      class="mb-4"
+      indeterminate
+      rounded
+      color="#B83AC2"
+      v-if="isLoading"
+    ></v-progress-linear>
 
     <!-- CONFIRM DELETE MODAL -->
     <v-row justify="center">
@@ -76,7 +84,7 @@
     </v-row>
 
     <!-- IMAGE CARDS -->
-    <v-row v-if="items.length > 0" class="mb-8">
+    <v-row v-if="items.length > 0 && !isLoading" class="mb-8">
       <v-col
         cols="12"
         sm="6"
@@ -168,8 +176,14 @@
           <p v-if="selectedItem.description != 'undefined'">
             {{ selectedItem.description }}
           </p>
-          <p>Last modified : {{ selectedItem.updated_at | moment("DD-MM-YYYY HH:mm:ss") }}</p>
-          <p>Uploaded at : {{ selectedItem.upload_date | moment("DD-MM-YYYY HH:mm") }}</p>
+          <p>
+            Last modified :
+            {{ selectedItem.updated_at | moment("DD-MM-YYYY HH:mm:ss") }}
+          </p>
+          <p>
+            Uploaded at :
+            {{ selectedItem.upload_date | moment("DD-MM-YYYY HH:mm") }}
+          </p>
           <p><v-icon>mdi-weight</v-icon> {{ selectedItem.size | bytesize }}</p>
           <p>{{ selectedItem.file | extension }}</p>
         </v-card-text>
@@ -218,7 +232,7 @@
     </v-dialog>
 
     <!-- PLACEHOLDER -->
-    <v-container v-if="items.length <= 0">
+    <v-container v-if="items.length <= 0 && !isLoading">
       <v-img
         contain
         max-height="460"
@@ -271,10 +285,10 @@ export default {
   watch: {
     items(newitems, olditems) {
       if (newitems != olditems && Object.keys(this.selectedItem).length > 0) {
-        let id = this.selectedItem.id
-        this.selectedItem.updated_at = newitems[id - 1].updated_at
+        let id = this.selectedItem.id;
+        this.selectedItem.updated_at = newitems[id - 1].updated_at;
       }
-    }
+    },
   },
   computed: {
     ...mapFields("photo", ["actualPage", "imageCount"]),
