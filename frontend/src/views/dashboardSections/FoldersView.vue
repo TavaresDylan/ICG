@@ -1,10 +1,12 @@
 <template>
   <v-container class="px-12">
-    <v-row class="align-center">
+    <!-- TOOLBAR -->
+    <v-row class="align-center mt-2">
       <create-folder :actualPage="actualPage" class="ma-2"></create-folder>
       <search-bar
         :searchLabel="'Search for a folder ...'"
         :items="folders"
+        :page="actualPage"
       ></search-bar>
     </v-row>
 
