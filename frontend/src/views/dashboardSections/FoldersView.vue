@@ -5,7 +5,6 @@
       <create-folder :actualPage="actualPage" class="ma-2"></create-folder>
       <search-bar
         :searchLabel="'Search for a folder ...'"
-        :items="folders"
         :page="actualPage"
       ></search-bar>
     </v-row>
