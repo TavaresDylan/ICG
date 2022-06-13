@@ -64,6 +64,15 @@ export default {
     login() {
       if (this.$refs.form.validate()) {
         this.logUser(this.creds);
+      } else {
+        this.$store.commit(
+          "updateAlert",
+          {
+            msg: "The form is not valid",
+            type: "warning",
+          },
+          { root: true }
+        );
       }
     },
   },
