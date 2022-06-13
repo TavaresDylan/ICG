@@ -48,10 +48,10 @@ export const folderModule = {
           console.error(JSON.stringify(err));
         });
     },
-    getFolderByName({ state }, name) {
-      return Vue.axios.get("api/v1/folder/" + name).then((res) => {
+    async getFolderByName({ state }, payload) {
+      return Vue.axios.get("api/v1/folder/?name=" + payload.name).then((res) => {
         if (res.status === 200) {
-          state.folders = res.data;
+          state.folders = res.data.data;
         }
       });
     },
