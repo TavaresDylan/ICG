@@ -49,11 +49,16 @@ export const folderModule = {
         });
     },
     async getFolderByName({ state }, payload) {
-      return Vue.axios.get("api/v1/folder/?name=" + payload.name).then((res) => {
-        if (res.status === 200) {
-          state.folders = res.data.data;
-        }
-      });
+      return Vue.axios
+        .get("api/v1/folder/?name=" + payload.name)
+        .then((res) => {
+          if (res.status === 200) {
+            state.folders = res.data.data;
+          }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
     },
     async getAllFolders({ state }, page) {
       state.isLoading = true;
