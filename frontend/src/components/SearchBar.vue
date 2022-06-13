@@ -52,13 +52,34 @@ export default {
   computed: {
     ...mapState("photo", ["page"]),
   },
-  methods: {
-    ...mapActions("photo", ["getByName", "getAll", "getByPage"]),
-    getBySearch() {
-      if (this.model === null) {
-        this.getByPage(this.page);
-      } else {
-        this.getByName(this.model);
+  watch: {
+    search(i) {
+      if (this.$router.currentRoute.name === "FoldersDetails") {
+        if (i === "") {
+          setTimeout(
+            () =>
+              this.getByPage({
+                page: this.page,
+                folder_id: this.selectedFolder.id,
+              }),
+            500
+          );
+        } else {
+          this.getByName({
+            name: this.search,
+            folder_id: this.selectedFolder.id,
+          });
+        }
+      } else if (this.$router.currentRoute.name === "Photos") {
+        if (i === "") {
+          setTimeout(() => this.getAllFolders(this.page), 500);
+        } else {
+          this.getFolderByName({
+            name: this.search,
+            folder_id: this.selectedFolder.id,
+            user_id: this.loggedInUser.id,
+          });
+        }
       }
     },
   },
