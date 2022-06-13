@@ -43,6 +43,7 @@ export default {
   props: {
     items: Array,
     searchLabel: String,
+    page: Number,
   },
   data: () => ({
     isLoading: false,
@@ -50,7 +51,8 @@ export default {
     search: null,
   }),
   computed: {
-    ...mapState("photo", ["page"]),
+    ...mapState("folder", ["selectedFolder"]),
+    ...mapState("auth", ["loggedInUser"]),
   },
   watch: {
     search(i) {
@@ -82,6 +84,10 @@ export default {
         }
       }
     },
+  },
+  methods: {
+    ...mapActions("photo", ["getByName", "getAll", "getByPage"]),
+    ...mapActions("folder", ["getAllFolders", "getFolderByName"]),
   },
 };
 </script>
