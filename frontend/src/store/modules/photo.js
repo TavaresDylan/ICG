@@ -23,7 +23,10 @@ export const photoModule = {
       state.isLoading = true;
       return Vue.axios
         .get(
-          "api/v1/photo/?page=" + payload.page + "&folder=" + payload.folder_id
+          "api/v1/photo/?page=" +
+            payload.page +
+            "&folder_id=" +
+            payload.folder_id
         )
         .then((res) => {
           if (res.status === 200) {
@@ -38,19 +41,25 @@ export const photoModule = {
           state.isLoading = false;
         });
     },
-    getByName({ state }, name) {
+    async getByName({ state }, payload) {
       return Vue.axios
-        .get("api/v1/photo/" + name)
+        .get(
+          "api/v1/photo/?name=" +
+            payload.name +
+            "&folder_id=" +
+            payload.folder_id
+        )
         .then((res) => {
           if (res.status === 200) {
-            state.items = res.data;
+            state.items = res.data.data;
+            state.imageCount = res.data.count;
           }
         })
         .catch((err) => {
           console.error(JSON.stringify(err));
         });
     },
-    upload({ state, dispatch }, formData) {
+    async upload({ state, dispatch }, formData) {
       return Vue.axios
         .post("api/v1/photo/", formData, {
           headers: {
@@ -69,7 +78,7 @@ export const photoModule = {
           console.error(JSON.stringify(err));
         });
     },
-    deleteById({ dispatch, state }, imageId) {
+    async deleteById({ dispatch, state }, imageId) {
       return Vue.axios.delete("api/v1/photo/" + imageId).then((res) => {
         if (res.status === 204) {
           dispatch("getByPage", {
@@ -79,18 +88,20 @@ export const photoModule = {
         }
       });
     },
-    renameById({dispatch, state}, payload) {
-      return Vue.axios.patch("api/v1/photo/" + payload.id + "/", payload ).then((res) => {
-          if (res.status  === 200){
+    async renameById({ dispatch, state }, payload) {
+      return Vue.axios
+        .patch("api/v1/photo/" + payload.id + "/", payload)
+        .then((res) => {
+          if (res.status === 200) {
             dispatch("getByPage", {
               page: state.actualPage,
               folder_id: this.state.folder.selectedFolder.id,
             });
           }
-      })
-      .catch((err) => {
-        console.error(JSON.stringify(err));
-      });
-    }
+        })
+        .catch((err) => {
+          console.error(JSON.stringify(err));
+        });
+    },
   },
 };
