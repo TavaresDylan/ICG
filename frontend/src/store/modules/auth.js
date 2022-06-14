@@ -13,7 +13,7 @@ export const authModule = {
   getters: {
     getField,
     token: (state) => state.token,
-    getUserId: (state) => state.loggedInUser.id
+    getUserId: (state) => state.loggedInUser.id,
   },
   mutations: {
     updateField,
@@ -76,12 +76,14 @@ export const authModule = {
           }
         });
       } catch (e) {
-        commit(
-          "updateAlert",
-          { msg: e.response.data.detail, type: "error" },
-          { root: true }
-        );
-        console.error(JSON.stringify(e));
+        {
+          commit(
+            "updateAlert",
+            { msg: e.response.data.detail, type: "error" },
+            { root: true }
+          );
+          console.error(JSON.stringify(e));
+        }
       }
     },
     fetchUser: async ({ commit }) => {
