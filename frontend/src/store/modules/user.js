@@ -70,9 +70,6 @@ export const userModule = {
               { root: true }
             );
           }
-        })
-        .catch((error) => {
-          console.log(error);
         });
       } catch (e) {
         {
