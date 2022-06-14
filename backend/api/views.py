@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework.decorators import permission_classes
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -7,14 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils import timezone
 
 from api.models import Photo, Demo, Folder
-from api.serializer import RegisterSerializer, PhotoSerializer, DemoSerializer, FolderSerializer
-
-@permission_classes([AllowAny])
-class RegisterViewset(ModelViewSet):
-    serializer_class = RegisterSerializer
-
-    def get_queryset(self):
-        return User.objects.all()
+from api.serializer import PhotoSerializer, DemoSerializer, FolderSerializer
 
 @permission_classes([IsAuthenticated])
 class UploadViewset(ModelViewSet):
