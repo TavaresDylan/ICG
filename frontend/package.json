@@ -20,7 +20,7 @@
     "vue-router": "^3.5.4",
     "vue-session": "^1.0.0",
     "vue-typer": "^1.2.0",
-    "vuetify": "^2.6.4",
+    "vuetify": "^2.6.6",
     "vuex": "^3.4.0",
     "vuex-map-fields": "^1.4.1"
   },
@@ -35,7 +35,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.0",
     "sass": "^1.51.0",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
