@@ -19,17 +19,19 @@ export const userModule = {
   },
   actions: {
     getUser({ state }) {
-      return Vue.axios.get("/api/v1/users/me/", {
-        headers: {
-          "Authorization": "JWT " + localStorage.getItem("JWT"),
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          state.username = res.data.username;
-          state.email = res.data.email;
-          state.date_joined = res.data.date_joined;
-        }
-      });
+      return Vue.axios
+        .get("/api/v1/users/me/", {
+          headers: {
+            Authorization: "JWT " + localStorage.getItem("JWT"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            state.username = res.data.username;
+            state.email = res.data.email;
+            state.date_joined = res.data.date_joined;
+          }
+        });
     },
     deleteUser({ state }) {
       return Vue.axios
