@@ -1,9 +1,8 @@
 from django.urls import path, include
 from rest_framework import routers
-from api.views import RegisterViewset, UploadViewset, DemoViewset, FolderViewset
+from api.views import UploadViewset, DemoViewset, FolderViewset
 
 router = routers.SimpleRouter()
-router.register('register', RegisterViewset, basename='register')
 router.register('photo', UploadViewset , basename='photo')
 router.register('demo', DemoViewset, basename='demo')
 router.register('folder', FolderViewset, basename='folder')

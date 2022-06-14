@@ -16,7 +16,7 @@ export default function axiosSetUp() {
       return config;
     },
     function (err) {
-      return Promise.reject(JSON.stringify(err));
+      return Promise.reject(err);
     }
   );
 
@@ -33,13 +33,13 @@ export default function axiosSetUp() {
       ) {
         store.commit("auth/clearUserData");
         router.push("/login");
-        return Promise.reject(JSON.stringify(err));
+        return Promise.reject(err);
       } else if (err.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         await store.dispatch("auth/refreshToken");
         return axios(originalRequest);
       }
-      return Promise.reject(JSON.stringify(err));
+      return Promise.reject(err);
     }
   );
 }

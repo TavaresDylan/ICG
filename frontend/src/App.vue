@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <v-navigation-drawer
+      id="mobile-nav"
       class="hidden-md-and-up"
       v-model="sidebar"
       disable-resize-watcher
@@ -72,7 +73,25 @@
         >
       </v-toolbar-items>
     </v-app-bar>
+
+    <!-- ALERT BAR -->
+    <v-alert
+      class="alert ma-0"
+      width="370px"
+      :value="alertStatus"
+      elevation="4"
+      dense
+      colored-border
+      border="left"
+      :type="alertType"
+      dismissible
+      @click="resetAlert()"
+      transition="scroll-y-reverse-transition"
+      >{{ alertMsg }}</v-alert
+    >
+
     <router-view />
+
     <svg
       id="wave"
       style="transform: rotate(0deg); transition: 0.3s"
@@ -126,6 +145,7 @@
         d="M0,245L120,269.5C240,294,480,343,720,318.5C960,294,1200,196,1440,179.7C1680,163,1920,229,2160,228.7C2400,229,2640,163,2880,171.5C3120,180,3360,261,3600,253.2C3840,245,4080,147,4320,138.8C4560,131,4800,212,5040,269.5C5280,327,5520,359,5760,359.3C6000,359,6240,327,6480,334.8C6720,343,6960,392,7200,400.2C7440,408,7680,376,7920,343C8160,310,8400,278,8640,220.5C8880,163,9120,82,9360,114.3C9600,147,9840,294,10080,302.2C10320,310,10560,180,10800,138.8C11040,98,11280,147,11520,179.7C11760,212,12000,229,12240,245C12480,261,12720,278,12960,245C13200,212,13440,131,13680,155.2C13920,180,14160,310,14400,318.5C14640,327,14880,212,15120,204.2C15360,196,15600,294,15840,277.7C16080,261,16320,131,16560,130.7C16800,131,17040,261,17160,326.7L17280,392L17280,490L17160,490C17040,490,16800,490,16560,490C16320,490,16080,490,15840,490C15600,490,15360,490,15120,490C14880,490,14640,490,14400,490C14160,490,13920,490,13680,490C13440,490,13200,490,12960,490C12720,490,12480,490,12240,490C12000,490,11760,490,11520,490C11280,490,11040,490,10800,490C10560,490,10320,490,10080,490C9840,490,9600,490,9360,490C9120,490,8880,490,8640,490C8400,490,8160,490,7920,490C7680,490,7440,490,7200,490C6960,490,6720,490,6480,490C6240,490,6000,490,5760,490C5520,490,5280,490,5040,490C4800,490,4560,490,4320,490C4080,490,3840,490,3600,490C3360,490,3120,490,2880,490C2640,490,2400,490,2160,490C1920,490,1680,490,1440,490C1200,490,960,490,720,490C480,490,240,490,120,490L0,490Z"
       ></path>
     </svg>
+
     <v-footer padless>
       <v-row justify="center" no-gutters>
         <v-col class="py-4 text-center white--text" cols="12">
@@ -138,7 +158,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "App",
@@ -147,6 +167,7 @@ export default {
   },
   computed: {
     ...mapState("auth", ["isAuthenticated", "token"]),
+    ...mapState(["alertMsg", "alertType", "alertStatus"]),
   },
   data() {
     return {
@@ -173,6 +194,7 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logoutUser"]),
+    ...mapMutations(["resetAlert"]),
     logout() {
       this.logoutUser();
     },
@@ -188,6 +210,17 @@ export default {
     font-family: "Oswald", sans-serif;
     font-weight: bold;
   }
+}
+.alert {
+  position: absolute !important;
+  z-index: 200;
+  top: 8rem;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+}
+#mobile-nav {
+  z-index: 1000;
 }
 footer {
   background-color: #b0205e !important;

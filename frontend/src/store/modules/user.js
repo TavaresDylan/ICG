@@ -19,17 +19,19 @@ export const userModule = {
   },
   actions: {
     getUser({ state }) {
-      return Vue.axios.get("/api/v1/users/me/", {
-        headers: {
-          "Authorization": "JWT " + localStorage.getItem("JWT"),
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          state.username = res.data.username;
-          state.email = res.data.email;
-          state.date_joined = res.data.date_joined;
-        }
-      });
+      return Vue.axios
+        .get("/api/v1/users/me/", {
+          headers: {
+            Authorization: "JWT " + localStorage.getItem("JWT"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            state.username = res.data.username;
+            state.email = res.data.email;
+            state.date_joined = res.data.date_joined;
+          }
+        });
     },
     deleteUser({ state }) {
       return Vue.axios
@@ -55,21 +57,33 @@ export const userModule = {
           console.log("ok renamed")
         );
     },
-    changePassword(){
-
-    },
-    registerUser() {
-      return Vue.axios
-        .post("/api/v1/users/", this.form)
-        .then((res) => {
+    registerUser: async ({ commit }, form) => {
+      try {
+        await Vue.axios.post("/api/v1/users/", form).then((res) => {
           if (res.status === 201) {
-            this.success_msg = "Registration complete you can now login";
-            this.$refs.form.reset();
+            commit(
+              "updateAlert",
+              {
+                msg: "Succefully registrated you can login 😀",
+                type: "success",
+              },
+              { root: true }
+            );
           }
-        })
-        .catch((error) => {
-          console.log(error);
         });
+      } catch (e) {
+        {
+          commit(
+            "updateAlert",
+            {
+              msg: e.response.data.username.toString(),
+              type: "error",
+            },
+            { root: true }
+          );
+          console.error(JSON.stringify(e));
+        }
+      }
     },
   },
 };

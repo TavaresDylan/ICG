@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Store from "../store/index.js";
 import PageNotFound from "@/views/PageNotFound";
+import store from "../store/index.js";
 
 Vue.use(VueRouter);
 
@@ -96,5 +97,14 @@ const router = new VueRouter({
   base: "/",
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (store.state.alertStatus == true) {
+    store.commit("resetAlert")
+    next()
+  } else{
+    next()
+  }
+})
 
 export default router;

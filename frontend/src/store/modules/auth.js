@@ -8,8 +8,6 @@ export const authModule = {
     token: "",
     refreshToken: "",
     isAuthenticated: false,
-    errorLoginMsg: "",
-    errorLoginStatus: false,
     loggedInUser: {},
   }),
   getters: {
@@ -49,16 +47,6 @@ export const authModule = {
       state.isAuthenticated = false;
       state.loggedInUser = {};
     },
-    setError(state, errorMsg) {
-      state.errorLoginMsg = errorMsg;
-      state.errorLoginStatus = true;
-    },
-    resetError(state) {
-      if (state.errorLoginStatus != state) {
-        state.errorLoginMsg = "";
-        state.errorLoginStatus = false;
-      }
-    },
   },
   actions: {
     refreshToken: async ({ state, commit }) => {
@@ -88,6 +76,11 @@ export const authModule = {
           }
         });
       } catch (e) {
+        commit(
+          "updateAlert",
+          { msg: e.response.data.detail, type: "error" },
+          { root: true }
+        );
         console.error(JSON.stringify(e));
       }
     },

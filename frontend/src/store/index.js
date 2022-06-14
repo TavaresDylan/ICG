@@ -15,11 +15,26 @@ Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 
 export default new Vuex.Store({
+  state: {
+    alertMsg: null,
+    alertType: null,
+    alertStatus: false,
+  },
   getters: {
     getField,
   },
   mutations: {
     updateField,
+    updateAlert(state, prop) {
+      state.alertMsg = prop.msg;
+      state.alertType = prop.type;
+      state.alertStatus = true;
+    },
+    resetAlert(state) {
+      state.alertMsg = null;
+      state.alertType = null;
+      state.alertStatus = false;
+    },
   },
   actions: {},
   modules: {
