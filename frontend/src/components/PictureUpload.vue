@@ -77,7 +77,7 @@
                         <v-card-title>
                           <v-text-field v-model="fileNames[key]"></v-text-field>
                         </v-card-title>
-                        <v-img contain :src="previewImage(file)"></v-img>
+                        <v-img contain :src="previewImage[key]"></v-img>
                         <v-card-text class="my-2 d-flex flex-column">
                           <v-row justify="center" align="center">
                             <v-tooltip bottom>
@@ -153,7 +153,12 @@ export default {
   },
   computed: {
     ...mapState("user", ["username"]),
-    ...mapState("folder", ["selectedFolder"])
+    ...mapState("folder", ["selectedFolder"]),
+    previewImage() {
+      return this.files.map(function (img) {
+        return URL.createObjectURL(img);
+      });
+    },
   },
   methods: {
     ...mapActions("photo", ["upload"]),
@@ -184,14 +189,11 @@ export default {
           formData.append("image_url", URL.createObjectURL(this.files[i]));
           formData.append("size", this.files[i]["size"]);
           formData.append("description", this.descriptions[i]);
-          formData.append("folder_id", this.selectedFolder.id)
+          formData.append("folder_id", this.selectedFolder.id);
         }
       }
       this.upload(formData);
       this.resetForm();
-    },
-    previewImage(img) {
-      return URL.createObjectURL(img);
     },
     resetForm() {
       this.files = null;
@@ -202,6 +204,7 @@ export default {
     },
     removeFile(key) {
       this.files.splice(key, 1);
+      this.fileNames.splice(key, 1);
     },
     handleCheckboxes(event, key) {
       let checkbox = event;
