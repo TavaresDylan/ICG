@@ -131,6 +131,7 @@
         <v-row justify="space-between" class="pa-0 ma-0">
           <div class="d-flex align-center">
             <v-form
+              @submit.prevent="renamePhoto(selectedItem.id, selectedItem.name)"
               ref="renameForm"
               v-if="renameForm"
               class="d-flex align-center pl-4"
@@ -199,18 +200,12 @@
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon color="blue">mdi-download</v-icon>
+                <v-icon color="blue" @click="downloadFile(selectedItem.file, selectedItem.name)"
+                  >mdi-download</v-icon
+                >
               </v-btn>
             </template>
             <span>Download</span>
-          </v-tooltip>
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon color="orange">mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-            <span>Edit</span>
           </v-tooltip>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
@@ -266,6 +261,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import router from "@/router/index.js";
 import { mapActions, mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
+import Axios from "axios";
 export default {
   name: "folderView",
   components: {
@@ -367,6 +363,16 @@ export default {
         });
         this.renameForm = false;
       }
+    },
+    downloadFile(file, filename) {
+      Axios.get('http://localhost:8085'+file, { responseType: "blob" }).then((response) => {
+        const blob = new Blob([response.data], { type: "image/jpeg" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      });
     },
   },
   mounted() {
