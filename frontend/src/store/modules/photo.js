@@ -103,5 +103,46 @@ export const photoModule = {
           console.error(JSON.stringify(err));
         });
     },
+    async downloadFile({ commit }, payload) {
+      try {
+        await Vue.axios
+          .get(payload.file, {
+            responseType: "blob",
+          })
+          .then((res) => {
+            const blob = new Blob([res.data], { type: "image/jpeg" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = payload.name;
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+          });
+      } catch (e) {
+        {
+          commit(
+            "updateAlert",
+            {
+              msg: "Sorry unable to download, try later.",
+              type: "error",
+            },
+            { root: true }
+          );
+          console.error(JSON.stringify(e));
+        }
+      } finally {
+        commit(
+          "updateAlert",
+          {
+            msg: "Your download is complete.",
+            type: "success",
+          },
+          { root: true }
+        );
+        setTimeout(() => {
+          commit("resetAlert",{}, { root: true })
+        }, 3000);
+      }
+    },
   },
 };

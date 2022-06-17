@@ -200,7 +200,9 @@
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon color="blue" @click="downloadFile(selectedItem.file, selectedItem.name)"
+                <v-icon
+                  color="blue"
+                  @click="download(selectedItem.file, selectedItem.name)"
                   >mdi-download</v-icon
                 >
               </v-btn>
@@ -261,7 +263,6 @@ import SearchBar from "@/components/SearchBar.vue";
 import router from "@/router/index.js";
 import { mapActions, mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
-import Axios from "axios";
 export default {
   name: "folderView",
   components: {
@@ -320,6 +321,7 @@ export default {
       "getByFolderId",
       "deleteById",
       "renameById",
+      "downloadFile",
     ]),
     ...mapActions("folder", ["deleteFolderById"]),
     getRouteId() {
@@ -364,15 +366,8 @@ export default {
         this.renameForm = false;
       }
     },
-    downloadFile(file, filename) {
-      Axios.get('http://localhost:8085'+file, { responseType: "blob" }).then((response) => {
-        const blob = new Blob([response.data], { type: "image/jpeg" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-        URL.revokeObjectURL(link.href);
-      });
+    download(file, filename) {
+      this.downloadFile({ file: file, name: filename });
     },
   },
   mounted() {
