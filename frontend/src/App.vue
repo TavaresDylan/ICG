@@ -212,8 +212,8 @@ export default {
   }
 }
 .alert {
-  position: absolute !important;
-  z-index: 200;
+  position: fixed !important;
+  z-index: 2000;
   top: 8rem;
   left: 50%;
   right: 50%;
