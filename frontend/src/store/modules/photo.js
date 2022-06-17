@@ -144,5 +144,10 @@ export const photoModule = {
         }, 3000);
       }
     },
+    downloadImgZipped({dispatch}, payload) {
+      for(let i = 0; i < payload.length; i++){
+        dispatch("downloadFile", payload[i])
+      }
+    }
   },
 };
