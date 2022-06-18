@@ -37,12 +37,12 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar scroll-threshold="10px" scroll-off-screen short app>
       <span class="hidden-md-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"> </v-app-bar-nav-icon>
       </span>
       <v-toolbar-title id="title">
-        <router-link class="d-flex" to="/" style="cursor: pointer">
+        <router-link class="d-flex align-center" to="/" style="cursor: pointer">
           <img
             src="https://img.icons8.com/fluency/48/000000/stack-of-photos.png"
           />{{ appTitle }}
@@ -52,7 +52,11 @@
       <!-- IF USER IS NOT AUTHENTICATED -->
       <v-toolbar-items v-if="!isAuthenticated" class="hidden-sm-and-down">
         <v-btn
+          small
           text
+          color="primary"
+          max-height="33"
+          class="rounded-pill ml-2 white--text d-flex align-self-center"
           v-for="item in menuNotcon"
           :key="item.title"
           :to="item.path"
@@ -64,11 +68,25 @@
 
       <!-- IF USER IS AUTHENTICATED -->
       <v-toolbar-items v-if="isAuthenticated" class="hidden-sm-and-down">
-        <v-btn text v-for="item in menuCon" :key="item.title" :to="item.path">
+        <v-btn
+          small
+          text
+          tile
+          max-height="33"
+          class="rounded-pill ml-2 white--text d-flex align-self-center"
+          color="primary"
+          v-for="item in menuCon"
+          :key="item.title"
+          :to="item.path"
+        >
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn text @click="logout"
+        <v-btn
+          max-height="33"
+          class="rounded-pill ml-2 white--text d-flex align-self-center"
+          color="#D23652"
+          @click="logout"
           ><v-icon left dark>mdi-logout</v-icon>Logout</v-btn
         >
       </v-toolbar-items>
@@ -87,8 +105,13 @@
       dismissible
       @click="resetAlert()"
       transition="scroll-y-reverse-transition"
-      >{{ alertMsg }}</v-alert
-    >
+      >{{ alertMsg }}
+      <v-progress-linear
+        indeterminate
+        rounded
+        color="#B83AC2"
+      ></v-progress-linear>
+    </v-alert>
 
     <router-view />
 
@@ -171,7 +194,7 @@ export default {
   },
   data() {
     return {
-      appTitle: "ICG",
+      appTitle: "AI-PhotoStock",
       sidebar: false,
       menuNotcon: [
         { title: "Home", path: "/", icon: "home" },
@@ -206,7 +229,17 @@ export default {
 #title {
   a {
     text-decoration: none;
-    color: black;
+    background: -webkit-linear-gradient(
+      45deg,
+      rgb(235, 0, 239) 0%,
+      rgb(227, 132, 0) 100%
+    );
+    font-size: 28px;
+    -webkit-text-stroke-width: 0.4px;
+    -webkit-text-stroke-color: #000000af;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-family: "Oswald", sans-serif;
     font-weight: bold;
   }
