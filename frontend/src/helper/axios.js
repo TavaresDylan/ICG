@@ -29,10 +29,18 @@ export default function axiosSetUp() {
       const originalRequest = err.config;
       if (
         err.response.status === 401 &&
-        originalRequest.url.includes("/api/v1/jwt/refresh")
+        originalRequest.url.includes("api/v1/jwt/refresh/")
       ) {
         store.commit("auth/clearUserData");
         router.push("/login");
+        store.commit(
+          "updateAlert",
+          {
+            msg: "Your session has expired please login again.",
+            type: "info",
+          },
+          { root: true }
+        );
         return Promise.reject(err);
       } else if (err.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
