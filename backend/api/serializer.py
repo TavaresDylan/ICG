@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Photo, Demo, Folder
+from api.models import Photo, Demo, Folder, ProfilePicture
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,3 +21,8 @@ class FolderSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Folder
 		fields = ('__all__')
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ProfilePicture
+		fields = ('id', 'file', 'user_id')

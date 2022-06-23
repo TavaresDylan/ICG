@@ -25,3 +25,11 @@ class Photo(models.Model):
 class Demo(models.Model):
 	file = models.ImageField(upload_to="demo/", default=None, blank=True)
 	description = models.CharField(max_length=230, default=None, null=True, blank=True)
+
+class ProfilePicture(models.Model):
+	name = models.CharField(max_length=120)
+	file = models.ImageField(upload_to="images/profiles/", default=None, blank=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+
+	def __str__(self):
+		return self.name

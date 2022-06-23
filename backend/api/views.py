@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils import timezone
 
-from api.models import Photo, Demo, Folder
-from api.serializer import PhotoSerializer, DemoSerializer, FolderSerializer
+from api.models import Photo, Demo, Folder, ProfilePicture
+from api.serializer import PhotoSerializer, DemoSerializer, FolderSerializer, ProfilePictureSerializer
 
 @permission_classes([IsAuthenticated])
 class UploadViewset(ModelViewSet):
@@ -73,3 +73,22 @@ class FolderViewset(ModelViewSet):
 			serializer = FolderSerializer(page, many=True)
 			return Response({"data":serializer.data, "count": len(queryset)})
 		return Response(serializer.data)
+
+@permission_classes([IsAuthenticated])
+class ProfilePictureViewset(ModelViewSet):
+	queryset = ProfilePicture.objects.all()
+	serializer_class = ProfilePictureSerializer(queryset)
+
+	def create(self, request):
+		if request.method == 'POST':
+			f=request.FILES.get('file')
+			ProfilePicture.objects.update_or_create(user_id=request.user.id, defaults={'file': f, 'user_id': request.user.id, 'name': f})
+			return Response(status=status.HTTP_201_CREATED)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
+	def list(self, request):
+		if request.method == 'GET':
+			queryset = ProfilePicture.objects.filter(user_id=request.user)
+			serializer = ProfilePictureSerializer(queryset, many=True)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
