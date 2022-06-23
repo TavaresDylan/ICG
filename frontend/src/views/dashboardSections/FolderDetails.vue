@@ -61,26 +61,53 @@
       </v-dialog>
     </v-row>
 
-    <h1 class="pt-6">{{ selectedFolder.name }}</h1>
+    <h1 class="py-3">{{ selectedFolder.name }}</h1>
 
     <!-- TOOLBAR MULTI SELECTIONS AND ACTIONS -->
     <v-row v-if="items.length > 0" align="center">
-      <v-checkbox v-model="selectAll" label="select all"></v-checkbox>
+      <v-toolbar
+        elevation="1"
+        dense
+        rounded
+        class="ma-2 d-flex flex-column justify-center"
+      >
+        <v-checkbox
+          hide-details
+          v-model="selectAll"
+          label="select all"
+        ></v-checkbox>
 
-      <v-tooltip v-if="selectedImages.length > 0" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            class="ml-3"
-            @click="deleteImages(selectedImages)"
-            v-bind="attrs"
-            v-on="on"
-            icon
-          >
-            <v-icon color="red">mdi-delete</v-icon>
-          </v-btn>
-        </template>
-        <span>Delete selected images</span>
-      </v-tooltip>
+        <v-tooltip v-if="selectedImages.length > 0" bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              small
+              class="ml-3"
+              @click="deleteImages(selectedImages)"
+              v-bind="attrs"
+              v-on="on"
+              icon
+            >
+              <v-icon color="red">mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span>Delete selected images</span>
+        </v-tooltip>
+
+        <v-tooltip v-if="selectedImages.length > 0" bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="ml-3"
+              @click="downloadMany(selectedImages)"
+              v-bind="attrs"
+              v-on="on"
+              icon
+            >
+              <v-icon color="primary">mdi-download</v-icon>
+            </v-btn>
+          </template>
+          <span>Download selected images</span>
+        </v-tooltip>
+      </v-toolbar>
     </v-row>
 
     <!-- IMAGE CARDS -->
@@ -131,6 +158,7 @@
         <v-row justify="space-between" class="pa-0 ma-0">
           <div class="d-flex align-center">
             <v-form
+              @submit.prevent="renamePhoto(selectedItem.id, selectedItem.name)"
               ref="renameForm"
               v-if="renameForm"
               class="d-flex align-center pl-4"
@@ -199,18 +227,14 @@
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon color="blue">mdi-download</v-icon>
+                <v-icon
+                  color="blue"
+                  @click="download(selectedItem.file, selectedItem.name)"
+                  >mdi-download</v-icon
+                >
               </v-btn>
             </template>
             <span>Download</span>
-          </v-tooltip>
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon color="orange">mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-            <span>Edit</span>
           </v-tooltip>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
@@ -315,6 +339,13 @@ export default {
         }
       },
     },
+    selectBycheckbox() {
+      let selectedImg = [];
+      this.selectedImages.forEach((el) =>
+        selectedImg.push(this.items.find((e) => e.id === el))
+      );
+      return selectedImg;
+    },
   },
   methods: {
     ...mapActions("auth", ["fetchUser"]),
@@ -324,6 +355,8 @@ export default {
       "getByFolderId",
       "deleteById",
       "renameById",
+      "downloadFile",
+      "downloadImgZipped",
     ]),
     ...mapActions("folder", ["deleteFolderById"]),
     getRouteId() {
@@ -367,6 +400,12 @@ export default {
         });
         this.renameForm = false;
       }
+    },
+    downloadMany() {
+      this.downloadImgZipped(this.selectBycheckbox)
+    },
+    download(file, filename) {
+      this.downloadFile({ file: file, name: filename });
     },
   },
   mounted() {
