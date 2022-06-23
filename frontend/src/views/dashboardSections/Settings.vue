@@ -1,45 +1,168 @@
 <template>
   <v-container>
-    <h2 class="pl-4">Personnal informations</h2>
-    <v-container>
-      <v-row justify="center">
-        <v-col cols="12" class="col-sm-6 col-md-4">
-          <v-form>
-            <v-text-field
-              v-model="firstname"
-              name="firstname"
-              label="Firstname"
-              required
-            ></v-text-field>
-          </v-form>
-          <v-form>
-            <v-text-field
-              v-model="lastname"
-              name="lastname"
-              label="Lastname"
-              required
-            ></v-text-field>
-          </v-form>
-          <v-btn color="success">Confirm</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div class="d-flex justify-center ma-12">
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <v-avatar class="avatar-no-img-bg" size="120">
+            <img
+              v-if="avatarPath != ''"
+              style="cursor: pointer"
+              :src="'http://localhost:8085' + avatarPath"
+              alt="Profile picture"
+            />
+            <span class="white--text text-h4" v-else>{{ initials }}</span>
+            <v-fade-transition>
+              <v-overlay v-show="hover" absolute color="#d54660">
+                <v-form ref="avatarForm">
+                  <v-file-input
+                    background-color="blue"
+                    class="ma-0 pa-0 pl-2"
+                    v-model="avatarImg"
+                    @change="changeAvatar()"
+                    prepend-icon="mdi-pen"
+                    hide-details
+                    hide-input
+                    rounded
+                    :rules="[rules.imgsize]"
+                    accept=".jpg, .png, .jpeg"
+                    hide-spin-buttons
+                  ></v-file-input>
+                </v-form>
+              </v-overlay>
+            </v-fade-transition>
+          </v-avatar>
+        </template>
+      </v-hover>
+    </div>
 
-    <hr class="ma-6" />
+    <v-row justify="center" class="text-center d-flex align-center ma-4">
+      <v-col cols="12" class="col-lg-4 col-md-6 col-sm-8">
+        Status :
+        <v-icon v-if="loggedInUser.is_superuser" color="orange"
+          >mdi-crown</v-icon
+        >
+        <v-btn
+          text
+          color="rgb(231, 68, 116)"
+          elevation="1"
+          class="ml-4"
+          small
+          rounded
+          ><v-icon>mdi-arrow-up</v-icon> Upgrade</v-btn
+        >
+      </v-col>
+      <v-col cols="12" class="col-lg-4 col-md-6 col-sm-8"
+        >space avalable :
+        <v-progress-linear
+          rounded
+          class="white--text"
+          reverse
+          buffer-value="100"
+          v-model="totalPhotos"
+          height="25"
+        >
+          <template v-slot:default="{ value }">
+            <strong>{{ Math.ceil(value) }} Photos</strong>
+          </template>
+        </v-progress-linear></v-col
+      >
+    </v-row>
 
-    <h2 class="pl-4">Account</h2>
-    <v-container class="px-6">
-      <v-row justify="center">
-        <v-col cols="12" class="col-sm-6 col-md-4">
-          <label for="">Change username</label>
-          <v-form ref="form1">
+    <v-row justify="center">
+      <v-col cols="10" class="col-lg-4 col-md-6 col-sm-8">
+        <v-form class="d-flex justify-space-around">
+          <v-text-field
+            class="mx-2"
+            outlined
+            v-model="loggedInUser.first_name"
+            name="firstname"
+            label="Firstname"
+            required
+          ></v-text-field>
+          <v-text-field
+            class="mx-2"
+            outlined
+            v-model="loggedInUser.last_name"
+            name="lastname"
+            label="Lastname"
+            required
+          ></v-text-field>
+          <!--<v-btn color="success">Confirm</v-btn>-->
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12" class="col-sm-6 col-md-4">
+        <v-form ref="form1">
+          <v-text-field
+            outlined
+            v-model="loggedInUser.username"
+            name="newusername"
+            label="Username"
+            required
+          ></v-text-field>
+          <v-text-field
+            outlined
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show ? 'text' : 'password'"
+            name="current_password"
+            v-model="current_password"
+            label="Enter your password"
+            required
+            counter
+            @click:append="show = !show"
+          ></v-text-field>
+          <v-btn @click="newUsernameAction" color="success"
+            >Change username</v-btn
+          >
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12" class="col-sm-6 col-md-4">
+        <v-form>
+          <v-text-field outlined label="Old password" required></v-text-field>
+          <v-text-field outlined label="New password" required></v-text-field>
+          <v-text-field
+            outlined
+            label="Confirm new password"
+            required
+          ></v-text-field>
+          <v-btn color="success">Change password</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12" class="col-sm-6 col-md-4">
+        <v-form>
+          <v-text-field
+            outlined
+            v-model="loggedInUser.email"
+            label="E-mail"
+            required
+          ></v-text-field>
+          <v-text-field
+            outlined
+            label="Confirm new e-mail"
+            required
+          ></v-text-field>
+          <v-btn color="success">Change email</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col align="center" cols="12" class="col-sm-6 col-md-4">
+        <v-btn class="my-12" color="red" dark v-model="checked" @click="check"
+          >Delete account</v-btn
+        >
+        <v-card flat v-if="checked">
+          <v-form ref="form" lazy-validation>
             <v-text-field
-              v-model="new_username"
-              name="newusername"
-              label="New username"
-              required
-            ></v-text-field>
-            <v-text-field
+              outlined
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show ? 'text' : 'password'"
               name="current_password"
@@ -49,79 +172,16 @@
               counter
               @click:append="show = !show"
             ></v-text-field>
-            <v-btn @click="newUsernameAction" color="success"
-              >Change username</v-btn
-            >
+            <v-btn color="error" @click="deleteAccount">Confirm</v-btn>
           </v-form>
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col cols="12" class="col-sm-6 col-md-4">
-          <label for="">Change password</label>
-          <v-form>
-            <v-text-field label="Old password" required></v-text-field>
-            <v-text-field label="New password" required></v-text-field>
-            <v-text-field label="Confirm new password" required></v-text-field>
-            <v-btn color="success">Change password</v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col cols="12" class="col-sm-6 col-md-4">
-          <label for="">Change email</label>
-          <v-form>
-            <v-text-field label="New e-mail" required></v-text-field>
-            <v-text-field label="Confirm new e-mail" required></v-text-field>
-            <v-btn color="success">Change email</v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col align="center" cols="12" class="col-sm-6 col-md-4">
-          <v-btn class="my-12" color="red" dark v-model="checked" @click="check"
-            >Delete account</v-btn
-          >
-          <v-card flat v-if="checked">
-            <v-form ref="form" lazy-validation>
-              <v-text-field
-                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="show ? 'text' : 'password'"
-                name="current_password"
-                v-model="current_password"
-                label="Enter your password"
-                required
-                counter
-                @click:append="show = !show"
-              ></v-text-field>
-              <v-btn color="error" @click="deleteAccount">Confirm</v-btn>
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <hr class="ma-6" />
-
-    <v-container>
-      <h2 class="pl-4">Profile</h2>
-      <v-row justify="center">
-        <v-col cols="12" class="col-sm-6 col-md-4">
-          <v-form class="pb-16">
-            <label for="">Change your avatar</label>
-            <v-file-input></v-file-input>
-            <v-btn color="primary">Change avatar</v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
-    </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
 export default {
   name: "settings",
@@ -130,15 +190,42 @@ export default {
       checked: false,
       show: false,
       newUsername: "",
-      firstname: "Jhon",
-      lastname: "Doe",
+      overlay: false,
+      totalPhotos: 222,
+      rules: {
+        imgsize: (v) => !v || v.size < 8000000 || "File must be less than 8mb.",
+      },
+      avatarImg: {},
     };
   },
   computed: {
     ...mapFields(["user.current_password", "user.new_username"]),
+    ...mapState("auth", ["loggedInUser"]),
+    ...mapState("user", ["avatarPath"]),
+    initials() {
+      if (
+        this.loggedInUser.first_name === "" ||
+        this.loggedInUser.last_name === ""
+      ) {
+        return this.loggedInUser.username.substring(0, 2).toUpperCase();
+      }
+      var fullname =
+        this.loggedInUser.first_name + " " + this.loggedInUser.last_name;
+      var names = fullname.split(" ");
+      var initials = names[0].substring(0, 1).toUpperCase();
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+      }
+      return initials;
+    },
   },
   methods: {
-    ...mapActions("user", ["deleteUser", "changeUsername"]),
+    ...mapActions("user", [
+      "deleteUser",
+      "changeUsername",
+      "getAvatar",
+      "uploadAvatar",
+    ]),
     deleteAccount() {
       this.deleteUser();
       this.$store.commit({
@@ -149,6 +236,19 @@ export default {
     newUsernameAction() {
       this.changeUsername();
     },
+    changeAvatar() {
+      const formData = new FormData();
+      formData.append("file", this.avatarImg);
+      if (this.$refs.avatarForm.validate() === true) {
+        this.uploadAvatar(formData);
+      } else {
+        this.$store.commit(
+          "updateAlert",
+          { msg: "File must be less than 8mb.", type: "error" },
+          { root: true }
+        );
+      }
+    },
     check() {
       if (this.checked === false) {
         this.checked = true;
@@ -157,5 +257,25 @@ export default {
       }
     },
   },
+  mounted() {
+    this.getAvatar();
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.avatar-no-img-bg {
+  background: linear-gradient(
+    95deg,
+    rgba(251, 84, 111, 1) 0%,
+    rgba(221, 21, 107, 1) 54%,
+    rgba(207, 44, 125, 1) 100%
+  ) !important;
+  ::v-deep .mdi-pen::before{
+    color: white !important;
+    border-radius: 100%;
+    padding: 4px;
+    background: rgba(255, 162, 0, 0.791);
+  }
+}
+</style>

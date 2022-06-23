@@ -10,12 +10,16 @@ export const userModule = {
     date_joined: "",
     current_password: "",
     new_username: "",
+    avatarPath: "",
   }),
   getters: {
     getField,
   },
   mutations: {
     updateField,
+    setAvatarPath(state, path){
+      state.avatarPath = path
+    }
   },
   actions: {
     getUser({ state }) {
@@ -85,5 +89,32 @@ export const userModule = {
         }
       }
     },
+    getAvatar({commit}){
+      return Vue.axios.get("/api/v1/avatar/").then((res) => {
+        try{
+          commit("setAvatarPath", res.data[0].file)
+        } catch{
+          commit("setAvatarPath", "")
+        }
+      })
+    },
+    uploadAvatar({dispatch, commit}, formData){
+      return Vue.axios.post("/api/v1/avatar/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res) =>{
+        if(res.status === 201){
+          dispatch("getAvatar")
+        }
+      }).catch((err) => {
+        commit(
+          "updateAlert",
+          { msg: "Unable to upload your avatar please try later.", type: "error" },
+          { root: true }
+        );
+        console.error(JSON.stringify(err))
+      })
+    }
   },
 };
