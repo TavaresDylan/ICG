@@ -36,7 +36,13 @@
         <v-icon v-if="loggedInUser.is_superuser" color="orange"
           >mdi-crown</v-icon
         >
-        <v-btn text color="rgb(231, 68, 116)" elevation="1" class="ml-4" small rounded
+        <v-btn
+          text
+          color="rgb(231, 68, 116)"
+          elevation="1"
+          class="ml-4"
+          small
+          rounded
           ><v-icon>mdi-arrow-up</v-icon> Upgrade</v-btn
         >
       </v-col>
