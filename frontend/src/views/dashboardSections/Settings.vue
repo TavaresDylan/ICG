@@ -13,15 +13,21 @@
             <span class="white--text text-h4" v-else>{{ initials }}</span>
             <v-fade-transition>
               <v-overlay v-show="hover" absolute color="#d54660">
-                <v-file-input
-                  class="ma-0 pa-0 pl-2"
-                  v-model="avatarImg"
-                  @change="changeAvatar()"
-                  prepend-icon="mdi-pen"
-                  hide-details
-                  hide-input
-                  hide-spin-buttons
-                ></v-file-input>
+                <v-form ref="avatarForm">
+                  <v-file-input
+                    background-color="blue"
+                    class="ma-0 pa-0 pl-2"
+                    v-model="avatarImg"
+                    @change="changeAvatar()"
+                    prepend-icon="mdi-pen"
+                    hide-details
+                    hide-input
+                    rounded
+                    :rules="[rules.imgsize]"
+                    accept=".jpg, .png, .jpeg"
+                    hide-spin-buttons
+                  ></v-file-input>
+                </v-form>
               </v-overlay>
             </v-fade-transition>
           </v-avatar>
@@ -47,7 +53,14 @@
       </v-col>
       <v-col cols="12" class="col-lg-4 col-md-6 col-sm-8"
         >space avalable :
-        <v-progress-linear rounded class="white--text" reverse buffer-value="100" v-model="totalPhotos" height="25">
+        <v-progress-linear
+          rounded
+          class="white--text"
+          reverse
+          buffer-value="100"
+          v-model="totalPhotos"
+          height="25"
+        >
           <template v-slot:default="{ value }">
             <strong>{{ Math.ceil(value) }} Photos</strong>
           </template>
@@ -179,6 +192,9 @@ export default {
       newUsername: "",
       overlay: false,
       totalPhotos: 222,
+      rules: {
+        imgsize: (v) => !v || v.size < 8000000 || "File must be less than 8mb.",
+      },
       avatarImg: {},
     };
   },
@@ -223,7 +239,15 @@ export default {
     changeAvatar() {
       const formData = new FormData();
       formData.append("file", this.avatarImg);
-      this.uploadAvatar(formData);
+      if (this.$refs.avatarForm.validate() === true) {
+        this.uploadAvatar(formData);
+      } else {
+        this.$store.commit(
+          "updateAlert",
+          { msg: "File must be less than 8mb.", type: "error" },
+          { root: true }
+        );
+      }
     },
     check() {
       if (this.checked === false) {
@@ -247,5 +271,11 @@ export default {
     rgba(221, 21, 107, 1) 54%,
     rgba(207, 44, 125, 1) 100%
   ) !important;
+  ::v-deep .mdi-pen::before{
+    color: white !important;
+    border-radius: 100%;
+    padding: 4px;
+    background: rgba(255, 162, 0, 0.791);
+  }
 }
 </style>
