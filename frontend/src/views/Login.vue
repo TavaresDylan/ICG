@@ -6,7 +6,7 @@
     <v-container class="pa-12">
       <v-row justify="center">
         <v-col cols="12" class="col-sm-8 col-md-6 col-lg-4">
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid">
             <v-text-field
               @focus="resetAlert()"
               v-model="creds.username"
