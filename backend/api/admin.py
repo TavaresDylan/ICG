@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Photo, Demo, Folder, ProfilePicture
+from .models import Photo, Demo, Folder, Avatar
 
 class PhotoAdmin(admin.ModelAdmin):
 	readonly_fields = ("upload_date", "updated_at")
@@ -16,8 +16,8 @@ class FolderAdmin(admin.ModelAdmin):
 	list_display = ['name', 'id', 'user_id', 'created_at']
 
 admin.site.register(Folder, FolderAdmin)
-class ProfilePictureAdmin(admin.ModelAdmin):
+class AvatarAdmin(admin.ModelAdmin):
 	list_display = ['user_id', 'id', 'file', 'name']
 
-admin.site.register(ProfilePicture, ProfilePictureAdmin)
+admin.site.register(Avatar, AvatarAdmin)
 

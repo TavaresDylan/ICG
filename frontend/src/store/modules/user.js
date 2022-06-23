@@ -10,15 +10,15 @@ export const userModule = {
     date_joined: "",
     current_password: "",
     new_username: "",
-    profileImgPath: "",
+    avatarPath: "",
   }),
   getters: {
     getField,
   },
   mutations: {
     updateField,
-    setProfileImagePath(state, path){
-      state.profileImgPath = path
+    setAvatarPath(state, path){
+      state.avatarPath = path
     }
   },
   actions: {
@@ -89,24 +89,31 @@ export const userModule = {
         }
       }
     },
-    getUserProfileImg({commit}){
-      return Vue.axios.get("/api/v1/profilePicture/").then((res) => {
+    getAvatar({commit}){
+      return Vue.axios.get("/api/v1/avatar/").then((res) => {
         try{
-          commit("setProfileImagePath", res.data[0].file)
+          commit("setAvatarPath", res.data[0].file)
         } catch{
-          commit("setProfileImagePath", "")
+          commit("setAvatarPath", "")
         }
       })
     },
-    uploadUserProfileImg({dispatch}, formData){
-      return Vue.axios.post("/api/v1/profilePicture/", formData, {
+    uploadAvatar({dispatch, commit}, formData){
+      return Vue.axios.post("/api/v1/avatar/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       }).then((res) =>{
         if(res.status === 201){
-          dispatch("getUserProfileImg")
+          dispatch("getAvatar")
         }
+      }).catch((err) => {
+        commit(
+          "updateAlert",
+          { msg: "Unable to upload your avatar please try later.", type: "error" },
+          { root: true }
+        );
+        console.error(JSON.stringify(err))
       })
     }
   },

@@ -5,9 +5,9 @@
         <template v-slot:default="{ hover }">
           <v-avatar class="avatar-no-img-bg" size="120">
             <img
-              v-if="profileImgPath != ''"
+              v-if="avatarPath != ''"
               style="cursor: pointer"
-              :src="'http://localhost:8085' + profileImgPath"
+              :src="'http://localhost:8085' + avatarPath"
               alt="Profile picture"
             />
             <span class="white--text text-h4" v-else>{{ initials }}</span>
@@ -15,9 +15,8 @@
               <v-overlay v-show="hover" absolute color="#d54660">
                 <v-file-input
                   class="ma-0 pa-0 pl-2"
-                  ref="profilePicture"
-                  v-model="profilePicture"
-                  @change="changeProfileImg()"
+                  v-model="avatarImg"
+                  @change="changeAvatar()"
                   prepend-icon="mdi-pen"
                   hide-details
                   hide-input
@@ -180,13 +179,13 @@ export default {
       newUsername: "",
       overlay: false,
       totalPhotos: 222,
-      profilePicture: {},
+      avatarImg: {},
     };
   },
   computed: {
     ...mapFields(["user.current_password", "user.new_username"]),
     ...mapState("auth", ["loggedInUser"]),
-    ...mapState("user", ["profileImgPath"]),
+    ...mapState("user", ["avatarPath"]),
     initials() {
       if (
         this.loggedInUser.first_name === "" ||
@@ -208,8 +207,8 @@ export default {
     ...mapActions("user", [
       "deleteUser",
       "changeUsername",
-      "getUserProfileImg",
-      "uploadUserProfileImg",
+      "getAvatar",
+      "uploadAvatar",
     ]),
     deleteAccount() {
       this.deleteUser();
@@ -221,10 +220,10 @@ export default {
     newUsernameAction() {
       this.changeUsername();
     },
-    changeProfileImg() {
+    changeAvatar() {
       const formData = new FormData();
-      formData.append("file", this.profilePicture);
-      this.uploadUserProfileImg(formData);
+      formData.append("file", this.avatarImg);
+      this.uploadAvatar(formData);
     },
     check() {
       if (this.checked === false) {
@@ -235,7 +234,7 @@ export default {
     },
   },
   mounted() {
-    this.getUserProfileImg();
+    this.getAvatar();
   },
 };
 </script>
