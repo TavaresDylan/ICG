@@ -10,12 +10,16 @@ export const userModule = {
     date_joined: "",
     current_password: "",
     new_username: "",
+    profileImgPath: "",
   }),
   getters: {
     getField,
   },
   mutations: {
     updateField,
+    setProfileImagePath(state, path){
+      state.profileImgPath = path
+    }
   },
   actions: {
     getUser({ state }) {
@@ -85,5 +89,25 @@ export const userModule = {
         }
       }
     },
+    getUserProfileImg({commit}){
+      return Vue.axios.get("/api/v1/profilePicture/").then((res) => {
+        try{
+          commit("setProfileImagePath", res.data[0].file)
+        } catch{
+          commit("setProfileImagePath", "")
+        }
+      })
+    },
+    uploadUserProfileImg({dispatch}, formData){
+      return Vue.axios.post("/api/v1/profilePicture/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res) =>{
+        if(res.status === 201){
+          dispatch("getUserProfileImg")
+        }
+      })
+    }
   },
 };

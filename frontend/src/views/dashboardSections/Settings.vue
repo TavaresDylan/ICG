@@ -1,23 +1,33 @@
 <template>
   <v-container>
     <div class="d-flex justify-center ma-12">
-      <v-badge
-        @click="changeProfileImg()"
-        style="cursor: pointer"
-        icon="mdi-pen"
-        bordered
-        bottom
-        color="primary"
-        offset-x="25"
-        offset-y="25"
-      >
-        <v-avatar size="120">
-          <img
-            src="https://cdn.vuetifyjs.com/images/john.jpg"
-            alt="Profile picture"
-          />
-        </v-avatar>
-      </v-badge>
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <v-avatar class="avatar-no-img-bg" size="120">
+            <img
+              v-if="profileImgPath != ''"
+              style="cursor: pointer"
+              :src="'http://localhost:8085' + profileImgPath"
+              alt="Profile picture"
+            />
+            <span class="white--text text-h4" v-else>{{ initials }}</span>
+            <v-fade-transition>
+              <v-overlay v-show="hover" absolute color="#d54660">
+                <v-file-input
+                  class="ma-0 pa-0 pl-2"
+                  ref="profilePicture"
+                  v-model="profilePicture"
+                  @change="changeProfileImg()"
+                  prepend-icon="mdi-pen"
+                  hide-details
+                  hide-input
+                  hide-spin-buttons
+                ></v-file-input>
+              </v-overlay>
+            </v-fade-transition>
+          </v-avatar>
+        </template>
+      </v-hover>
     </div>
 
     <v-row justify="center" class="text-center d-flex align-center ma-4">
@@ -164,14 +174,37 @@ export default {
       newUsername: "",
       overlay: false,
       totalPhotos: 222,
+      profilePicture: {},
     };
   },
   computed: {
     ...mapFields(["user.current_password", "user.new_username"]),
     ...mapState("auth", ["loggedInUser"]),
+    ...mapState("user", ["profileImgPath"]),
+    initials() {
+      if (
+        this.loggedInUser.first_name === "" ||
+        this.loggedInUser.last_name === ""
+      ) {
+        return this.loggedInUser.username.substring(0, 2).toUpperCase();
+      }
+      var fullname =
+        this.loggedInUser.first_name + " " + this.loggedInUser.last_name;
+      var names = fullname.split(" ");
+      var initials = names[0].substring(0, 1).toUpperCase();
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+      }
+      return initials;
+    },
   },
   methods: {
-    ...mapActions("user", ["deleteUser", "changeUsername"]),
+    ...mapActions("user", [
+      "deleteUser",
+      "changeUsername",
+      "getUserProfileImg",
+      "uploadUserProfileImg",
+    ]),
     deleteAccount() {
       this.deleteUser();
       this.$store.commit({
@@ -183,7 +216,9 @@ export default {
       this.changeUsername();
     },
     changeProfileImg() {
-      console.log("change profile image");
+      const formData = new FormData();
+      formData.append("file", this.profilePicture);
+      this.uploadUserProfileImg(formData);
     },
     check() {
       if (this.checked === false) {
@@ -193,5 +228,19 @@ export default {
       }
     },
   },
+  mounted() {
+    this.getUserProfileImg();
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.avatar-no-img-bg {
+  background: linear-gradient(
+    95deg,
+    rgba(251, 84, 111, 1) 0%,
+    rgba(221, 21, 107, 1) 54%,
+    rgba(207, 44, 125, 1) 100%
+  ) !important;
+}
+</style>
