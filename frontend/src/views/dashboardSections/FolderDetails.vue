@@ -131,6 +131,7 @@
         <v-row justify="space-between" class="pa-0 ma-0">
           <div class="d-flex align-center">
             <v-form
+              @submit.prevent="renamePhoto(selectedItem.id, selectedItem.name)"
               ref="renameForm"
               v-if="renameForm"
               class="d-flex align-center pl-4"
