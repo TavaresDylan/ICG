@@ -30,7 +30,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  /api/v1/users/:
+  users/:
     post:
       tags:
       - "user"
@@ -78,7 +78,6 @@ paths:
                     description: "The email"
         400:
           description: "Bad request"
-  api/v1/users/:
     put:
       tags:
       - "user"
@@ -123,7 +122,7 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
-  /api/v1/users/me/:
+  users/me/:
     get:
       tags:
       - "user"
@@ -159,7 +158,7 @@ paths:
               description: "date in UTC when token expires"
         400:
           description: "Invalid username/password supplied"
-  api/v1/jwt/create/:
+  jwt/create/:
     post:
       tags:
       - "auth"
@@ -180,7 +179,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-  api/v1/jwt/refresh/:
+  jwt/refresh/:
     post:
       tags:
       - "auth"
@@ -201,7 +200,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-  api/v1/jwt/logout:
+  jwt/logout/:
     get:
       tags:
       - "auth"
@@ -214,7 +213,7 @@ paths:
       responses:
         default:
           description: "successful operation"
-  api/v1/photo:
+  photo/:
     post:
       tags:
       - "photo"
@@ -257,7 +256,7 @@ paths:
           description: "created"
         "400":
           description: "bad request"
-  api/v1/photo/{page}/{folderId}:
+  photo/{page}/{folderId}:
     get:
       tags:
       - "photo"
@@ -278,12 +277,12 @@ paths:
       responses:
         default:
           description: "successful operation"
-  api/v1/photo/{name}:
+  photo/{name}:
     get:
       tags:
       - "photo"
       summary: "Get photo by name"
-  api/v1/photo/{id}:
+  photo/{id}:
     delete:
       tags:
       - "photo"
@@ -320,7 +319,7 @@ paths:
           description: "updated"
         400:
           description: "bad request"
-  api/v1/folder:
+  folder/:
     post:
       tags:
       - "folder"
@@ -348,6 +347,27 @@ paths:
           description: "folder already exists"
         400:
           description: "bad request"
+  folder/{id}/:
+    patch:
+      tags:
+      - "folder"
+      summary: "Update folder"
+      description: ""
+      operationId: "updateFolder"
+      consume:
+      - "application/json"
+      produces:
+      - "application/json"
+    delete:
+      tags:
+      - "folder"
+      summary: "Delete folder"
+      description: ""
+      operationId: "deleteFolder"
+      consume:
+      - "application/json"
+      produces:
+      - "application/json"
 definitions:
   User:
     type: "object"
