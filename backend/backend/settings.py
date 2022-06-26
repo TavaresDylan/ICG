@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'djoser',
     'api',
     'backend',
+	'captionning',
 	'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',

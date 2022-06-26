@@ -7,6 +7,9 @@ from django.utils import timezone
 
 from api.models import Photo, Demo, Folder
 from api.serializer import PhotoSerializer, DemoSerializer, FolderSerializer
+from captionning.loadModel import extract_features, generate_desc
+from pickle import load
+from keras.models import load_model
 
 @permission_classes([IsAuthenticated])
 class UploadViewset(ModelViewSet):
@@ -21,7 +24,16 @@ class UploadViewset(ModelViewSet):
 			name=request.POST.getlist('name')
 			folderID = Folder.objects.get(pk=int(request.POST.get('folder_id')))
 			for i, f in enumerate(files):
+				print(f.name)
+				# load the tokenizer
+				tokenizer = load(open('media/tokenizer.pkl', 'rb'))
+				# pre-define the max sequence length (from training)
+				max_length = 34
 				Photo.objects.create(file=f, size=f.size, name=name[i], description=description[i], user_id=request.user, folder_id=folderID)
+				model = load_model('media/models-VGG16/model_18.h5', compile=False)
+				features = extract_features("media/images/" + f.name)
+				desc = generate_desc(model, tokenizer, features, max_length)
+				Photo.objects.filter(name=name[i]).update(description=desc)
 			return Response(status=status.HTTP_201_CREATED)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
