@@ -34,5 +34,5 @@ social-auth-core==4.3.0
 sqlparse==0.4.2
 typing_extensions==4.2.0
 uritemplate==4.1.1
-urllib3==1.26.9
+urllib3==1.26.12
 zipp==3.8.0
