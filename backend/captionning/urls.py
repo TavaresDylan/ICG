@@ -1,10 +1,6 @@
-from django.urls import path, include
-from rest_framework import routers
-from captionning.views import CaptionViewset
-
-router = routers.SimpleRouter()
-router.register('icg', CaptionViewset, basename='icg')
+from django.urls import path
+from .views import icg
 
 urlpatterns = [
-    path('api/v1/', include(router.urls)),
+    path('icg', icg.as_view()),
 ]

@@ -17,8 +17,8 @@ from django.urls import path, re_path, include
 from rest_framework import routers
 from django.conf.urls.static import static
 from api.urls import router as api_router
-from captionning.urls import router as icg_router
 from django.conf import settings
+from captionning.views import IcgApiView
 
 router = routers.DefaultRouter()
 router.registry.extend(api_router.registry)
@@ -28,6 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # API
     re_path(r'^', include('api.urls')),
-	re_path(r'^', include('captionning.urls')),
-	path('', include(router.urls)),
+	#path('', include(router.urls)),
+	path('icg/', IcgApiView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

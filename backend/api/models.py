@@ -18,6 +18,7 @@ class Photo(models.Model):
 	description = models.CharField(max_length=220, null=True)
 	user_id = models.ForeignKey(User,on_delete=models.CASCADE)
 	folder_id = models.ForeignKey(Folder, on_delete=models.CASCADE)
+	is_wip = models.BooleanField(default=True)
 
 	def __str__(self):
 		return self.name

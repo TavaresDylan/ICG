@@ -1,4 +1,3 @@
-from pickle import load
 from numpy import argmax
 from keras_preprocessing.sequence import pad_sequences
 from keras.applications.vgg16 import VGG16
@@ -6,7 +5,6 @@ from keras_preprocessing.image import load_img
 from keras_preprocessing.image import img_to_array
 from keras.applications.vgg16 import preprocess_input
 from keras.models import Model
-from keras.models import load_model
 
 # extract features from each photo in the directory
 def extract_features(filename):
@@ -61,16 +59,3 @@ def generate_desc(model, tokenizer, photo, max_length):
 	in_text = in_text.replace("endseq", "").strip()
 	print(in_text)
 	return in_text
-
-# load the tokenizer
-tokenizer = load(open('media/tokenizer.pkl', 'rb'))
-# pre-define the max sequence length (from training)
-max_length = 34
-# load the model
-model = load_model('media/models-VGG16/model_18.h5', compile=False)
-# load and prepare the photograph
-#photo = extract_features('media/images/received_1089157587919835.jpeg')
-# generate description
-#description = generate_desc(model, tokenizer, photo, max_length)
-#print(description)
-
