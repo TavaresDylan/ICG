@@ -6,7 +6,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==37.0.3
 defusedxml==0.7.1
-Django==4.0.5
+Django==4.0.7
 django-cors-headers==3.13.0
 django-environ==0.9.0
 django-mysql==4.7.0
