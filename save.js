@@ -8,6 +8,7 @@ export const photoModule = {
     actualPage: 1,
     imageCount: 0,
     isLoading: false,
+    aiWip: true,
   }),
   getters: {
     getField,
@@ -18,9 +19,11 @@ export const photoModule = {
       state.actualPage = 1;
     },
     update(state, e) {
-      const itemIndex = state.items.findIndex((x) => x.id === e.id);
-      state.items[itemIndex].description = e.description;
-      state.items[itemIndex].is_wip = e.is_wip;
+      console.log("id in update mutation : : ", e.id)
+      console.log("aiStatus in update mutation : ", e.aiStatus)
+      // Find index of the item to be updated
+      const itemIndex = state.items.findIndex(x => x.id === e.id)
+      state.items[itemIndex].is_wip = e.aiStatus;
     },
   },
   actions: {
@@ -64,7 +67,7 @@ export const photoModule = {
           console.error(JSON.stringify(err));
         });
     },
-    upload({ state, dispatch }, formData) {
+    async upload({ state, dispatch }, formData) {
       return Vue.axios
         .post("api/v1/photo/", formData, {
           headers: {
@@ -73,6 +76,7 @@ export const photoModule = {
         })
         .then((res) => {
           if (res.status === 201) {
+            console.log("Upload results : ", res.data)
             dispatch("getByPage", {
               page: state.actualPage,
               folder_id: this.state.folder.selectedFolder.id,
@@ -118,21 +122,20 @@ export const photoModule = {
         });
     },
     async describeOnUpload({ commit }, fd) {
-      try {
-        await Vue.axios
-          .post("icg/", fd, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              commit("update", res.data[0]);
-            }
-          });
-      } catch (e) {
-        console.error(JSON.stringify(e));
-      }
+      return Vue.axios
+        .post("icg/", fd, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data)
+            console.log(res.data[0].id)
+            console.log(res.data[0].is_wip)
+            commit("update", {"id": res.data[0].id, "aiStatus" : res.data[0].is_wip})
+          }
+        });
     },
   },
 };

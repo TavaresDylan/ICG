@@ -114,6 +114,20 @@
             <p class="white--text font-weight-bold text-truncate ma-0">
               {{ item.name }}
             </p>
+            <v-spacer></v-spacer>
+            <v-tooltip v-if="item.is_wip" bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-progress-circular
+                  v-bind="attrs"
+                  v-on="on"
+                  class="mr-2"
+                  size=22
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              </template>
+              <span>AI captioning in progress</span>
+            </v-tooltip>
           </div>
           <v-img
             position="center center"
@@ -298,6 +312,7 @@ export default {
       "imgDescs",
       "items",
       "isLoading",
+      "aiWip",
     ]),
     ...mapState("folder", ["selectedFolder"]),
     ...mapState("auth", ["loggedInUser"]),
