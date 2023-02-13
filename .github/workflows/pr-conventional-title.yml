@@ -12,7 +12,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: aslafy-z/conventional-pr-title-action@4dc0053b09491ee22af894d8a5960089061a8cdc
+      - uses: aslafy-z/conventional-pr-title-action@b9d8aa366ba2ac0f10e02ce4236d2bd61a84fac3
         with:
           preset: conventional-changelog-angular@^5.0.6
         env:
