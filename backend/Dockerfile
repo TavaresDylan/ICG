@@ -1,4 +1,4 @@
-FROM python:3.10.5 as dev
+FROM python:3.11.2 as dev
 
 # Dossier de travail (racine du projet)
 WORKDIR /app
